@@ -129,8 +129,10 @@ import userSvg from "../static/svg/user.svg";
 import blackUserSvg from "../static/svg/black-user.svg";
 import settingsSvg from "../static/svg/settings.svg";
 import blackSettingsSvg from "../static/svg/black-settings.svg";
+import Cookies from "js-cookie";
 
 export default {
+  middleware: "auth",
   data() {
     return {
       isSidebarOpen: false,
@@ -195,7 +197,7 @@ export default {
       this.isDropdown = false;
     },
     logOut() {
-      sessionStorage.removeItem("token");
+      Cookies.remove("token");
       this.$router.push("login");
     },
     toggleSidebar() {

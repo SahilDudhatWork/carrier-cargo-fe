@@ -4,6 +4,9 @@
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  async asyncData({ redirect }) {
+    redirect('/login');
+  }
 }
 </script>
