@@ -708,13 +708,6 @@ export default {
       await this.profile();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
       this.selectedLabel = this.formData.companyFormationType;
-
-      // if (this.formData.companyFormation.usa) {
-      //   this.selectedLabel = "USA";
-      // }
-      // if (this.formData.companyFormation.maxico) {
-      //   this.selectedLabel = "MEXICO";
-      // }
     } catch (error) {
       console.log(error);
     }
