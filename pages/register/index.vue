@@ -3,7 +3,7 @@
     <div>
       <Content>
         <template #modalContent>
-          <div class="mt-8 sm:w-[400px]">
+          <div class="mt-5 sm:w-[400px]">
             <h1 class="font-bold text-[2rem] text-[#3683D5]">
               Explore the app
             </h1>
@@ -20,7 +20,7 @@
               class="space-y-4 md:space-y-6 mt-6"
               @submit.prevent="sendRegistrationRequest"
             >
-              <div class="overflow-y-scroll h-[260px]">
+              <div class="overflow-y-scroll h-[450px]">
                 <div>
                   <label
                     for="Company name"
