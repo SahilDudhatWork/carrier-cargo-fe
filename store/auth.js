@@ -20,10 +20,10 @@ export const actions = {
     try {
       const response = await $axios.post(`/v1/carrier/auth/logIn`, payload);
       this.$cookies.set("token", response.data.accessToken, {
-        expires: 7,
-        path: "/",
-        secure: true,
-        sameSite: "Strict",
+        // expires: 7,
+        // path: "/",
+        // secure: true,
+        // sameSite: "Strict",
       });
       ctx.commit("getuserData", response.data);
       return response;

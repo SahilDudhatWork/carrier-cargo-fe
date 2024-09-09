@@ -145,7 +145,6 @@
                           ? 'text-white'
                           : 'text-[#686868]'
                       "
-                      style="font-family: 'Poppins'"
                       >{{ tab.name }}</span
                     >
                   </Nuxt-link>
