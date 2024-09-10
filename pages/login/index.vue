@@ -132,12 +132,16 @@ export default {
           });
         } else {
           const res = await this.signin(this.formData);
+          this.$cookies.set("email", this.formData?.email, { expires: 1 });
+
           this.$toast.open({
-            message: this.$i18n.t("loginMessage"),
+            message: this.$i18n.t("loginOTPMessage"),
           });
-          this.$router.push("/dashboard");
+          this.$router.push("/verification");
         }
       } catch (error) {
+        console.log(error);
+
         this.$toast.open({
           message: error?.response?.data?.msg,
           type: "error",
