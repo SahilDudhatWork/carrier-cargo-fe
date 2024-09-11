@@ -172,7 +172,7 @@ export default {
         this.validatePasswords();
         if ((!this.password, !this.confirmPassword)) {
           this.$toast.open({
-            message: this.$i18n.t("errorMessage"),
+            message: this.$i18n.t("requiredErrorMessage"),
             type: "error",
           });
           return;
@@ -192,8 +192,9 @@ export default {
           this.$router.push("/login");
         }
       } catch (error) {
+        console.log(error);
         this.$toast.open({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
       }

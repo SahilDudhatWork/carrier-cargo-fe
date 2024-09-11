@@ -36,13 +36,13 @@
                 <p class="font-semibold text-[20px] text-[#414141]">
                   Hi Welcome!
                 </p>
-                <img src="../static/Images/slap.webp" alt="" />
+                <img src="@/static/Images/slap.webp" alt="" />
               </div>
               <p class="text-[#575757] text-sm font-light">Login as Carrier</p>
             </div>
             <div class="flex gap-4 items-center">
-              <img src="../static/svg/moon.svg" alt="" />
-              <img src="../static/svg/bell.svg" alt="" />
+              <img src="@/static/svg/moon.svg" alt="" />
+              <img src="@/static/svg/bell.svg" alt="" />
               <h1 class="text-[#11263C] font-semibold text-[16px] capitalize">
                 {{ profileData?.contactName }}
               </h1>
@@ -50,8 +50,8 @@
                 class="flex gap-2 cursor-pointer"
                 @click="isDropdown = !isDropdown"
               >
-                <img src="../static/Images/header-image.webp" alt="" />
-                <img src="../static/svg/down-arrow.svg" alt="" />
+                <img src="@/static/Images/header-image.webp" alt="" />
+                <img src="@/static/svg/down-arrow.svg" alt="" />
               </div>
             </div>
           </div>
@@ -106,13 +106,13 @@
           <div>
             <div class="flex items-center justify-center gap-3">
               <img
-                src="../static/Images/slime.webp"
+                src="@/static/Images/slime.webp"
                 alt=""
                 class="cursor-pointer sm:block hidden"
                 @click="toggleSidebarWidth"
               />
               <img
-                src="../static/Images/header-logo.webp"
+                src="@/static/Images/header-logo.webp"
                 alt=""
                 v-if="isShow"
               />
@@ -170,16 +170,16 @@
 
 <script>
 import { mapGetters } from "vuex";
-import dashboardSvg from "../static/svg/dashboard.svg";
-import blackDashboardSvg from "../static/svg/black-dashboard.svg";
-import activitySvg from "../static/svg/activity.svg";
-import blackActivitySvg from "../static/svg/black-activity.svg";
-import truckSideSvg from "../static/svg/truck-side.svg";
-import blackTruckSideSvg from "../static/svg/black-truck-side.svg";
-import userSvg from "../static/svg/user.svg";
-import blackUserSvg from "../static/svg/black-user.svg";
-import settingsSvg from "../static/svg/settings.svg";
-import blackSettingsSvg from "../static/svg/black-settings.svg";
+import dashboardSvg from "@/static/svg/dashboard.svg";
+import blackDashboardSvg from "@/static/svg/black-dashboard.svg";
+import activitySvg from "@/static/svg/activity.svg";
+import blackActivitySvg from "@/static/svg/black-activity.svg";
+import truckSideSvg from "@/static/svg/truck-side.svg";
+import blackTruckSideSvg from "@/static/svg/black-truck-side.svg";
+import userSvg from "@/static/svg/user.svg";
+import blackUserSvg from "@/static/svg/black-user.svg";
+import settingsSvg from "@/static/svg/settings.svg";
+import blackSettingsSvg from "@/static/svg/black-settings.svg";
 import Cookies from "js-cookie";
 
 export default {

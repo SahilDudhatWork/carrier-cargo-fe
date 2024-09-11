@@ -88,7 +88,7 @@ export default {
       try {
         if (this.otp.some((digit) => digit === "")) {
           this.$toast.open({
-            message: this.$i18n.t("errorMessage"),
+            message: this.$i18n.t("requiredErrorMessage"),
             type: "error",
           });
           return;
@@ -111,9 +111,8 @@ export default {
         }
       } catch (error) {
         console.log(error);
-
         this.$toast.open({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
       }
@@ -126,8 +125,9 @@ export default {
           message: res.msg,
         });
       } catch (error) {
+        console.log(error);
         this.$toast.open({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
       }

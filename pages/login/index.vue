@@ -127,7 +127,7 @@ export default {
       try {
         if ((!this.formData.email, !this.formData.password)) {
           this.$toast.open({
-            message: this.$i18n.t("errorMessage"),
+            message: this.$i18n.t("requiredErrorMessage"),
             type: "error",
           });
         } else {
@@ -141,9 +141,8 @@ export default {
         }
       } catch (error) {
         console.log(error);
-
         this.$toast.open({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
       }
