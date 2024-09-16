@@ -3,7 +3,7 @@
     <div>
       <Content>
         <template #modalContent>
-          <div class="mt-5 sm:w-[400px]">
+          <div class="mt-5 sm:w-[450px]">
             <h1 class="font-bold text-[2rem] text-[#3683D5]">
               Explore the app
             </h1>
@@ -81,16 +81,16 @@
                       viewBox="0 0 24 24"
                       stroke-width="2"
                       stroke="currentColor"
-                      class="cursor-pointer w-6 h-6 absolute xl:right-5 lg:right-3 sm:right-3 right-2 top-10"
+                      class="cursor-pointer w-6 h-6 absolute xl:right-[74px] lg:right-3 sm:right-3 right-2 top-10"
                     >
                       <path
-                        v-if="!isPassword"
+                        v-if="!password"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"
                       />
                       <path
-                        v-if="!isPassword"
+                        v-if="!password"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         d="M2.458 12C3.732 7.943 7.297 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-4.839 7-9.542 7S3.732 16.057 2.458 12z"
@@ -103,14 +103,58 @@
                       />
                     </svg>
                     <input
-                      :type="isPassword ? 'text' : 'password'"
+                      :type="password ? 'text' : 'password'"
                       name="createPassword"
                       id="createPassword"
                       class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
-                      placeholder="Type your email address"
+                      placeholder="Your password"
                       v-model="formData.password"
                     />
                   </div>
+                </div>
+                <div class="relative mt-2">
+                  <label
+                    for="createPassword"
+                    class="block mb-2 text-sm font-normal text-[#4B4B4B]"
+                    >Confirm Password</label
+                  >
+
+                  <svg
+                    @click="toggleConfirmPassword"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    class="cursor-pointer w-6 h-6 absolute xl:right-[75px] lg:right-3 sm:right-3 right-2 top-11"
+                  >
+                    <path
+                      v-if="!confirmPassword"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"
+                    />
+                    <path
+                      v-if="!confirmPassword"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.458 12C3.732 7.943 7.297 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-4.839 7-9.542 7S3.732 16.057 2.458 12z"
+                    />
+                    <path
+                      v-else
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3.98 8.218a10.451 10.451 0 00-.31.282C2.763 9.463 2 10.656 2 12c1.581 4.77 5.804 7.5 10.5 7.5 1.348 0 2.639-.21 3.843-.603M6.179 6.177a9.718 9.718 0 015.821-1.677c3.966 0 7.455 2.12 9.542 5.5a10.354 10.354 0 01-1.065 1.502m-1.814 2.904C15.869 15.673 14.5 16.5 12 16.5a3.5 3.5 0 01-3.5-3.5c0-.861.327-1.656.865-2.245M15 12c0-1.657-1.343-3-3-3a2.992 2.992 0 00-2.78 1.943M3 3l18 18"
+                    />
+                  </svg>
+                  <input
+                    :type="confirmPassword ? 'text' : 'password'"
+                    name="createPassword"
+                    id="createPassword"
+                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
+                    placeholder="Your password"
+                    v-model="formData.confirmPassword"
+                  />
                 </div>
                 <div>
                   <label
@@ -141,7 +185,8 @@
                 <div>
                   <inputFile
                     item-label="SCAC"
-                    :file="formData.scac?.name"
+                    :fileData="formData?.scac"
+                    :file="formData?.scac?.name"
                     @handleFileChange="uploadScac"
                   />
                 </div>
@@ -149,7 +194,8 @@
                   <inputFile
                     class="mt-3"
                     item-label="CAAT"
-                    :file="formData.caat?.name"
+                    :fileData="formData?.caat"
+                    :file="formData?.caat?.name"
                     @handleFileChange="uploadCaat"
                   />
                 </div>
@@ -157,7 +203,8 @@
                   <inputFile
                     class="mt-3"
                     item-label="Insurance Policy"
-                    :file="formData.insurancePolicy?.name"
+                    :fileData="formData?.insurancePolicy"
+                    :file="formData?.insurancePolicy?.name"
                     @handleFileChange="uploadInsurancePolicy"
                   />
                 </div>
@@ -165,7 +212,8 @@
                   <inputFile
                     class="mt-3"
                     item-label="OEA"
-                    :file="formData.oea?.name"
+                    :fileData="formData?.oea"
+                    :file="formData?.oea?.name"
                     @handleFileChange="uploadOea"
                   />
                 </div>
@@ -173,7 +221,8 @@
                   <inputFile
                     class="mt-3"
                     item-label="CTPAT"
-                    :file="formData.ctpat?.name"
+                    :fileData="formData?.ctpat"
+                    :file="formData?.ctpat?.name"
                     @handleFileChange="uploadCtpat"
                   />
                 </div>
@@ -193,12 +242,14 @@
                   <inputFile
                     class="mt-2"
                     item-label="W9 Form"
+                    :fileData="formData?.companyFormation?.usa?.w9_Form"
                     :file="formData?.companyFormation?.usa?.w9_Form?.name"
                     @handleFileChange="uploadW9Form"
                   />
                   <inputFile
                     class="mt-4"
                     item-label="Utility Bill"
+                    :fileData="formData?.companyFormation?.usa?.utility_Bill"
                     :file="formData?.companyFormation?.usa?.utility_Bill?.name"
                     @handleFileChange="uploadUtilityBill"
                   />
@@ -208,6 +259,9 @@
                   <inputFile
                     class="mt-2"
                     item-label="COPIA RFC Form"
+                    :fileData="
+                      formData?.companyFormation?.maxico?.copia_Rfc_Form
+                    "
                     :file="
                       typeof formData?.companyFormation?.maxico
                         ?.copia_Rfc_Form == 'object'
@@ -220,6 +274,10 @@
                   <inputFile
                     class="mt-2"
                     item-label="Constance of Fiscal Situation"
+                    :fileData="
+                      formData?.companyFormation?.maxico
+                        ?.constance_Of_Fiscal_Situation
+                    "
                     :file="
                       formData?.companyFormation?.maxico
                         ?.constance_Of_Fiscal_Situation?.name
@@ -229,6 +287,9 @@
                   <inputFile
                     class="mt-2"
                     item-label="Proof of Favorable"
+                    :fileData="
+                      formData?.companyFormation?.maxico?.proof_of_Favorable
+                    "
                     :file="
                       formData?.companyFormation?.maxico?.proof_of_Favorable
                         ?.name
@@ -238,6 +299,9 @@
                   <inputFile
                     class="mt-2"
                     item-label="Proof of Address"
+                    :fileData="
+                      formData?.companyFormation?.maxico?.proof_Of_Address
+                    "
                     :file="
                       formData?.companyFormation?.maxico?.proof_Of_Address?.name
                     "
@@ -358,7 +422,8 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      isPassword: false,
+      password: false,
+      confirmPassword: false,
       countriesList: [
         {
           label: "USA",
@@ -385,6 +450,7 @@ export default {
         contactNumber: "",
         email: "",
         password: "",
+        confirmPassword: "",
         scac: "",
         caat: "",
         insurancePolicy: "",
@@ -440,7 +506,24 @@ export default {
       uploadImage: "auth/uploadImage",
     }),
     togglePassword() {
-      this.isPassword = !this.isPassword;
+      this.password = !this.password;
+    },
+    validatePasswords() {
+      if (
+        this.formData.password &&
+        this.formData.confirmPassword &&
+        this.formData.password !== this.formData.confirmPassword
+      ) {
+        this.$toast.open({
+          message: this.$i18n.t("matchPasswordMessage"),
+          type: "error",
+        });
+        return false;
+      }
+      return true;
+    },
+    toggleConfirmPassword() {
+      this.confirmPassword = !this.confirmPassword;
     },
     getCountry(item) {
       this.formData.countryCode = item.value;
@@ -543,6 +626,9 @@ export default {
     },
     async sendRegistrationRequest() {
       try {
+        if (!this.validatePasswords()) {
+          return;
+        }
         const formData = new FormData();
         formData.append("companyName", this.formData.companyName);
         formData.append("contactName", this.formData.contactName);
@@ -603,7 +689,9 @@ export default {
             if (key === "countryCode") {
               value = `${value}`;
             }
-            formData.append(`commercialReference[${index}][${key}]`, value);
+            if (value && value != "") {
+              formData.append(`commercialReference[${index}][${key}]`, value);
+            }
           }
         });
 

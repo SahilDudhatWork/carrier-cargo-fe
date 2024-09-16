@@ -111,10 +111,11 @@
               <div>
                 <inputFile
                   item-label="SCAC"
+                  :fileData="formData?.scac"
                   :file="
-                    typeof formData.scac == 'object'
-                      ? formData.scac?.name
-                      : formData.scac
+                    typeof formData?.scac == 'object'
+                      ? formData?.scac?.name
+                      : formData?.scac
                   "
                   @handleFileChange="uploadScac"
                 />
@@ -122,10 +123,11 @@
               <div>
                 <inputFile
                   item-label="CAAT"
+                  :fileData="formData?.caat"
                   :file="
-                    typeof formData.caat == 'object'
-                      ? formData.caat?.name
-                      : formData.caat
+                    typeof formData?.caat == 'object'
+                      ? formData?.caat?.name
+                      : formData?.caat
                   "
                   @handleFileChange="uploadCaat"
                 />
@@ -133,10 +135,11 @@
               <div>
                 <inputFile
                   item-label="Insurance Policy"
+                  :fileData="formData?.insurancePolicy"
                   :file="
-                    typeof formData.insurancePolicy == 'object'
-                      ? formData.insurancePolicy?.name
-                      : formData.insurancePolicy
+                    typeof formData?.insurancePolicy == 'object'
+                      ? formData?.insurancePolicy?.name
+                      : formData?.insurancePolicy
                   "
                   @handleFileChange="uploadInsurancePolicy"
                 />
@@ -144,10 +147,11 @@
               <div>
                 <inputFile
                   item-label="OEA"
+                  :fileData="formData?.oea"
                   :file="
-                    typeof formData.oea == 'object'
-                      ? formData.oea?.name
-                      : formData.oea
+                    typeof formData?.oea == 'object'
+                      ? formData?.oea?.name
+                      : formData?.oea
                   "
                   @handleFileChange="uploadOea"
                 />
@@ -155,10 +159,11 @@
               <div>
                 <inputFile
                   item-label="CTPAT"
+                  :fileData="formData?.ctpat"
                   :file="
-                    typeof formData.ctpat == 'object'
-                      ? formData.ctpat?.name
-                      : formData.ctpat
+                    typeof formData?.ctpat == 'object'
+                      ? formData?.ctpat?.name
+                      : formData?.ctpat
                   "
                   @handleFileChange="uploadCtpat"
                 />
@@ -178,6 +183,7 @@
               <div v-if="selectedLabel === 'USA'">
                 <inputFile
                   item-label="W9 Form"
+                  :fileData="formData?.companyFormation?.usa?.w9_Form"
                   :file="
                     typeof formData?.companyFormation?.usa?.w9_Form == 'object'
                       ? formData?.companyFormation?.usa?.w9_Form?.name
@@ -189,6 +195,7 @@
               <div v-if="selectedLabel === 'USA'">
                 <inputFile
                   item-label="Utility Bill"
+                  :fileData="formData?.companyFormation?.usa?.utility_Bill"
                   :file="
                     typeof formData?.companyFormation?.usa?.utility_Bill ==
                     'object'
@@ -201,6 +208,7 @@
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="COPIA RFC Form"
+                  :fileData="formData?.companyFormation?.maxico?.copia_Rfc_Form"
                   :file="
                     typeof formData?.companyFormation?.maxico?.copia_Rfc_Form ==
                     'object'
@@ -213,6 +221,10 @@
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="Constance of Fiscal Situation"
+                  :fileData="
+                    formData?.companyFormation?.maxico
+                      ?.constance_Of_Fiscal_Situation
+                  "
                   :file="
                     typeof formData?.companyFormation?.maxico
                       ?.constance_Of_Fiscal_Situation == 'object'
@@ -227,6 +239,9 @@
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="Proof of Favorable"
+                  :fileData="
+                    formData?.companyFormation?.maxico?.proof_of_Favorable
+                  "
                   :file="
                     typeof formData?.companyFormation?.maxico
                       ?.proof_of_Favorable == 'object'
@@ -240,6 +255,9 @@
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="Proof of Address"
+                  :fileData="
+                    formData?.companyFormation?.maxico?.proof_Of_Address
+                  "
                   :file="
                     typeof formData?.companyFormation?.maxico
                       ?.proof_Of_Address == 'object'
@@ -649,12 +667,20 @@ export default {
             let value = ref[key];
 
             if (key === "contactNo") {
-              value = `${value}`;
+              value = value ? `${value}` : "";
             }
             if (key === "countryCode") {
               value = `${value}`;
             }
-            formData.append(`commercialReference[${index}][${key}]`, value);
+            if (
+              value &&
+              value != "" &&
+              value != null &&
+              key != "accountId" &&
+              key != "_id"
+            ) {
+              formData.append(`commercialReference[${index}][${key}]`, value);
+            }
           }
         });
         const response = await this.updateProfile(formData);

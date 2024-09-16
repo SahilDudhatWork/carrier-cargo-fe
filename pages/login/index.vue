@@ -23,7 +23,7 @@
                   name="email"
                   id="email"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-3 py-[17px]"
-                  placeholder="Email"
+                  placeholder="Your email"
                   v-model="formData.email"
                 />
               </div>
@@ -61,7 +61,7 @@
                   name="createPassword"
                   id="createPassword"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[17px]"
-                  placeholder="Type your email address"
+                  placeholder="Your password"
                   v-model="formData.password"
                 />
               </div>

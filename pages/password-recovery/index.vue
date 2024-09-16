@@ -80,7 +80,7 @@ export default {
             message: res.msg,
           });
           this.$cookies.set("email", this.forgetEmail, { expires: 1 });
-          this.$router.push("/email-sent");
+          this.$router.push("/otp-sent");
         }
       } catch (error) {
         console.log(error);
