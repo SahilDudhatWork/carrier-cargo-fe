@@ -96,10 +96,7 @@ export const actions = {
   // for login
   async verifyCarrierOtp(ctx, payload) {
     try {
-      const response = await $axios.post(
-        "/v1/common/otp/verify/carrier",
-        payload
-      );
+      const response = await $axios.post("/v1/carrier/auth/verifyOtp", payload);
       return response;
     } catch (error) {
       throw error;

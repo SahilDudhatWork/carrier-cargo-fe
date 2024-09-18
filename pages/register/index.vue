@@ -29,12 +29,20 @@
                   >
                   <input
                     type="text"
+                    :class="
+                      errors?.companyName
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="CompanyName"
                     id="CompanyName"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     placeholder="Your company name"
                     v-model="formData.companyName"
                   />
+                  <span v-if="errors?.companyName" class="error-msg">{{
+                    errors?.companyName
+                  }}</span>
                 </div>
                 <div>
                   <label
@@ -44,12 +52,20 @@
                   >
                   <input
                     type="text"
+                    :class="
+                      errors?.contactName
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="ContactName"
                     id="ContactName"
                     placeholder="Your contact name"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     v-model="formData.contactName"
                   />
+                  <span v-if="errors?.contactName" class="error-msg">{{
+                    errors?.contactName
+                  }}</span>
                 </div>
                 <div>
                   <label
@@ -59,12 +75,20 @@
                   >
                   <input
                     type="email"
+                    :class="
+                      errors?.email
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="email"
                     id="email"
                     placeholder="Your Email Address"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     v-model="formData.email"
                   />
+                  <span v-if="errors?.email" class="error-msg">{{
+                    errors?.email
+                  }}</span>
                 </div>
                 <div>
                   <div class="relative mt-2">
@@ -104,13 +128,21 @@
                     </svg>
                     <input
                       :type="password ? 'text' : 'password'"
+                      :class="
+                        errors?.password
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
                       name="createPassword"
                       id="createPassword"
-                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                       placeholder="Your password"
                       v-model="formData.password"
                     />
                   </div>
+                  <span v-if="errors?.password" class="error-msg">{{
+                    errors?.password
+                  }}</span>
                 </div>
                 <div class="relative mt-2">
                   <label
@@ -149,13 +181,21 @@
                   </svg>
                   <input
                     :type="confirmPassword ? 'text' : 'password'"
+                    :class="
+                      errors?.confirmPassword
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     name="createPassword"
                     id="createPassword"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                     placeholder="Your password"
                     v-model="formData.confirmPassword"
                   />
                 </div>
+                <span v-if="errors?.confirmPassword" class="error-msg">{{
+                  errors?.confirmPassword
+                }}</span>
                 <div>
                   <label
                     for="ContactNo"
@@ -173,58 +213,82 @@
                       class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                     ></div>
                     <input
-                      type="number"
+                      type="text"
+                      :class="
+                        errors?.contactNumber
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
                       name="ContactNo"
                       id="ContactNo"
                       placeholder="Your Contact No."
-                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[12px] bg-white pl-24 focus:outline-none mb-3"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[12px] bg-white pl-24 focus:outline-none mb-3"
                       v-model="formData.contactNumber"
                     />
                   </div>
+                  <span v-if="errors?.contactNumber" class="error-msg">{{
+                    errors?.contactNumber
+                  }}</span>
                 </div>
                 <div>
                   <inputFile
                     item-label="SCAC"
+                    :errors="errors.scac"
                     :fileData="formData?.scac"
                     :file="formData?.scac?.name"
                     @handleFileChange="uploadScac"
                   />
+                  <span class="error-msg" v-if="errors.scac">{{
+                    errors.scac
+                  }}</span>
                 </div>
                 <div>
                   <inputFile
-                    class="mt-3"
                     item-label="CAAT"
                     :fileData="formData?.caat"
+                    :errors="errors.caat"
                     :file="formData?.caat?.name"
                     @handleFileChange="uploadCaat"
                   />
+                  <span class="error-msg" v-if="errors.caat">{{
+                    errors.caat
+                  }}</span>
                 </div>
                 <div>
                   <inputFile
-                    class="mt-3"
                     item-label="Insurance Policy"
                     :fileData="formData?.insurancePolicy"
+                    :errors="errors.insurancePolicy"
                     :file="formData?.insurancePolicy?.name"
                     @handleFileChange="uploadInsurancePolicy"
                   />
+                  <span class="error-msg" v-if="errors.insurancePolicy">{{
+                    errors.insurancePolicy
+                  }}</span>
                 </div>
                 <div>
                   <inputFile
-                    class="mt-3"
                     item-label="OEA"
                     :fileData="formData?.oea"
+                    :errors="errors.oea"
                     :file="formData?.oea?.name"
                     @handleFileChange="uploadOea"
                   />
+                  <span class="error-msg" v-if="errors.oea">{{
+                    errors.oea
+                  }}</span>
                 </div>
                 <div>
                   <inputFile
-                    class="mt-3"
+                    :errors="errors.ctpat"
                     item-label="CTPAT"
                     :fileData="formData?.ctpat"
                     :file="formData?.ctpat?.name"
                     @handleFileChange="uploadCtpat"
                   />
+                  <span class="error-msg" v-if="errors.ctpat">{{
+                    errors.ctpat
+                  }}</span>
                 </div>
                 <div>
                   <label
@@ -240,39 +304,44 @@
                 </div>
                 <div v-if="selectedLabel === 'USA'">
                   <inputFile
-                    class="mt-2"
+                    :errors="errors.w9_Form"
                     item-label="W9 Form"
                     :fileData="formData?.companyFormation?.usa?.w9_Form"
                     :file="formData?.companyFormation?.usa?.w9_Form?.name"
                     @handleFileChange="uploadW9Form"
                   />
+                  <span class="error-msg" v-if="errors.w9_Form">{{
+                    errors.w9_Form
+                  }}</span>
                   <inputFile
-                    class="mt-4"
+                    :errors="errors.utility_Bill"
                     item-label="Utility Bill"
                     :fileData="formData?.companyFormation?.usa?.utility_Bill"
                     :file="formData?.companyFormation?.usa?.utility_Bill?.name"
                     @handleFileChange="uploadUtilityBill"
                   />
+                  <span class="error-msg" v-if="errors.utility_Bill">{{
+                    errors.utility_Bill
+                  }}</span>
                 </div>
 
                 <div v-if="selectedLabel === 'MEXICO'">
                   <inputFile
-                    class="mt-2"
+                    :errors="errors.copia_Rfc_Form"
                     item-label="COPIA RFC Form"
                     :fileData="
                       formData?.companyFormation?.maxico?.copia_Rfc_Form
                     "
                     :file="
-                      typeof formData?.companyFormation?.maxico
-                        ?.copia_Rfc_Form == 'object'
-                        ? formData?.companyFormation?.maxico?.copia_Rfc_Form
-                            ?.name
-                        : formData?.companyFormation?.maxico?.copia_Rfc_Form
+                      formData?.companyFormation?.maxico?.copia_Rfc_Form?.name
                     "
                     @handleFileChange="uploadCopiaRfcForm"
                   />
+                  <span class="error-msg" v-if="errors.copia_Rfc_Form">{{
+                    errors.copia_Rfc_Form
+                  }}</span>
                   <inputFile
-                    class="mt-2"
+                    :errors="errors.constance_Of_Fiscal_Situation"
                     item-label="Constance of Fiscal Situation"
                     :fileData="
                       formData?.companyFormation?.maxico
@@ -284,20 +353,28 @@
                     "
                     @handleFileChange="uploadConstanceOfFiscalSituation"
                   />
+                  <span
+                    class="error-msg"
+                    v-if="errors.constance_Of_Fiscal_Situation"
+                    >{{ errors.constance_Of_Fiscal_Situation }}</span
+                  >
                   <inputFile
-                    class="mt-2"
                     item-label="Proof of Favorable"
                     :fileData="
                       formData?.companyFormation?.maxico?.proof_of_Favorable
                     "
+                    :errors="errors.proof_of_Favorable"
                     :file="
                       formData?.companyFormation?.maxico?.proof_of_Favorable
                         ?.name
                     "
                     @handleFileChange="uploadProofOfFavorable"
                   />
+                  <span class="error-msg" v-if="errors.proof_of_Favorable">{{
+                    errors.proof_of_Favorable
+                  }}</span>
                   <inputFile
-                    class="mt-2"
+                    :errors="errors.proof_Of_Address"
                     item-label="Proof of Address"
                     :fileData="
                       formData?.companyFormation?.maxico?.proof_Of_Address
@@ -307,6 +384,9 @@
                     "
                     @handleFileChange="uploadProofOfAddress"
                   />
+                  <span class="error-msg" v-if="errors.proof_Of_Address">{{
+                    errors.proof_Of_Address
+                  }}</span>
                 </div>
                 <div v-if="selectedLabel != 'Select option'" class="mt-1">
                   <div
@@ -424,6 +504,7 @@ export default {
     return {
       password: false,
       confirmPassword: false,
+      errors: {},
       countriesList: [
         {
           label: "USA",
@@ -507,20 +588,6 @@ export default {
     }),
     togglePassword() {
       this.password = !this.password;
-    },
-    validatePasswords() {
-      if (
-        this.formData.password &&
-        this.formData.confirmPassword &&
-        this.formData.password !== this.formData.confirmPassword
-      ) {
-        this.$toast.open({
-          message: this.$i18n.t("matchPasswordMessage"),
-          type: "error",
-        });
-        return false;
-      }
-      return true;
     },
     toggleConfirmPassword() {
       this.confirmPassword = !this.confirmPassword;
@@ -626,7 +693,12 @@ export default {
     },
     async sendRegistrationRequest() {
       try {
-        if (!this.validatePasswords()) {
+        this.errors = await this.$validateFormData({ form: this.formData });
+        if (Object.keys(this.errors).length > 0) {
+          this.$toast.open({
+            message: "Please fix the errors before submitting.",
+            type: "error",
+          });
           return;
         }
         const formData = new FormData();
@@ -711,3 +783,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.error-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: red;
+}
+</style>
