@@ -8,11 +8,6 @@
             alt=""
             class="w-full h-[400px]"
           />
-          <h1
-            class="text-[#3683D5] font-normal text-[12px] bg-white py-2 px-5 absolute right-16 top-12 rounded-2xl cursor-pointer"
-          >
-            Change Background
-          </h1>
         </div>
         <div class="mx-16 relative">
           <img
@@ -98,7 +93,7 @@
                       class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                     ></div>
                     <input
-                      type="number"
+                      type="text"
                       name="ContactNo"
                       id="ContactNo"
                       placeholder="Your Contact No."
@@ -178,6 +173,7 @@
                   :items="countriesList"
                   :selectedLabel="selectedLabel"
                   @getValue="getValue"
+                  :isDisabled="isDropdownDisabled"
                 />
               </div>
               <div v-if="selectedLabel === 'USA'">
@@ -347,7 +343,7 @@
                         class="border-r border-gray-400 h-[40%] absolute left-20 top-4"
                       ></div>
                       <input
-                        type="number"
+                        type="text"
                         name="ContactNo"
                         id="ContactNo"
                         placeholder="Your Contact No."
@@ -446,6 +442,9 @@ export default {
     ...mapGetters({
       getUserProfile: "auth/getUserProfile",
     }),
+    isDropdownDisabled() {
+      return this.getUserProfile?.companyFormationType !== "";
+    },
   },
   methods: {
     ...mapActions({
