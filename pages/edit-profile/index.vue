@@ -11,15 +11,30 @@
         </div>
         <div class="mx-16 relative">
           <img
-            src="@/static/Images/edit-profile-truck-circle-imag.webp"
+            v-if="profileURL"
+            :src="profileURL"
             alt=""
             class="rounded-full absolute w-[300px] -top-36 h-[300px] object-cover border-[17px] border-white"
           />
-          <p
-            class="text-[#3683D5] font-normal text-sm absolute top-44 left-20 cursor-pointer"
-          >
-            Change profile picture
-          </p>
+          <img
+            v-else
+            src="@/static/Images/edit-profile-circle-imag.webp"
+            alt=""
+            class="rounded-full absolute w-[300px] -top-36 h-[300px] object-cover border-[17px] border-white"
+          />
+          <label class="cursor-pointer">
+            <p
+              class="text-[#3683D5] font-normal text-sm absolute top-44 left-20 cursor-pointer"
+            >
+              Change profile picture
+            </p>
+            <input
+              type="file"
+              accept="image/*"
+              class="hidden"
+              @change="handleFileChange"
+            />
+          </label>
         </div>
       </div>
       <div class="mt-56 mx-10">
@@ -33,37 +48,53 @@
                 <label
                   for="Company name"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Company name</label
+                  >Company name *</label
                 >
                 <input
                   type="text"
                   name="CompanyName"
                   id="CompanyName"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   placeholder="Your company name"
                   v-model="formData.companyName"
+                  :class="
+                    errors?.companyName
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
+                <span class="error-msg" v-if="errors?.companyName">{{
+                  errors?.companyName
+                }}</span>
               </div>
               <div>
                 <label
                   for="ContactName"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Contact name</label
+                  >Contact name *</label
                 >
                 <input
                   type="text"
                   name="ContactName"
+                  :class="
+                    errors?.contactName
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                   id="ContactName"
                   placeholder="Your contact name"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   v-model="formData.contactName"
                 />
+                <span class="error-msg" v-if="errors?.contactName">{{
+                  errors?.contactName
+                }}</span>
               </div>
               <div>
                 <label
                   for="email"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Email Address</label
+                  >Email Address *</label
                 >
                 <input
                   disabled
@@ -71,17 +102,27 @@
                   name="email"
                   id="email"
                   placeholder="Your Email Address"
-                  class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                  class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                   v-model="formData.email"
+                  :class="
+                    errors?.email
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
+                <span class="error-msg" v-if="errors?.email">{{
+                  errors?.email
+                }}</span>
               </div>
               <div>
                 <label
                   for="ContactNo"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >Contact No.</label
+                  >Contact *</label
                 >
-                <label class="xl:w-[382px] relative flex cursor-pointer">
+                <label
+                  class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                >
                   <div class="flex justify-between">
                     <CountryDropdown
                       :items="countries"
@@ -97,15 +138,25 @@
                       name="ContactNo"
                       id="ContactNo"
                       placeholder="Your Contact No."
-                      class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                      class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
                       v-model="formData.contactNumber"
+                      @input="validateContactInput"
+                      :class="
+                        errors?.contactNumber
+                          ? 'border border-red-600'
+                          : 'border border-gray-300'
+                      "
                     />
                   </div>
+                  <span class="error-msg" v-if="errors?.contactNumber">{{
+                    errors?.contactNumber
+                  }}</span>
                 </label>
               </div>
               <div>
                 <inputFile
                   item-label="SCAC"
+                  :errors="errors?.scac"
                   :fileData="formData?.scac"
                   :file="
                     typeof formData?.scac == 'object'
@@ -114,10 +165,14 @@
                   "
                   @handleFileChange="uploadScac"
                 />
+                <span class="error-msg" v-if="errors?.scac">{{
+                  errors?.scac
+                }}</span>
               </div>
               <div>
                 <inputFile
                   item-label="CAAT"
+                  :errors="errors?.caat"
                   :fileData="formData?.caat"
                   :file="
                     typeof formData?.caat == 'object'
@@ -126,10 +181,14 @@
                   "
                   @handleFileChange="uploadCaat"
                 />
+                <span class="error-msg" v-if="errors?.caat">{{
+                  errors?.caat
+                }}</span>
               </div>
               <div>
                 <inputFile
                   item-label="Insurance Policy"
+                  :errors="errors?.insurancePolicy"
                   :fileData="formData?.insurancePolicy"
                   :file="
                     typeof formData?.insurancePolicy == 'object'
@@ -138,11 +197,15 @@
                   "
                   @handleFileChange="uploadInsurancePolicy"
                 />
+                <span class="error-msg" v-if="errors?.insurancePolicy">{{
+                  errors?.insurancePolicy
+                }}</span>
               </div>
               <div>
                 <inputFile
                   item-label="OEA"
                   :fileData="formData?.oea"
+                  :errors="errors?.oea"
                   :file="
                     typeof formData?.oea == 'object'
                       ? formData?.oea?.name
@@ -150,11 +213,15 @@
                   "
                   @handleFileChange="uploadOea"
                 />
+                <span class="error-msg" v-if="errors?.oea">{{
+                  errors?.oea
+                }}</span>
               </div>
               <div>
                 <inputFile
                   item-label="CTPAT"
                   :fileData="formData?.ctpat"
+                  :errors="errors?.ctpat"
                   :file="
                     typeof formData?.ctpat == 'object'
                       ? formData?.ctpat?.name
@@ -162,6 +229,9 @@
                   "
                   @handleFileChange="uploadCtpat"
                 />
+                <span class="error-msg" v-if="errors?.ctpat">{{
+                  errors?.ctpat
+                }}</span>
               </div>
               <div class="">
                 <label
@@ -179,6 +249,7 @@
               <div v-if="selectedLabel === 'USA'">
                 <inputFile
                   item-label="W9 Form"
+                  :errors="errors?.w9_Form"
                   :fileData="formData?.companyFormation?.usa?.w9_Form"
                   :file="
                     typeof formData?.companyFormation?.usa?.w9_Form == 'object'
@@ -187,10 +258,14 @@
                   "
                   @handleFileChange="uploadW9Form"
                 />
+                <span class="error-msg" v-if="errors?.w9_Form">{{
+                  errors?.w9_Form
+                }}</span>
               </div>
               <div v-if="selectedLabel === 'USA'">
                 <inputFile
                   item-label="Utility Bill"
+                  :errors="errors?.utility_Bill"
                   :fileData="formData?.companyFormation?.usa?.utility_Bill"
                   :file="
                     typeof formData?.companyFormation?.usa?.utility_Bill ==
@@ -200,10 +275,14 @@
                   "
                   @handleFileChange="uploadUtilityBill"
                 />
+                <span class="error-msg" v-if="errors?.utility_Bill">{{
+                  errors?.utility_Bill
+                }}</span>
               </div>
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="COPIA RFC Form"
+                  :errors="errors?.copia_Rfc_Form"
                   :fileData="formData?.companyFormation?.maxico?.copia_Rfc_Form"
                   :file="
                     typeof formData?.companyFormation?.maxico?.copia_Rfc_Form ==
@@ -213,10 +292,14 @@
                   "
                   @handleFileChange="uploadCopiaRfcForm"
                 />
+                <span class="error-msg" v-if="errors?.copia_Rfc_Form">{{
+                  errors?.copia_Rfc_Form
+                }}</span>
               </div>
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="Constance of Fiscal Situation"
+                  :errors="errors?.constance_Of_Fiscal_Situation"
                   :fileData="
                     formData?.companyFormation?.maxico
                       ?.constance_Of_Fiscal_Situation
@@ -231,10 +314,16 @@
                   "
                   @handleFileChange="uploadConstanceOfFiscalSituation"
                 />
+                <span
+                  class="error-msg"
+                  v-if="errors?.constance_Of_Fiscal_Situation"
+                  >{{ errors?.constance_Of_Fiscal_Situation }}</span
+                >
               </div>
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="Proof of Favorable"
+                  :errors="errors?.proof_of_Favorable"
                   :fileData="
                     formData?.companyFormation?.maxico?.proof_of_Favorable
                   "
@@ -247,10 +336,14 @@
                   "
                   @handleFileChange="uploadProofOfFavorable"
                 />
+                <span class="error-msg" v-if="errors?.proof_of_Favorable">{{
+                  errors?.proof_of_Favorable
+                }}</span>
               </div>
               <div v-if="selectedLabel === 'MEXICO'">
                 <inputFile
                   item-label="Proof of Address"
+                  :errors="errors?.proof_Of_Address"
                   :fileData="
                     formData?.companyFormation?.maxico?.proof_Of_Address
                   "
@@ -263,6 +356,9 @@
                   "
                   @handleFileChange="uploadProofOfAddress"
                 />
+                <span class="error-msg" v-if="errors?.proof_Of_Address">{{
+                  errors?.proof_Of_Address
+                }}</span>
               </div>
             </div>
 
@@ -288,10 +384,21 @@
                     type="text"
                     name="CompanyName"
                     id="CompanyName"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    :class="
+                      errors[`commercialReference[${key}].companyName`]
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     placeholder="Your company name"
                     v-model="reference.companyName"
                   />
+                  <span
+                    class="error-msg"
+                    v-if="errors[`commercialReference[${key}].companyName`]"
+                  >
+                    {{ errors[`commercialReference[${key}].companyName`] }}
+                  </span>
                 </div>
                 <div>
                   <label
@@ -304,9 +411,20 @@
                     name="ContactName"
                     id="ContactName"
                     placeholder="Your contact name"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    :class="
+                      errors[`commercialReference[${key}].contactName`]
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                     v-model="reference.contactName"
                   />
+                  <span
+                    class="error-msg"
+                    v-if="errors[`commercialReference[${key}].contactName`]"
+                  >
+                    {{ errors[`commercialReference[${key}].contactName`] }}
+                  </span>
                 </div>
                 <div>
                   <label
@@ -319,9 +437,20 @@
                     name="email"
                     id="email"
                     placeholder="Your Email Address"
-                    class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                    class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                     v-model="reference.emailAddress"
+                    :class="
+                      errors[`commercialReference[${key}].emailAddress`]
+                        ? 'border border-red-600'
+                        : 'border border-gray-300'
+                    "
                   />
+                  <span
+                    class="error-msg"
+                    v-if="errors[`commercialReference[${key}].emailAddress`]"
+                  >
+                    {{ errors[`commercialReference[${key}].emailAddress`] }}
+                  </span>
                 </div>
                 <div>
                   <label
@@ -329,7 +458,9 @@
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                     >Contact No.</label
                   >
-                  <label class="xl:w-[382px] relative flex cursor-pointer">
+                  <label
+                    class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                  >
                     <div class="flex justify-between">
                       <CountryDropdown
                         :items="countries"
@@ -347,10 +478,22 @@
                         name="ContactNo"
                         id="ContactNo"
                         placeholder="Your Contact No."
-                        class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                        class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
                         v-model="reference.contactNo"
+                        :class="
+                          errors[`commercialReference[${key}].contactNo`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
+                        @input="validateReferrenceInput(reference)"
                       />
                     </div>
+                    <span
+                      class="error-msg"
+                      v-if="errors[`commercialReference[${key}].contactNo`]"
+                    >
+                      {{ errors[`commercialReference[${key}].contactNo`] }}
+                    </span>
                   </label>
                 </div>
               </div>
@@ -375,6 +518,9 @@ export default {
   layout: "dashboard",
   data() {
     return {
+      errors: {},
+      maxFileSize: 2000000,
+      profileURL: "",
       countriesList: [
         {
           label: "USA",
@@ -399,6 +545,7 @@ export default {
         contactName: "",
         countryCode: 1,
         contactNumber: "",
+        profilePicture: "",
         email: "",
         password: "",
         scac: "",
@@ -443,7 +590,10 @@ export default {
       getUserProfile: "auth/getUserProfile",
     }),
     isDropdownDisabled() {
-      return this.getUserProfile?.companyFormationType !== "";
+      return (
+        this.getUserProfile?.companyFormationType !== "" &&
+        this.getUserProfile?.companyFormationType != null
+      );
     },
   },
   methods: {
@@ -460,6 +610,43 @@ export default {
     getValue(item) {
       this.selectedLabel = item.label;
       this.formData.companyFormationType = item.label;
+    },
+    checkFileSize(file) {
+      if (file?.size > this.maxFileSize) {
+        return false;
+      }
+      return true;
+    },
+    async handleFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          if (!this.checkFileSize(file)) {
+            this.$toast.open({
+              message: this.$i18n.t("fileSizeErrorMessage"),
+              type: "error",
+            });
+            return;
+          }
+          this.profileURL = file ? URL.createObjectURL(file) : "";
+          this.formData.profilePicture = file;
+          await this.upateUserProfile();
+        } catch (error) {
+          console.log(error);
+          this.$toast.open({
+            message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+            type: "error",
+          });
+        }
+      }
+    },
+    async validateContactInput(event) {
+      this.formData.contactNumber = await this.$validateNumber(
+        event.target.value
+      );
+    },
+    async validateReferrenceInput(reference) {
+      reference.contactNo = await this.$validateNumber(reference.contactNo);
     },
     async uploadW9Form(event) {
       try {
@@ -550,20 +737,76 @@ export default {
         console.log(error);
       }
     },
+    async formatCommercialReference() {
+      if (
+        !this.getUserProfile.commercialReference ||
+        this.getUserProfile.commercialReference.length === 0
+      ) {
+        this.formData.commercialReference = [
+          {
+            companyName: "",
+            contactName: "",
+            emailAddress: "",
+            countryCode: 1,
+            contactNo: "",
+          },
+          {
+            companyName: "",
+            contactName: "",
+            emailAddress: "",
+            countryCode: 1,
+            contactNo: "",
+          },
+        ];
+      } else if (this.getUserProfile.commercialReference.length === 1) {
+        this.formData.commercialReference = [
+          this.getUserProfile.commercialReference[0],
+          {
+            companyName: "",
+            contactName: "",
+            emailAddress: "",
+            countryCode: 1,
+            contactNo: "",
+          },
+        ];
+      } else {
+        this.formData.commercialReference =
+          this.getUserProfile.commercialReference;
+      }
+    },
     async upateUserProfile() {
       try {
-        console.log("this.formData", this.formData);
+        this.errors = await this.$validateFormData({
+          form: this.formData,
+          isEdit: true,
+        });
+        if (Object.keys(this.errors).length > 0) {
+          this.$toast.open({
+            message: "Please fix the errors before submitting.",
+            type: "error",
+          });
+          return;
+        }
         const formData = new FormData();
         formData.append("companyName", this.formData.companyName);
         formData.append("contactName", this.formData.contactName);
         formData.append("contactNumber", this.formData.contactNumber);
         formData.append("countryCode", this.formData.countryCode);
-        formData.append("email", this.formData.email);
-        formData.append(
-          "companyFormationType",
-          this.formData.companyFormationType
-        );
-        if (typeof this.formData?.scac == "object") {
+        formData.append("email", this.formData.email.toLowerCase());
+        formData.append("profilePicture", this.formData.profilePicture);
+        if (
+          this.formData.companyFormationType &&
+          this.formData.companyFormationType != null
+        ) {
+          formData.append(
+            "companyFormationType",
+            this.formData.companyFormationType
+          );
+        }
+        if (
+          this.formData?.scac != null &&
+          typeof this.formData?.scac == "object"
+        ) {
           formData.append("scac", this.formData?.scac);
         }
         if (
@@ -662,23 +905,33 @@ export default {
           }
         }
         this.formData.commercialReference.forEach((ref, index) => {
-          for (let key in ref) {
-            let value = ref[key];
+          let hasValidValue = Object.keys(ref).some(
+            (key) =>
+              key !== "countryCode" &&
+              key !== "accountId" &&
+              key !== "_id" &&
+              ref[key] &&
+              ref[key] !== ""
+          );
+          if (hasValidValue) {
+            for (let key in ref) {
+              let value = ref[key];
 
-            if (key === "contactNo") {
-              value = value ? `${value}` : "";
-            }
-            if (key === "countryCode") {
-              value = `${value}`;
-            }
-            if (
-              value &&
-              value != "" &&
-              value != null &&
-              key != "accountId" &&
-              key != "_id"
-            ) {
-              formData.append(`commercialReference[${index}][${key}]`, value);
+              if (key === "contactNo") {
+                value = value ? `${value}` : "";
+              }
+              if (key === "countryCode") {
+                value = `${value}`;
+              }
+              if (
+                value &&
+                value != "" &&
+                value != null &&
+                key != "accountId" &&
+                key != "_id"
+              ) {
+                formData.append(`commercialReference[${index}][${key}]`, value);
+              }
             }
           }
         });
@@ -700,10 +953,24 @@ export default {
     try {
       await this.profile();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
-      this.selectedLabel = this.formData.companyFormationType;
+      this.profileURL = this.formData?.profilePicture || "";
+      this.selectedLabel =
+        this.formData.companyFormationType &&
+        this.formData.companyFormationType != "" &&
+        this.formData.companyFormationType != null
+          ? this.formData.companyFormationType
+          : "Select option";
+      await this.formatCommercialReference();
     } catch (error) {
       console.log(error);
     }
   },
 };
 </script>
+<style scoped>
+.error-msg {
+  font-size: 14px;
+  font-weight: 400;
+  color: red;
+}
+</style>

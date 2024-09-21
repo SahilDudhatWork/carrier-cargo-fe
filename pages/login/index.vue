@@ -131,6 +131,7 @@ export default {
             type: "error",
           });
         } else {
+          this.formData.email = this.formData.email.toLowerCase();
           const res = await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, { expires: 1 });
 

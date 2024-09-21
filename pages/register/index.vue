@@ -25,7 +25,7 @@
                   <label
                     for="Company name"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Company name</label
+                    >Company name *</label
                   >
                   <input
                     type="text"
@@ -48,7 +48,7 @@
                   <label
                     for="ContactName"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-2"
-                    >Contact name</label
+                    >Contact name *</label
                   >
                   <input
                     type="text"
@@ -71,7 +71,7 @@
                   <label
                     for="email"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-2"
-                    >Email Address</label
+                    >Email Address *</label
                   >
                   <input
                     type="email"
@@ -95,7 +95,7 @@
                     <label
                       for="createPassword"
                       class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                      >Create Password</label
+                      >Create Password *</label
                     >
 
                     <svg
@@ -148,7 +148,7 @@
                   <label
                     for="createPassword"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                    >Confirm Password</label
+                    >Confirm Password *</label
                   >
 
                   <svg
@@ -200,7 +200,7 @@
                   <label
                     for="ContactNo"
                     class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-2"
-                    >Contact No.</label
+                    >Contact *</label
                   >
                   <div class="flex items-center text-lg relative">
                     <CountryDropdown
@@ -224,6 +224,7 @@
                       placeholder="Your Contact No."
                       class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[12px] bg-white pl-24 focus:outline-none mb-3"
                       v-model="formData.contactNumber"
+                      @input="validateContactInput"
                     />
                   </div>
                   <span v-if="errors?.contactNumber" class="error-msg">{{
@@ -406,11 +407,22 @@
                       <input
                         type="text"
                         name="CompanyName"
+                        :class="
+                          errors[`commercialReference[${key}].companyName`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
                         id="CompanyName"
                         class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
                         placeholder="Your company name"
                         v-model="reference.companyName"
                       />
+                      <span
+                        class="error-msg"
+                        v-if="errors[`commercialReference[${key}].companyName`]"
+                      >
+                        {{ errors[`commercialReference[${key}].companyName`] }}
+                      </span>
                     </div>
                     <div>
                       <label
@@ -424,8 +436,19 @@
                         id="ContactName"
                         placeholder="Your contact name"
                         class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                        :class="
+                          errors[`commercialReference[${key}].contactName`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
                         v-model="reference.contactName"
                       />
+                      <span
+                        class="error-msg"
+                        v-if="errors[`commercialReference[${key}].contactName`]"
+                      >
+                        {{ errors[`commercialReference[${key}].contactName`] }}
+                      </span>
                     </div>
                     <div>
                       <label
@@ -439,8 +462,21 @@
                         id="email"
                         placeholder="Your Email Address"
                         class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[14px]"
+                        :class="
+                          errors[`commercialReference[${key}].emailAddress`]
+                            ? 'border border-red-600'
+                            : 'border border-gray-300'
+                        "
                         v-model="reference.emailAddress"
                       />
+                      <span
+                        class="error-msg"
+                        v-if="
+                          errors[`commercialReference[${key}].emailAddress`]
+                        "
+                      >
+                        {{ errors[`commercialReference[${key}].emailAddress`] }}
+                      </span>
                     </div>
                     <div>
                       <label
@@ -448,7 +484,9 @@
                         class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                         >Contact No.</label
                       >
-                      <label class="xl:w-[382px] relative flex cursor-pointer">
+                      <label
+                        class="xl:w-[382px] relative flex cursor-pointer flex-col"
+                      >
                         <div class="flex justify-between">
                           <CountryDropdown
                             :items="countries"
@@ -467,9 +505,21 @@
                             id="ContactNo"
                             placeholder="Your Contact No."
                             class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-3"
+                            :class="
+                              errors[`commercialReference[${key}].contactNo`]
+                                ? 'border border-red-600'
+                                : 'border border-gray-300'
+                            "
                             v-model="reference.contactNo"
+                            @input="validateReferrenceInput(reference)"
                           />
                         </div>
+                        <span
+                          class="error-msg"
+                          v-if="errors[`commercialReference[${key}].contactNo`]"
+                        >
+                          {{ errors[`commercialReference[${key}].contactNo`] }}
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -602,6 +652,14 @@ export default {
       this.selectedLabel = item.label;
       this.formData.companyFormationType = item.label;
     },
+    async validateContactInput(event) {
+      this.formData.contactNumber = await this.$validateNumber(
+        event.target.value
+      );
+    },
+    async validateReferrenceInput(reference) {
+      reference.contactNo = await this.$validateNumber(reference.contactNo);
+    },
     async uploadW9Form(event) {
       try {
         const file = event.target.files[0];
@@ -693,7 +751,10 @@ export default {
     },
     async sendRegistrationRequest() {
       try {
-        this.errors = await this.$validateFormData({ form: this.formData });
+        this.errors = await this.$validateFormData({
+          form: this.formData,
+          isEdit: false,
+        });
         if (Object.keys(this.errors).length > 0) {
           this.$toast.open({
             message: "Please fix the errors before submitting.",
@@ -706,17 +767,47 @@ export default {
         formData.append("contactName", this.formData.contactName);
         formData.append("contactNumber", this.formData.contactNumber);
         formData.append("countryCode", this.formData.countryCode);
-        formData.append("email", this.formData.email);
+        formData.append("email", this.formData.email.toLowerCase());
         formData.append("password", this.formData.password);
-        formData.append("scac", this.formData.scac);
-        formData.append("caat", this.formData.caat);
-        formData.append("insurancePolicy", this.formData.insurancePolicy);
-        formData.append("oea", this.formData.oea);
-        formData.append("ctpat", this.formData.ctpat);
-        formData.append(
-          "companyFormationType",
-          this.formData.companyFormationType
-        );
+        if (
+          this.formData.scac != null &&
+          typeof this.formData?.scac == "object"
+        ) {
+          formData.append("scac", this.formData.scac);
+        }
+        if (
+          this.formData.caat != null &&
+          typeof this.formData?.caat == "object"
+        ) {
+          formData.append("caat", this.formData.caat);
+        }
+        if (
+          this.formData.insurancePolicy != null &&
+          typeof this.formData?.insurancePolicy == "object"
+        ) {
+          formData.append("insurancePolicy", this.formData.insurancePolicy);
+        }
+        if (
+          this.formData.oea != null &&
+          typeof this.formData?.oea == "object"
+        ) {
+          formData.append("oea", this.formData.oea);
+        }
+        if (
+          this.formData.ctpat != null &&
+          typeof this.formData?.ctpat == "object"
+        ) {
+          formData.append("ctpat", this.formData.ctpat);
+        }
+        if (
+          this.formData.companyFormationType &&
+          this.formData.companyFormationType != null
+        ) {
+          formData.append(
+            "companyFormationType",
+            this.formData.companyFormationType
+          );
+        }
         if (this.selectedLabel === "USA") {
           delete this.formData?.companyFormation?.maxico;
 
@@ -752,17 +843,22 @@ export default {
         }
 
         this.formData.commercialReference.forEach((ref, index) => {
-          for (let key in ref) {
-            let value = ref[key];
+          let hasValidValue = Object.keys(ref).some(
+            (key) => key !== "countryCode" && ref[key] && ref[key] !== ""
+          );
+          if (hasValidValue) {
+            for (let key in ref) {
+              let value = ref[key];
 
-            if (key === "contactNo") {
-              value = `${value}`;
-            }
-            if (key === "countryCode") {
-              value = `${value}`;
-            }
-            if (value && value != "") {
-              formData.append(`commercialReference[${index}][${key}]`, value);
+              if (key === "contactNo") {
+                value = `${value}`;
+              }
+              if (key === "countryCode") {
+                value = `${value}`;
+              }
+              if (value && value !== "") {
+                formData.append(`commercialReference[${index}][${key}]`, value);
+              }
             }
           }
         });
