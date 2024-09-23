@@ -34,12 +34,12 @@ export const actions = {
   async signup(ctx, payload) {
     try {
       const response = await $axios.post("/v1/carrier/auth/signUp", payload);
-      this.$cookies.set("token", response.data.accessToken, {
-        expires: 7,
-        path: "/",
-        secure: true,
-        sameSite: "Strict",
-      });
+      // this.$cookies.set("token", response.data.accessToken, {
+      //   expires: 7,
+      //   path: "/",
+      //   secure: true,
+      //   sameSite: "Strict",
+      // });
       return response;
     } catch (error) {
       throw error;
@@ -68,6 +68,7 @@ export const actions = {
   async updateProfile(ctx, payload) {
     try {
       const response = await $axios.put("/v1/carrier/profile", payload);
+      ctx.commit("setUserProfile", response.data);
       return response;
     } catch (error) {
       throw error;
@@ -97,6 +98,8 @@ export const actions = {
   async verifyCarrierOtp(ctx, payload) {
     try {
       const response = await $axios.post("/v1/carrier/auth/verifyOtp", payload);
+      this.$cookies.set("token", response?.data?.accessToken);
+      this.$cookies.set("refreshToken", response?.data?.refreshToken);
       return response;
     } catch (error) {
       throw error;
