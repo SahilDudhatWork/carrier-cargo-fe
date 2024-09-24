@@ -143,6 +143,120 @@ export default async (ctx, inject) => {
     return errors;
   };
 
+  const validateOperatorField = async ({ form }) => {
+    const errors = {};
+    const isEmpty = (value) => {
+      return typeof value === "string" ? value.trim() === "" : !value;
+    };
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    const validateField = (field, fieldName, errorLabel) => {
+      if (isEmpty(field)) {
+        setError(fieldName, `${errorLabel} is required`);
+      }
+    };
+
+    validateField(form.operatorName, "operatorName", "operator-name");
+    validateField(form.operatorNumber, "operatorNumber", "operator-number");
+    validateField(form.mxIdBadge, "mxIdBadge", "mx-id-badge");
+    validateField(
+      form.mxIdBadgeExpirationDate,
+      "mxIdBadgeExpirationDate",
+      "mx-id-badge-expiration-date"
+    );
+    validateField(form.fastId, "fastId", "fast-id");
+    validateField(
+      form.fastIdExpirationDate,
+      "fastIdExpirationDate",
+      "fast-id-expiration-date"
+    );
+    validateField(
+      form.mxDriversLicense,
+      "mxDriversLicense",
+      "mx-drivers-license"
+    );
+    validateField(
+      form.mxDriversLicenseExpirationDate,
+      "mxDriversLicenseExpirationDate",
+      "mx-drivers-license-expiration-date"
+    );
+    validateField(
+      form.usDriversLicense,
+      "usDriversLicense",
+      "us-drivers-license"
+    );
+    validateField(
+      form.usDriversLicenseExpirationDate,
+      "usDriversLicenseExpirationDate",
+      "us-drivers-license-expiration-date"
+    );
+
+    if (!(await validatePhoneNumber(form.operatorNumber))) {
+      setError("operatorNumber", "Invalid operator-number format");
+    }
+
+    return errors;
+  };
+  const validateVehicleField = async ({ form }) => {
+    const errors = {};
+    const isEmpty = (value) => {
+      return typeof value === "string" ? value.trim() === "" : !value;
+    };
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    const validateField = (field, fieldName, errorLabel) => {
+      if (isEmpty(field)) {
+        setError(fieldName, `${errorLabel} is required`);
+      }
+    };
+
+    validateField(form.vehicleName, "vehicleName", "vehicle-name");
+    validateField(form.mxPlates, "mxPlates", "mx-plates");
+    validateField(
+      form.mxPlatesExpirationDate,
+      "mxPlatesExpirationDate",
+      "mx-plates-expiration-date"
+    );
+    validateField(form.usPlates, "usPlates", "us-plates");
+    validateField(
+      form.usPlatesExpirationDate,
+      "usPlatesExpirationDate",
+      "us-plates-expiration-date"
+    );
+    validateField(
+      form.mxInsurancePlates,
+      "mxInsurancePlates",
+      "mx-insurance-plates"
+    );
+    validateField(
+      form.mxInsurancePlatesExpirationDate,
+      "mxInsurancePlatesExpirationDate",
+      "mx-insurance-plates-expiration-date"
+    );
+    validateField(
+      form.usInsurancePlates,
+      "usInsurancePlates",
+      "us-insurance-plates"
+    );
+    validateField(
+      form.usInsurancePlatesExpirationDate,
+      "usInsurancePlatesExpirationDate",
+      "us-insurance-plates-expiration-date"
+    );
+
+    if (!(await validatePhoneNumber(form.operatorNumber))) {
+      setError("operatorNumber", "Invalid operator-number format");
+    }
+
+    return errors;
+  };
+
   inject("validateFormData", validateFormData);
+  inject("validateOperatorField", validateOperatorField);
+  inject("validateVehicleField", validateVehicleField);
   inject("validateNumber", validateNumber);
 };

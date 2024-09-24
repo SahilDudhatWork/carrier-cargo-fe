@@ -7,3 +7,25 @@
     background: linear-gradient(90deg, #9ED0FF 0%, #0464CB 100%);
   }
   
+  .group .mx-datepicker .mx-input {
+    background-color: white !important;
+    cursor: pointer !important;
+    border: 1px solid 	#E8E8E8;
+    border-radius: 8px;
+    height: 54px !important;
+    padding-left: 12px !important;
+    color: #1E1E1E;
+    font-weight: 400 !important;
+    font-size: 16px;
+  }
+  .group .mx-datepicker .mx-icon-calendar {
+    display: none !important;
+  }
+
+  .group .mx-input-wrapper {
+    width: 382px !important;
+  }
+
+  .mx-datepicker-main .mx-calendar {
+    width: 382px !important;
+  }

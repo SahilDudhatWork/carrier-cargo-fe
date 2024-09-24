@@ -34,6 +34,8 @@ export default {
     "~/plugins/lodash.js",
     "~/plugins/validation.js",
     "~/plugins/downloadFile.js",
+    "~/plugins/moment.js",
+    { src: "~/plugins/vue2-datepicker.js", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
