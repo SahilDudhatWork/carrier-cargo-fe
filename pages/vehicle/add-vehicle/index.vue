@@ -413,9 +413,19 @@ export default {
         this.formData.usInsurancePlatesExpirationDate = this.$moment(
           this.formData.usInsurancePlatesExpirationDate
         ).format("YYYY-MM-DD");
-        this.formData.typeOfService = this.selectedTypeOfServiceItem;
-        this.formData.typeOfTransportation =
-          this.selectedTypeOfTransportationItem;
+        if (
+          this.selectedTypeOfServiceItem &&
+          this.selectedTypeOfServiceItem.length > 0
+        ) {
+          this.formData.typeOfService = this.selectedTypeOfServiceItem;
+        }
+        if (
+          this.selectedTypeOfTransportationItem &&
+          this.selectedTypeOfTransportationItem.length > 0
+        ) {
+          this.formData.typeOfTransportation =
+            this.selectedTypeOfTransportationItem;
+        }
         const modeOfTransportation = {
           FTL: [],
           LTL: [],
@@ -438,17 +448,22 @@ export default {
           }
         });
 
-        if (modeOfTransportation.FTL) {
-          this.formData.modeOfTransportation = {
-            ...this.formData.modeOfTransportation,
-            FTL: modeOfTransportation.FTL ? modeOfTransportation.FTL : null,
-          };
-        }
-        if (modeOfTransportation.LTL) {
-          this.formData.modeOfTransportation = {
-            ...this.formData.modeOfTransportation,
-            LTL: modeOfTransportation.LTL ? modeOfTransportation.LTL : null,
-          };
+        if (
+          (modeOfTransportation.FTL && modeOfTransportation.FTL.length > 0) ||
+          (modeOfTransportation.LTL && modeOfTransportation.LTL.length > 0)
+        ) {
+          if (modeOfTransportation.FTL) {
+            this.formData.modeOfTransportation = {
+              ...this.formData.modeOfTransportation,
+              FTL: modeOfTransportation.FTL ? modeOfTransportation.FTL : null,
+            };
+          }
+          if (modeOfTransportation.LTL) {
+            this.formData.modeOfTransportation = {
+              ...this.formData.modeOfTransportation,
+              LTL: modeOfTransportation.LTL ? modeOfTransportation.LTL : null,
+            };
+          }
         }
         const response = await this.createVehicle(this.formData);
         this.$toast.open({
