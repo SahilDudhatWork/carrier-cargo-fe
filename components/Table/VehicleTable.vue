@@ -72,7 +72,11 @@
                 <div class="flex flex-col mt-4">
                   <span> {{ item?.usPlates }}</span>
                   <span class="text-[#989898]"
-                    >({{ formattedUsPlatesExpirationDate }})</span
+                    >({{
+                      $moment(item?.usPlatesExpirationDate).format(
+                        "DD-MM-YYYY"
+                      )
+                    }})</span
                   >
                 </div>
               </td>
@@ -80,7 +84,11 @@
                 <div class="flex flex-col mt-4">
                   <span> {{ item?.mxPlates }}</span>
                   <span class="text-[#989898]"
-                    >({{ formattedMxPlatesExpirationDate }})</span
+                    >({{
+                      $moment(item?.mxPlatesExpirationDate).format(
+                        "DD-MM-YYYY"
+                      )
+                    }})</span
                   >
                 </div>
               </td>
@@ -253,16 +261,16 @@ export default {
     ...mapGetters({
       vehiclePaginationData: "vehicle/getVehiclePaginationData",
     }),
-    formattedMxPlatesExpirationDate() {
-      return this.$moment(this.allData?.mxPlatesExpirationDate).format(
-        "DD-MM-YYYY"
-      );
-    },
-    formattedUsPlatesExpirationDate() {
-      return this.$moment(this.allData?.usPlatesExpirationDate).format(
-        "DD-MM-YYYY"
-      );
-    },
+    // formattedMxPlatesExpirationDate() {
+    //   return this.$moment(this.allData?.mxPlatesExpirationDate).format(
+    //     "DD-MM-YYYY"
+    //   );
+    // },
+    // formattedUsPlatesExpirationDate() {
+    //   return this.$moment(this.allData?.usPlatesExpirationDate).format(
+    //     "DD-MM-YYYY"
+    //   );
+    // },
   },
   methods: {
     editOperator(item) {

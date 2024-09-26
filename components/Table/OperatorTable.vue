@@ -74,7 +74,11 @@
                 {{ item?.mxDriversLicense }}
               </td>
               <td class="px-6 text-[#000000] font-normal text-[12px]">
-                {{ formattedmxDriversLicenseExpirationDate }}
+                {{
+                  $moment(item?.mxDriversLicenseExpirationDate).format(
+                    "DD-MM-YYYY"
+                  )
+                }}
               </td>
               <td
                 class="px-6 font-normal text-[12px]"
@@ -244,11 +248,11 @@ export default {
     ...mapGetters({
       operatorPaginationData: "operator/getOperatorPaginationData",
     }),
-    formattedmxDriversLicenseExpirationDate() {
-      return this.$moment(this.allData?.mxDriversLicenseExpirationDate).format(
-        "DD-MM-YYYY"
-      );
-    },
+    // formattedmxDriversLicenseExpirationDate() {
+    //   return this.$moment(this.allData?.mxDriversLicenseExpirationDate).format(
+    //     "DD-MM-YYYY"
+    //   );
+    // },
   },
   methods: {
     editOperator(item) {
