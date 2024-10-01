@@ -248,11 +248,6 @@ export default {
     ...mapGetters({
       operatorPaginationData: "operator/getOperatorPaginationData",
     }),
-    // formattedmxDriversLicenseExpirationDate() {
-    //   return this.$moment(this.allData?.mxDriversLicenseExpirationDate).format(
-    //     "DD-MM-YYYY"
-    //   );
-    // },
   },
   methods: {
     editOperator(item) {

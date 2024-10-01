@@ -261,16 +261,6 @@ export default {
     ...mapGetters({
       vehiclePaginationData: "vehicle/getVehiclePaginationData",
     }),
-    // formattedMxPlatesExpirationDate() {
-    //   return this.$moment(this.allData?.mxPlatesExpirationDate).format(
-    //     "DD-MM-YYYY"
-    //   );
-    // },
-    // formattedUsPlatesExpirationDate() {
-    //   return this.$moment(this.allData?.usPlatesExpirationDate).format(
-    //     "DD-MM-YYYY"
-    //   );
-    // },
   },
   methods: {
     editOperator(item) {

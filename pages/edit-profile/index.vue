@@ -923,13 +923,7 @@ export default {
               if (key === "countryCode") {
                 value = `${value}`;
               }
-              if (
-                value &&
-                value != "" &&
-                value != null &&
-                key != "accountId" &&
-                key != "_id"
-              ) {
+              if (value && value != "" && value != null) {
                 formData.append(`commercialReference[${index}][${key}]`, value);
               }
             }
