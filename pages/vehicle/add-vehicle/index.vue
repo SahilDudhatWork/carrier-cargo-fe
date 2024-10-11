@@ -271,15 +271,19 @@
             </div>
             <h1
               class="font-normal text-[#1E1E1E] text-sm"
-              v-if="
-                selectedTypeOfTransportation.includes('FTL') ||
-                selectedTypeOfTransportation.includes('LTL')
-              "
+              v-if="filteredModes.length > 0"
             >
               Mode of Transportation
             </h1>
             <div class="grid grid-cols-2 gap-y-1 mt-3 gap-4">
               <Transportation
+                v-for="(item, index) in filteredModes"
+                :key="index"
+                :item="item"
+                :isSelected="selectModeOfTransportation(item._id)"
+                @select="selectModeOfTransportationItem(item._id)"
+              />
+              <!-- <Transportation
                 v-for="(item, index) in locations?.modeOfTransportation?.FTL"
                 :key="index"
                 :item="item"
@@ -294,7 +298,7 @@
                 :isSelected="selectModeOfTransportation(item._id)"
                 @select="selectModeOfTransportationItem(item._id)"
                 v-if="selectedTypeOfTransportation.includes('LTL')"
-              />
+              /> -->
             </div>
           </div>
           <div class="flex justify-center">
@@ -382,6 +386,15 @@ export default {
         )
         .map((item) => item.title);
     },
+    filteredModes() {
+      let modes = [];
+      this.selectedTypeOfTransportation.forEach((type) => {
+        if (this.locations?.modeOfTransportation?.[type]) {
+          modes = modes.concat(this.locations.modeOfTransportation[type]);
+        }
+      });
+      return modes;
+    },
   },
   methods: {
     ...mapActions({
@@ -426,45 +439,14 @@ export default {
           this.formData.typeOfTransportation =
             this.selectedTypeOfTransportationItem;
         }
-        const modeOfTransportation = {
-          FTL: [],
-          LTL: [],
-        };
-
-        this.selectedModeOfTransportationItem.forEach((id) => {
-          if (
-            this.locations.modeOfTransportation.FTL.some(
-              (item) => item._id === id
-            )
-          ) {
-            modeOfTransportation.FTL.push(id);
-          }
-          if (
-            this.locations.modeOfTransportation.LTL.some(
-              (item) => item._id === id
-            )
-          ) {
-            modeOfTransportation.LTL.push(id);
-          }
-        });
-
         if (
-          (modeOfTransportation.FTL && modeOfTransportation.FTL.length > 0) ||
-          (modeOfTransportation.LTL && modeOfTransportation.LTL.length > 0)
+          this.selectedModeOfTransportationItem &&
+          this.selectedModeOfTransportationItem.length > 0
         ) {
-          if (modeOfTransportation.FTL) {
-            this.formData.modeOfTransportation = {
-              ...this.formData.modeOfTransportation,
-              FTL: modeOfTransportation.FTL ? modeOfTransportation.FTL : null,
-            };
-          }
-          if (modeOfTransportation.LTL) {
-            this.formData.modeOfTransportation = {
-              ...this.formData.modeOfTransportation,
-              LTL: modeOfTransportation.LTL ? modeOfTransportation.LTL : null,
-            };
-          }
+          this.formData.modeOfTransportation =
+            this.selectedModeOfTransportationItem;
         }
+
         const response = await this.createVehicle(this.formData);
         this.$toast.open({
           message: response.msg,

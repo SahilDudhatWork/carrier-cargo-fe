@@ -6,6 +6,7 @@
       :class="[
         isDropdown ? ' border-t border-r border-l rounded-t-lg' : 'border',
         !isDisabled ? 'bg-white' : 'bg-[#efefef4d]',
+        errors ? 'border border-red-600' : 'border',
       ]"
       type="button"
       :disabled="isDisabled"
@@ -31,7 +32,7 @@
     <div
       v-if="isDropdown"
       v-click-outside="closeDropdown"
-      class="!z-[999] bg-white rounded-lg shadow-md xl:w-[382px] w-full dark:bg-gray-700"
+      class="!z-[999] bg-white rounded-lg shadow-md xl:w-[382px] w-full dark:bg-gray-700 absolute"
     >
       <ul class="text-sm text-gray-700 dark:text-gray-200 cursor-pointer mb-2">
         <li v-for="(item, index) in items" :key="index">
@@ -56,6 +57,7 @@ export default {
     selectedLabel: {
       type: String,
       required: true,
+      default: () => "",
     },
     isSvg: {
       type: Boolean,
@@ -64,6 +66,11 @@ export default {
     isDisabled: {
       type: Boolean,
       default: false,
+    },
+    errors: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   data() {

@@ -2,7 +2,7 @@
   <div>
     <div>
       <h1 class="text-[#4B4B4B] font-normal text-[12px] mb-5 cursor-pointer">
-        <nuxt-link to="/operator">OPERATOR</nuxt-link>
+        OPERATOR
       </h1>
     </div>
     <div class="relative w-[71%]">

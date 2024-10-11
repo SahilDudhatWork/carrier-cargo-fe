@@ -255,8 +255,46 @@ export default async (ctx, inject) => {
     return errors;
   };
 
+  const validateActivityModal = async ({ form, fieldsToValidate }) => {
+    const errors = [];
+    const isEmpty = (value) => {
+      return typeof value === null || value === "string"
+        ? value.trim() === ""
+        : !value;
+    };
+
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    const validateField = (field, fieldName, errorLabel) => {
+      if (isEmpty(field)) {
+        setError(`${fieldName}`, `${errorLabel} is required`);
+      }
+    };
+    if (fieldsToValidate.includes("selectedCarrierReference")) {
+      validateField(
+        form.selectedCarrierReference,
+        "selectedCarrierReference",
+        "Please select an option"
+      );
+    }
+    if (fieldsToValidate.includes("selectedOperator")) {
+      validateField(
+        form.selectedOperator,
+        "selectedOperator",
+        "selectedOperator"
+      );
+    }
+    if (fieldsToValidate.includes("selectedVehicle")) {
+      validateField(form.selectedVehicle, "selectedVehicle", "selectedVehicle");
+    }
+    return errors;
+  };
+
   inject("validateFormData", validateFormData);
   inject("validateOperatorField", validateOperatorField);
   inject("validateVehicleField", validateVehicleField);
+  inject("validateActivityModal", validateActivityModal);
   inject("validateNumber", validateNumber);
 };

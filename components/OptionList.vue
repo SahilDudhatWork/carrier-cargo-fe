@@ -10,7 +10,7 @@
         class="text-transparent bg-clip-text bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium text-[12px] focus:ring-none"
         @click="handleClick"
       >
-        <span class="text-[#0464CB]">+ </span>{{ buttonText }}
+        <span class="text-[#0464CB]" v-if="buttonText">+ </span>{{ buttonText }}
       </button>
     </div>
   </div>

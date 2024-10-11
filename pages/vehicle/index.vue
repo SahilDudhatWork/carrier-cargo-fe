@@ -2,7 +2,7 @@
   <div>
     <div>
       <h1 class="text-[#4B4B4B] font-normal text-[12px] mb-5 cursor-pointer">
-        <nuxt-link to="/vehicle">VEHICLE</nuxt-link>
+        VEHICLE
       </h1>
     </div>
     <div class="relative w-[71%]">

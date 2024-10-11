@@ -419,8 +419,6 @@ export default {
     async EditOperator() {
       try {
         this.errors = await this.$validateVehicleField({ form: this.formData });
-        console.log(this.errors, "this.errors");
-
         if (Object.keys(this.errors).length > 0) {
           this.$toast.open({
             message: "Please fix the errors before submitting.",
@@ -441,44 +439,14 @@ export default {
           this.formData.typeOfTransportation =
             this.selectedTypeOfTransportationItem;
         }
-        const modeOfTransportation = {
-          FTL: [],
-          LTL: [],
-        };
-
-        this.selectedModeOfTransportationItem.forEach((id) => {
-          if (
-            this.locations.modeOfTransportation.FTL.some(
-              (item) => item._id === id
-            )
-          ) {
-            modeOfTransportation.FTL.push(id);
-          }
-          if (
-            this.locations.modeOfTransportation.LTL.some(
-              (item) => item._id === id
-            )
-          ) {
-            modeOfTransportation.LTL.push(id);
-          }
-        });
         if (
-          (modeOfTransportation.FTL && modeOfTransportation.FTL.length > 0) ||
-          (modeOfTransportation.LTL && modeOfTransportation.LTL.length > 0)
+          this.selectedModeOfTransportationItem &&
+          this.selectedModeOfTransportationItem.length > 0
         ) {
-          if (modeOfTransportation.FTL) {
-            this.formData.modeOfTransportation = {
-              ...this.ty,
-              FTL: modeOfTransportation.FTL ? modeOfTransportation.FTL : null,
-            };
-          }
-          if (modeOfTransportation.LTL) {
-            this.formData.modeOfTransportation = {
-              ...this.formData.modeOfTransportation,
-              LTL: modeOfTransportation.LTL ? modeOfTransportation.LTL : null,
-            };
-          }
+          this.formData.modeOfTransportation =
+            this.selectedModeOfTransportationItem;
         }
+
         const response = await this.updateVehicle(this.formData);
         this.$toast.open({
           message: response.msg,
@@ -552,8 +520,8 @@ export default {
       ];
 
       this.selectedModeOfTransportationItem = [
-        ...this.getSingleVehicleData.modeOfTransportation.FTL,
-        ...this.getSingleVehicleData.modeOfTransportation.LTL,
+        ...this.getSingleVehicleData.modeOfTransportation,
+        ...this.getSingleVehicleData.modeOfTransportation,
       ];
       this.formData.usPlatesExpirationDate = new Date(
         this.getSingleVehicleData.usPlatesExpirationDate
