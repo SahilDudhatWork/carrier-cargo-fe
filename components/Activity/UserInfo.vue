@@ -5,11 +5,11 @@
       <div class="grid grid-cols-3">
         <div>
           <p class="text-[#1E1E1E] font-medium text-sm">
-            {{ acticitySingleData?.userReference?.contactName }}
+            {{ activitySingleData?.userReference?.contactName }}
           </p>
           <p class="text-[#686868] font-normal text-xs">
-            (+{{ acticitySingleData?.userReference?.countryCode }}
-            {{ acticitySingleData?.userReference?.contactNo }})
+            (+{{ activitySingleData?.userReference?.countryCode }}
+            {{ activitySingleData?.userReference?.contactNo }})
           </p>
         </div>
       </div>
@@ -33,7 +33,7 @@
 <script>
 export default {
   props: {
-    acticitySingleData: {
+    activitySingleData: {
       type: Object,
       required: true,
     },

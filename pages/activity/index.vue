@@ -5,7 +5,7 @@
         ACTIVITY
       </h1>
     </div>
-    <div class="relative w-[71%]">
+    <div class="relative">
       <img
         src="@/static/svg/search.svg"
         alt=""
@@ -32,6 +32,7 @@
         @prevPage="prevPage"
         @nextPage="nextPage"
         @lastPage="lastPage"
+        :sortBy="sortBy"
         @handleSeeMoreClick="handleSeeMoreClick"
         :activityPaginationData="activityPaginationData"
       />
@@ -75,7 +76,7 @@ export default {
     },
     async firstPage() {
       try {
-        const res = await this.getAllActivity({
+        await this.getAllActivity({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: 1,
@@ -91,7 +92,7 @@ export default {
     },
     async lastPage() {
       try {
-        const res = await this.getAllActivity({
+        await this.getAllActivity({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.activityPaginationData?.total_page,
@@ -107,7 +108,7 @@ export default {
     },
     async prevPage() {
       try {
-        const res = await this.getAllActivity({
+        await this.getAllActivity({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.activityPaginationData?.current_page - 1,
@@ -123,7 +124,7 @@ export default {
     },
     async nextPage() {
       try {
-        const res = await this.getAllActivity({
+        await this.getAllActivity({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.activityPaginationData?.current_page + 1,
@@ -158,7 +159,7 @@ export default {
     async allActionButtons(type) {
       try {
         this.sortBy = type;
-        const res = await this.getAllActivity({
+        await this.getAllActivity({
           keyWord: this.search,
           sortBy: this.sortBy,
         });
@@ -173,7 +174,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await this.getAllActivity({
+      await this.getAllActivity({
         keyWord: this.search,
         sortBy: this.sortBy,
       });

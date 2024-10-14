@@ -5,7 +5,7 @@
         VEHICLE
       </h1>
     </div>
-    <div class="relative w-[71%]">
+    <div class="relative">
       <img
         src="@/static/svg/search.svg"
         alt=""
@@ -25,7 +25,7 @@
       <OptionList
         labelText="Vehicle list"
         buttonText="Add Vehicle"
-        listWidth="85%"
+        listWidth="90%"
         @add="addVehicle"
       />
     </div>
@@ -90,7 +90,7 @@ export default {
     },
     async firstPage() {
       try {
-        const res = await this.getAllVehicle({
+        await this.getAllVehicle({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: 1,
@@ -106,7 +106,7 @@ export default {
     },
     async lastPage() {
       try {
-        const res = await this.getAllVehicle({
+        await this.getAllVehicle({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.vehiclePaginationData?.total_page,
@@ -122,7 +122,7 @@ export default {
     },
     async prevPage() {
       try {
-        const res = await this.getAllVehicle({
+        await this.getAllVehicle({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.vehiclePaginationData.current_page - 1,
@@ -138,7 +138,7 @@ export default {
     },
     async nextPage() {
       try {
-        const res = await this.getAllVehicle({
+        await this.getAllVehicle({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.vehiclePaginationData.current_page + 1,
@@ -215,7 +215,7 @@ export default {
     async allActionButtons(type) {
       try {
         this.sortBy = type;
-        const res = await this.getAllVehicle({
+        await this.getAllVehicle({
           keyWord: this.search,
           sortBy: this.sortBy,
         });
@@ -230,7 +230,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await this.getAllVehicle({
+      await this.getAllVehicle({
         keyWord: this.search,
         sortBy: this.sortBy,
       });

@@ -11,8 +11,8 @@
         </p>
       </div>
       <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="addOperator">
-        <div class="w-[65%]">
-          <div class="grid grid-cols-2 gap-y-3">
+        <div>
+          <div class="grid grid-cols-3 gap-y-3">
             <div>
               <label
                 for="Company name"
@@ -107,7 +107,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -157,7 +157,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -207,7 +207,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -258,7 +258,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker

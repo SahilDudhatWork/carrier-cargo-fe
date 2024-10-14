@@ -103,10 +103,7 @@ export default {
             email: accessEmail,
             otp: parseInt(otpString),
           });
-
-          // this.$cookies.set("token", res.data.accessToken);
           this.$cookies.remove("email");
-
           this.$router.push("/dashboard");
         }
       } catch (error) {

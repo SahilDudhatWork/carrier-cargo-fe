@@ -1,12 +1,12 @@
 <template>
-  <div class="w-[71%]">
+  <div>
     <div class="flex items-center gap-3 mb-5">
       <h1 class="text-[#4B4B4B] font-normal text-[12px] cursor-pointer">
         <nuxt-link to="/activity">ACTIVITY</nuxt-link>
       </h1>
       <img src="@/static/svg/right-arrow.svg" alt="" />
       <h1 class="text-[#4B4B4B] font-normal text-[12px] cursor-pointer">
-        {{ acticitySingleData.movementId }}
+        {{ activitySingleData.movementId }}
       </h1>
     </div>
     <div>
@@ -33,31 +33,31 @@
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
     <div class="mt-5">
-      <AmountDetails :acticitySingleData="acticitySingleData" />
+      <AmountDetails :activitySingleData="activitySingleData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     <div class="mt-5">
-      <UserInfo :acticitySingleData="acticitySingleData" />
+      <UserInfo :activitySingleData="activitySingleData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5" v-if="acticitySingleData?.status !== 'Pending'">
+    <div class="mt-5" v-if="activitySingleData?.status !== 'Pending'">
       <div class="mt-5">
-        <VehicleRequest :acticitySingleData="acticitySingleData" />
+        <VehicleRequest :activitySingleData="activitySingleData" />
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
     <div class="mt-5">
-      <ServiceDetails :acticitySingleData="acticitySingleData" />
+      <ServiceDetails :activitySingleData="activitySingleData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5" v-if="acticitySingleData?.status !== 'Pending'">
+    <div class="mt-5" v-if="activitySingleData?.status !== 'Pending'">
       <div>
-        <OperatorInfo :acticitySingleData="acticitySingleData" />
+        <OperatorInfo :activitySingleData="activitySingleData" />
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
     <div class="mt-5">
-      <Locations :acticitySingleData="acticitySingleData" />
+      <Locations :activitySingleData="activitySingleData" />
     </div>
   </div>
 </template>
@@ -68,7 +68,7 @@ export default {
   layout: "dashboard",
   data() {
     return {
-      acticitySingleData: {},
+      activitySingleData: {},
     };
   },
   methods: {
@@ -80,7 +80,7 @@ export default {
         const res = await this.fetchSingleActivity({
           id: this.movementId,
         });
-        this.acticitySingleData = res.data;
+        this.activitySingleData = res.data;
       } catch (error) {
         console.log(error);
         this.$toast.open({

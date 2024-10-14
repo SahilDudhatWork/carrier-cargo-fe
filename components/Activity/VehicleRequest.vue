@@ -5,38 +5,32 @@
         VEHICLE INFO
       </h1>
       <div class="bg-[#F7F7F7] px-5 py-4 rounded-lg">
-        <div class="grid grid-cols-2 gap-y-3">
+        <div class="grid grid-cols-3 gap-y-3">
           <div>
-            <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Number</p>
+            <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Name</p>
             <p class="text-[#686868] font-normal text-xs">
-              {{ acticitySingleData?.vehicleData?.mxPlates }}
+              {{ activitySingleData?.vehicleData?.vehicleName }}
             </p>
           </div>
           <div>
-            <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Type</p>
-            <p class="text-[#686868] font-normal text-xs">COA 124MJ</p>
-          </div>
-          <div>
-            <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Color</p>
-            <p class="text-[#686868] font-normal text-xs">Black</p>
-          </div>
-          <div>
-            <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Axes</p>
-            <p class="text-[#686868] font-normal text-xs">12 Axes</p>
+            <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Number</p>
+            <p class="text-[#686868] font-normal text-xs">
+              {{ activitySingleData?.vehicleData?.mxPlates }}
+            </p>
           </div>
         </div>
         <div class="bg-[#E6E6E6] h-[1px] w-full mt-4 mb-3"></div>
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-3">
           <div>
             <p class="text-[#1E1E1E] font-medium text-sm">Drive Type</p>
             <p class="text-[#686868] font-normal text-xs">
-              {{ acticitySingleData?.typeOfTransportation?.title }}
+              {{ activitySingleData?.typeOfTransportation?.title }}
             </p>
           </div>
           <div>
             <p class="text-[#1E1E1E] font-medium text-sm">Container Type</p>
             <p class="text-[#686868] font-normal text-xs">
-              {{ acticitySingleData?.modeOfTransportation?.title }}
+              {{ activitySingleData?.modeOfTransportation?.title }}
             </p>
           </div>
         </div>
@@ -58,7 +52,7 @@
 <script>
 export default {
   props: {
-    acticitySingleData: {
+    activitySingleData: {
       type: Object,
       required: true,
     },

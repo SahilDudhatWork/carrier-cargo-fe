@@ -22,14 +22,14 @@
               v-if="isBackAssign"
               type="submit"
               @click="$emit('backAssign')"
-              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[20px] w-[204px] py-[7px] text-center focus:outline-none"
+              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[20px] w-[120px] py-[7px] text-center focus:outline-none"
             >
               Back
             </button>
             <button
               type="submit"
               @click="$emit('handleAssign')"
-              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[20px] w-[204px] py-[7px] text-center focus:outline-none"
+              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[20px] w-[120px] py-[7px] text-center focus:outline-none"
             >
               {{ buttonText }}
             </button>

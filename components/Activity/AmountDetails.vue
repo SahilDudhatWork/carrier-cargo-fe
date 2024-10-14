@@ -6,11 +6,11 @@
       </h1>
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">
-          {{ acticitySingleData?.amountDetails?.price
-          }}{{ acticitySingleData?.amountDetails?.currency }}
+          {{ activitySingleData?.amountDetails?.price
+          }}{{ activitySingleData?.amountDetails?.currency }}
         </p>
         <p class="text-[#B9B9B9] font-normal text-[10px]">
-          Payment Mode: {{ acticitySingleData?.amountDetails?.paymentMode }}
+          Payment Mode: {{ activitySingleData?.amountDetails?.paymentMode }}
         </p>
       </div>
     </div>
@@ -18,14 +18,14 @@
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Drive Type</p>
         <p class="text-[#686868] font-light text-[10px] pt-0.5">
-          {{ acticitySingleData?.typeOfTransportation?.title }}
+          {{ activitySingleData?.typeOfTransportation?.title }}
         </p>
       </div>
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Container Type</p>
 
         <p class="text-[#686868] font-light text-[10px] pt-0.5">
-          {{ acticitySingleData?.modeOfTransportation?.title }}
+          {{ activitySingleData?.modeOfTransportation?.title }}
         </p>
       </div>
       <div>
@@ -33,7 +33,7 @@
         <div class="flex flex-wrap gap-2 mt-1">
           <p
             class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
-            v-for="(item, index) in acticitySingleData?.specialRequirements"
+            v-for="(item, index) in activitySingleData?.specialRequirements"
             :key="index"
           >
             <span class="text-[#0060C9] text-[10px] font-semibold">
@@ -45,22 +45,22 @@
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Bridge of crossing</p>
         <p class="text-[#686868] font-light text-[10px] pt-0.5">
-          {{ acticitySingleData?.port_BridgeOfCrossing }}
+          {{ activitySingleData?.port_BridgeOfCrossing }}
         </p>
       </div>
-      <div v-if="acticitySingleData?.programming !== 'Instant'">
+      <div v-if="activitySingleData?.programming !== 'Instant'">
         <p class="text-[#1E1E1E] font-medium text-sm">Scheduled Time</p>
         <p class="text-[#686868] font-light text-[10px] pt-0.5">
-          {{ acticitySingleData?.schedule?.date }}
-          {{ acticitySingleData?.schedule?.time }}
+          {{ activitySingleData?.schedule?.date }}
+          {{ activitySingleData?.schedule?.time }}
         </p>
       </div>
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Quantity</p>
         <p class="text-[#686868] font-light text-[10px]">
-          {{ acticitySingleData?.quantityForChains }}xChains,
-          {{ acticitySingleData?.quantityForStraps }}xStraps,
-          {{ acticitySingleData?.quantityForTarps }}xTarps
+          {{ activitySingleData?.quantityForChains }}xChains,
+          {{ activitySingleData?.quantityForStraps }}xStraps,
+          {{ activitySingleData?.quantityForTarps }}xTarps
         </p>
       </div>
     </div>
@@ -70,7 +70,7 @@
 <script>
 export default {
   props: {
-    acticitySingleData: {
+    activitySingleData: {
       type: Object,
       required: true,
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-6">
-      <div class="relative overflow-x-auto w-[71%]">
+      <div class="relative overflow-x-auto">
         <table class="w-full text-left rtl:text-right">
           <thead class="bg-[#F4F4F4]">
             <tr>
@@ -35,7 +35,7 @@
               >
                 User Info
               </th>
-              <template v-if="isPending">
+              <template v-if="sortBy === 'Requests'">
                 <th
                   scope="col"
                   class="ml-6 pr-6 py-3 text-[#000000] font-normal text-[12px]"
@@ -43,7 +43,7 @@
                   Actions
                 </th>
               </template>
-              <template v-else>
+              <template v-if="sortBy !== 'Requests'">
                 <th
                   scope="col"
                   class="ml-6 pr-6 py-3 text-[#000000] font-normal text-[12px]"
@@ -55,6 +55,14 @@
                   class="ml-6 pr-6 py-3 text-[#000000] font-normal text-[12px]"
                 >
                   Vehicle Info
+                </th>
+              </template>
+              <template v-if="sortBy === 'InProgress'">
+                <th
+                  scope="col"
+                  class="ml-6 pr-6 py-3 text-[#000000] font-normal text-[12px]"
+                >
+                  Actions
                 </th>
               </template>
               <th
@@ -140,6 +148,15 @@
                       item?.vehicleData?.mxPlates
                     }}</span>
                   </div>
+                </td>
+              </template>
+              <template v-if="item?.status == 'InProgress'">
+                <td class="py-6">
+                  <span
+                    class="text-[#2AA1EB] font-normal text-xs border-b border-[#2AA1EB]"
+                    @click="assignRequest(item?.movementId)"
+                    >Reassign</span
+                  >
                 </td>
               </template>
               <td class="px-6 py-6">
@@ -361,6 +378,10 @@ export default {
       type: String,
       default: "",
     },
+    sortBy: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -370,6 +391,7 @@ export default {
       selectedVehicle: null,
       selectedCarrierReference: "",
       errors: {},
+      activitySingleData: {},
     };
   },
   computed: {
@@ -385,9 +407,6 @@ export default {
           label: user?.contactName,
         };
       });
-    },
-    isPending() {
-      return this.allData.some((item) => item.status === "Pending");
     },
     formatStatus() {
       return (item) => {
@@ -410,6 +429,7 @@ export default {
       fetchAllOperator: "operator/fetchAllOperator",
       fetchAllVehicle: "vehicle/fetchAllVehicle",
       updateActivity: "activity/updateActivity",
+      fetchSingleActivity: "activity/fetchSingleActivity",
     }),
     getCarrierReferenceValue(item) {
       this.selectedCarrierReference = item;
@@ -435,6 +455,28 @@ export default {
       this.selectedCarrierReference = null;
       this.selectedOperator = null;
       this.selectedVehicle = null;
+    },
+    async assignRequest(id) {
+      this.movementId = id;
+      this.isAssignOperatorModal = true;
+      await this.getSingleTransitInfo();
+      await this.getAllOperator();
+      await this.getAllVehicle();
+      const carrierIdToMatch = this.activitySingleData?.vehicleData?._id;
+      const operatorIdToMatch = this.activitySingleData?.operatorData?._id;
+
+      this.selectedVehicle =
+        this.allVehicleData.find(
+          (vehicle) => vehicle._id === carrierIdToMatch
+        ) || null;
+      this.selectedOperator =
+        this.allOperatorData.find(
+          (operator) => operator._id === operatorIdToMatch
+        ) || null;
+      this.selectedCarrierReference =
+        this.formatRef.find(
+          (item) => item.key === this.activitySingleData?.carrierReference?._id
+        ) || null;
     },
     async backAssign() {
       this.isAssignOperatorModal = true;
@@ -502,7 +544,6 @@ export default {
           formData: formData,
           id: this.movementId,
         });
-        console.log(res, "res");
         this.$toast.open({
           message: res.msg,
         });
@@ -538,6 +579,20 @@ export default {
         await this.fetchAllVehicle();
       } catch (error) {
         console.log(error);
+      }
+    },
+    async getSingleTransitInfo() {
+      try {
+        const res = await this.fetchSingleActivity({
+          id: this.movementId,
+        });
+        this.activitySingleData = res.data;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
       }
     },
   },

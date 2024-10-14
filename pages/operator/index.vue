@@ -5,7 +5,7 @@
         OPERATOR
       </h1>
     </div>
-    <div class="relative w-[71%]">
+    <div class="relative">
       <img
         src="@/static/svg/search.svg"
         alt=""
@@ -25,7 +25,7 @@
       <OptionList
         labelText="Operator list"
         buttonText="Add Operator"
-        listWidth="85%"
+        listWidth="89%"
         @add="addOperator"
       />
     </div>
@@ -89,7 +89,7 @@ export default {
     },
     async firstPage() {
       try {
-        const res = await this.getAllOperator({
+        await this.getAllOperator({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: 1,
@@ -105,7 +105,7 @@ export default {
     },
     async lastPage() {
       try {
-        const res = await this.getAllOperator({
+        await this.getAllOperator({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.operatorPaginationData?.total_page,
@@ -121,7 +121,7 @@ export default {
     },
     async prevPage() {
       try {
-        const res = await this.getAllOperator({
+        await this.getAllOperator({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.operatorPaginationData.current_page - 1,
@@ -137,7 +137,7 @@ export default {
     },
     async nextPage() {
       try {
-        const res = await this.getAllOperator({
+        await this.getAllOperator({
           sortBy: this.sortBy,
           keyWord: this.search,
           page: this.operatorPaginationData.current_page + 1,
@@ -200,7 +200,7 @@ export default {
     async allActionButtons(type) {
       try {
         this.sortBy = type;
-        const res = await this.getAllOperator({
+        await this.getAllOperator({
           keyWord: this.search,
           sortBy: this.sortBy,
         });
@@ -215,7 +215,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await this.getAllOperator({
+      await this.getAllOperator({
         keyWord: this.search,
         sortBy: this.sortBy,
       });

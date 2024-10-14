@@ -7,61 +7,63 @@
         </h1>
         <span
           :class="
-            acticitySingleData?.status == 'Pending'
+            activitySingleData?.status == 'Pending'
               ? 'bg-[#FFAA00]'
               : 'bg-[#3ECC48]'
           "
           class="text-[#FEFEFE] font-medium text-[10px] rounded px-[17px] py-[1px]"
-          >{{ formatStatus(acticitySingleData) }}</span
+          >{{ formatStatus(activitySingleData) }}</span
         >
       </div>
       <div class="flex mb-3 gap-1">
         <p class="text-[#1E1E1E] font-medium text-sm">
           {{
-            $moment(acticitySingleData?.createdAt)
+            $moment(activitySingleData?.createdAt)
               .locale("en")
               .format(" MMM,DD dddd YYYY")
           }}
         </p>
         <span
           class="text-[#FEFEFE] bg-[#3683D5] rounded px-4 py-0.5 text-[10px]"
-          >{{ acticitySingleData?.typeOfService?.title }}</span
+          >{{ activitySingleData?.typeOfService?.title }}</span
         >
       </div>
       <div class="grid grid-cols-2 gap-y-3">
         <div>
           <p class="text-[#1E1E1E] font-medium text-sm">Movement ID</p>
           <p class="text-[#686868] font-normal text-xs">
-            {{ acticitySingleData?.movementId }}
+            {{ activitySingleData?.movementId }}
           </p>
         </div>
-        <div v-if="acticitySingleData?.programming !== 'Instant'">
+        <div v-if="activitySingleData?.programming !== 'Instant'">
           <p class="text-[#1E1E1E] font-medium text-sm">Scheduled Time</p>
           <p class="text-[#686868] font-normal text-xs">
             {{
-              $moment(acticitySingleData?.schedule?.date)
+              $moment(activitySingleData?.schedule?.date)
                 .locale("en")
                 .format(" MMM,DD dddd YYYY")
             }}
-            {{ acticitySingleData?.schedule?.time }}
+            {{ activitySingleData?.schedule?.time }}
           </p>
         </div>
         <div>
           <p class="text-[#1E1E1E] font-medium text-sm">Special Requirement</p>
-          <div class="flex">
+          <div class="flex flex-wrap gap-2 mt-1">
             <p
-              class="text-[#686868] font-normal text-xs flex"
-              v-for="(item, key) in acticitySingleData?.specialRequirements"
-              :key="key"
+              class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
+              v-for="(item, index) in activitySingleData?.specialRequirements"
+              :key="index"
             >
-              {{ item?.type }} ,
+              <span class="text-[#0060C9] text-[10px] font-semibold">
+                {{ item?.type }}
+              </span>
             </p>
           </div>
         </div>
         <div>
           <p class="text-[#1E1E1E] font-medium text-sm">Bridge of crossing</p>
           <p class="text-[#686868] font-normal text-xs">
-            {{ acticitySingleData?.port_BridgeOfCrossing }}
+            {{ activitySingleData?.port_BridgeOfCrossing }}
           </p>
         </div>
       </div>
@@ -72,7 +74,7 @@
 <script>
 export default {
   props: {
-    acticitySingleData: {
+    activitySingleData: {
       type: Object,
       required: true,
     },

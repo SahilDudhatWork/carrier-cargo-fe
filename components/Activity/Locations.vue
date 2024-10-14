@@ -7,7 +7,7 @@
     </div>
     <div>
       <LocationsCarousel
-        :carouselItem="acticitySingleData?.pickUpAddressData"
+        :carouselItem="activitySingleData?.pickUpAddressData"
       />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
@@ -17,7 +17,7 @@
       </h1>
     </div>
     <div>
-      <LocationsCarousel :carouselItem="acticitySingleData?.dropAddressData" />
+      <LocationsCarousel :carouselItem="activitySingleData?.dropAddressData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
   </div>
@@ -26,7 +26,7 @@
 <script>
 export default {
   props: {
-    acticitySingleData: {
+    activitySingleData: {
       type: Object,
       required: true,
     },

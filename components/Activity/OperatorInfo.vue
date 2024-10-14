@@ -7,17 +7,17 @@
       <div class="grid grid-cols-3 bg-[#F7F7F7] px-5 py-4 rounded-lg">
         <div>
           <p class="text-[#1E1E1E] font-medium text-xs">
-            {{ acticitySingleData?.operatorData?.operatorName }}
+            {{ activitySingleData?.operatorData?.operatorName }}
           </p>
           <p class="text-[#686868] font-normal text-xs">
-            (+{{ acticitySingleData?.operatorData?.countryCode }}
-            {{ acticitySingleData?.operatorData?.operatorNumber }})
+            (+{{ activitySingleData?.operatorData?.countryCode }}
+            {{ activitySingleData?.operatorData?.operatorNumber }})
           </p>
         </div>
         <div>
           <p class="text-[#1E1E1E] font-medium text-xs">Driver License</p>
           <p class="text-[#686868] font-normal text-xs">
-            {{ acticitySingleData?.operatorData?.usDriversLicense }}
+            {{ activitySingleData?.operatorData?.usDriversLicense }}
           </p>
         </div>
       </div>
@@ -28,7 +28,7 @@
 <script>
 export default {
   props: {
-    acticitySingleData: {
+    activitySingleData: {
       type: Object,
       required: true,
     },

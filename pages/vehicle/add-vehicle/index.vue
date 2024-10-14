@@ -11,8 +11,8 @@
         </p>
       </div>
       <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="addVehicle">
-        <div class="w-[65%]">
-          <div class="grid grid-cols-2 gap-y-3">
+        <div>
+          <div class="grid grid-cols-3 gap-y-3">
             <div>
               <label
                 for="VehicleName"
@@ -70,7 +70,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -125,7 +125,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -175,7 +175,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -226,7 +226,7 @@
                   <img
                     src="@/static/svg/calendar.svg"
                     alt=""
-                    class="absolute z-50 top-4 right-[10.5rem]"
+                    class="absolute z-50 top-4 right-[11rem]"
                   />
                 </div>
                 <DatePicker
@@ -246,7 +246,7 @@
           </div>
           <div class="mt-3">
             <h1 class="font-normal text-[#1E1E1E] text-sm">Types Of Service</h1>
-            <div class="grid grid-cols-2 gap-y-1 mt-3 gap-4">
+            <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
               <Transportation
                 v-for="(item, index) of locations?.typeOfService"
                 :key="index"
@@ -259,7 +259,7 @@
               <h1 class="font-normal text-[#1E1E1E] text-sm">
                 Type of Transportation
               </h1>
-              <div class="grid grid-cols-2 gap-y-1 mt-3 gap-4">
+              <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
                 <Transportation
                   v-for="(item, index) of locations?.typeOfTransportation"
                   :key="index"
@@ -275,7 +275,7 @@
             >
               Mode of Transportation
             </h1>
-            <div class="grid grid-cols-2 gap-y-1 mt-3 gap-4">
+            <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
               <Transportation
                 v-for="(item, index) in filteredModes"
                 :key="index"
