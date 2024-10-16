@@ -154,7 +154,7 @@
                 <td class="py-6">
                   <span
                     class="text-[#2AA1EB] font-normal text-xs border-b border-[#2AA1EB]"
-                    @click="assignRequest(item?.movementId)"
+                    @click="reAssignRequest(item?.movementId)"
                     >Reassign</span
                   >
                 </td>
@@ -289,75 +289,22 @@
       </div>
     </div>
     <div>
-      <AssignModal
-        :isModal="isAssignOperatorModal"
-        @handleAssign="handleAssignOperator"
-        @close="closeAssignOperatorModal"
-        :buttonText="'Next'"
-      >
-        <template #content>
-          <div>
-            <div class="mb-3">
-              <label
-                for="email"
-                class="block mb-1 text-sm font-medium text-[#3683D5]"
-                >Carrier Reference</label
-              >
-              <Dropdown
-                :items="formatRef"
-                :selectedLabel="selectedCarrierReference?.label"
-                @getValue="getCarrierReferenceValue"
-                :errors="errors?.selectedCarrierReference"
-              />
-              <span class="error-msg" v-if="errors?.selectedCarrierReference">{{
-                errors?.selectedCarrierReference
-              }}</span>
-            </div>
-            <h1 class="font-semibold text-lg text-[#3683D5]">
-              Assign Operator
-            </h1>
-            <div
-              class="mt-5 grid grid-cols-2 gap-y-5 overflow-y-auto h-[480px]"
-            >
-              <AssignOperator
-                v-for="item in allOperatorData"
-                :key="item._id"
-                :allOperatorData="item"
-                :isSelected="
-                  selectedOperator && selectedOperator._id === item._id
-                "
-                @selectOperator="selectOperator(item)"
-              />
-            </div>
-          </div>
-        </template>
-      </AssignModal>
-      <AssignModal
-        :isModal="isAssignVehicleModal"
-        @handleAssign="handleAssignVehicle"
-        @close="closeAssignVehicleModal"
-        @backAssign="backAssign"
-        :isBackAssign="true"
-      >
-        <template #content>
-          <div>
-            <h1 class="font-semibold text-lg text-[#3683D5]">Assign Vehicle</h1>
-            <div
-              class="mt-5 grid grid-cols-2 gap-y-5 overflow-y-auto h-[480px]"
-            >
-              <AssignVehicle
-                v-for="item in allVehicleData"
-                :key="item._id"
-                :allVehicleData="item"
-                :isSelected="
-                  selectedVehicle && selectedVehicle._id === item._id
-                "
-                @selectVehicle="selectVehicle(item)"
-              />
-            </div>
-          </div>
-        </template>
-      </AssignModal>
+      <OperatorAssignModal
+        v-if="isAssignOperatorModal"
+        :isAssignOperatorModal="isAssignOperatorModal"
+        :errors="errors"
+        :requestReassign="requestReassign"
+        @handleAssignOperator="handleAssignOperator"
+        @closeAssignOperatorModal="closeAssignOperatorModal"
+      />
+      <VehicleAssignModal
+        v-if="isAssignVehicleModal"
+        :isAssignVehicleModal="isAssignVehicleModal"
+        :requestReassign="requestReassign"
+        @handleAssignVehicle="handleAssignVehicle"
+        @closeAssignVehicleModal="closeAssignVehicleModal"
+        @backAssignVehicle="backAssign"
+      />
     </div>
   </div>
 </template>
@@ -380,7 +327,7 @@ export default {
     },
     sortBy: {
       type: String,
-      default: "",
+      default: "Requests",
     },
   },
   data() {
@@ -389,9 +336,9 @@ export default {
       isAssignVehicleModal: false,
       selectedOperator: null,
       selectedVehicle: null,
-      selectedCarrierReference: "",
+      selectedCarrierReference: null,
       errors: {},
-      activitySingleData: {},
+      requestReassign: false,
     };
   },
   computed: {
@@ -426,17 +373,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchAllOperator: "operator/fetchAllOperator",
-      fetchAllVehicle: "vehicle/fetchAllVehicle",
       updateActivity: "activity/updateActivity",
       fetchSingleActivity: "activity/fetchSingleActivity",
     }),
-    getCarrierReferenceValue(item) {
-      this.selectedCarrierReference = item;
-    },
-    selectOperator(operator) {
-      this.selectedOperator = operator;
-    },
     selectVehicle(vehicle) {
       this.selectedVehicle = vehicle;
     },
@@ -450,41 +389,28 @@ export default {
     },
     async acceptRequest(id) {
       this.movementId = id;
+      this.requestReassign = false;
       this.isAssignOperatorModal = true;
-      await this.getAllOperator();
       this.selectedCarrierReference = null;
       this.selectedOperator = null;
       this.selectedVehicle = null;
     },
-    async assignRequest(id) {
+    async reAssignRequest(id) {
       this.movementId = id;
-      this.isAssignOperatorModal = true;
       await this.getSingleTransitInfo();
-      await this.getAllOperator();
-      await this.getAllVehicle();
-      const carrierIdToMatch = this.activitySingleData?.vehicleData?._id;
-      const operatorIdToMatch = this.activitySingleData?.operatorData?._id;
-
-      this.selectedVehicle =
-        this.allVehicleData.find(
-          (vehicle) => vehicle._id === carrierIdToMatch
-        ) || null;
-      this.selectedOperator =
-        this.allOperatorData.find(
-          (operator) => operator._id === operatorIdToMatch
-        ) || null;
-      this.selectedCarrierReference =
-        this.formatRef.find(
-          (item) => item.key === this.activitySingleData?.carrierReference?._id
-        ) || null;
+      this.requestReassign = true;
+      this.isAssignOperatorModal = true;
     },
+
     async backAssign() {
+      this.requestReassign = false;
       this.isAssignOperatorModal = true;
       this.isAssignVehicleModal = false;
-      await this.getAllOperator();
     },
-    async handleAssignOperator() {
+    async handleAssignOperator(selectedOperator, selectedCarrierReference) {
       try {
+        this.selectedCarrierReference = selectedCarrierReference;
+        this.selectedOperator = selectedOperator;
         const form = {
           selectedCarrierReference: this.selectedCarrierReference,
           selectedOperator: this.selectedOperator,
@@ -508,13 +434,13 @@ export default {
         }
         this.isAssignVehicleModal = true;
         this.isAssignOperatorModal = false;
-        await this.getAllVehicle();
       } catch (error) {
         console.log(error);
       }
     },
-    async handleAssignVehicle() {
+    async handleAssignVehicle(selectedVehicle) {
       try {
+        this.selectedVehicle = selectedVehicle;
         const form = {
           selectedVehicle: this.selectedVehicle,
         };
@@ -557,36 +483,11 @@ export default {
         });
       }
     },
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    },
-    async getAllOperator() {
-      try {
-        await this.fetchAllOperator();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async getAllVehicle() {
-      try {
-        await this.fetchAllVehicle();
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async getSingleTransitInfo() {
       try {
         const res = await this.fetchSingleActivity({
           id: this.movementId,
         });
-        this.activitySingleData = res.data;
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -598,10 +499,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
-</style>

@@ -1,10 +1,20 @@
 import $axios from "@/plugins/axios";
 
-export const state = () => ({});
+export const state = () => ({
+  singleActivity: {},
+});
 
-export const getters = {};
+export const getters = {
+  getSingleActivity(state) {
+    return state.singleActivity;
+  },
+};
 
-export const mutations = {};
+export const mutations = {
+  setSingleActivity(state, payload) {
+    state.singleActivity = payload;
+  },
+};
 
 export const actions = {
   async fetchAllActivities(ctx, payload) {
@@ -29,6 +39,8 @@ export const actions = {
         `v1/carrier/movement/${payload.id}`,
         payload
       );
+      ctx.commit("setSingleActivity", response.data);
+
       return response;
     } catch (error) {
       throw error;

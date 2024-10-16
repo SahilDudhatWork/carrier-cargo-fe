@@ -6,6 +6,11 @@
   ::-webkit-scrollbar-thumb {
     background: linear-gradient(90deg, #9ED0FF 0%, #0464CB 100%);
   }
+  .error-msg {
+    font-size: 14px;
+    font-weight: 400;
+    color: red;
+  }
   
   .group .mx-datepicker .mx-input {
     background-color: white !important;
