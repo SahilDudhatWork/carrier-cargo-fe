@@ -116,6 +116,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.mxIdBadgeExpirationDate },
+                  ]"
                 />
               </div>
               <span class="error-msg" v-if="errors?.mxIdBadgeExpirationDate">{{
@@ -165,6 +169,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.fastIdExpirationDate },
+                  ]"
                 />
               </div>
               <span class="error-msg" v-if="errors?.fastIdExpirationDate">{{
@@ -214,6 +222,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.mxDriversLicenseExpirationDate },
+                  ]"
                 />
               </div>
               <span
@@ -265,6 +277,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.usDriversLicenseExpirationDate },
+                  ]"
                 />
               </div>
               <span
@@ -418,11 +434,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
-</style>

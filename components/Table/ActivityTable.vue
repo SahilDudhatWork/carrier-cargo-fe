@@ -375,27 +375,34 @@ export default {
     ...mapActions({
       updateActivity: "activity/updateActivity",
       fetchSingleActivity: "activity/fetchSingleActivity",
+      updateSelectedOperator: "activity/updateSelectedOperator",
+      updateSelectedCarrierReference: "activity/updateSelectedCarrierReference",
+      updateSelectedVehicle: "activity/updateSelectedVehicle",
+      fetchAllActivities: "activity/fetchAllActivities",
     }),
     selectVehicle(vehicle) {
       this.selectedVehicle = vehicle;
     },
     closeAssignOperatorModal() {
+      document.body.style.overflow = "";
       this.isAssignOperatorModal = false;
-      this.selectedOperator = null;
     },
     closeAssignVehicleModal() {
+      document.body.style.overflow = "";
       this.isAssignVehicleModal = false;
       this.isAssignOperatorModal = false;
     },
     async acceptRequest(id) {
+      document.body.style.overflow = "hidden";
       this.movementId = id;
       this.requestReassign = false;
       this.isAssignOperatorModal = true;
-      this.selectedCarrierReference = null;
-      this.selectedOperator = null;
-      this.selectedVehicle = null;
+      this.updateSelectedOperator(null);
+      this.updateSelectedCarrierReference({});
+      this.updateSelectedVehicle({});
     },
     async reAssignRequest(id) {
+      document.body.style.overflow = "hidden";
       this.movementId = id;
       await this.getSingleTransitInfo();
       this.requestReassign = true;
@@ -423,6 +430,7 @@ export default {
           this.errors.forEach((item) => {
             this.errors.selectedCarrierReference =
               item.selectedCarrierReference;
+            console.log(item, "this.errors");
           });
         }
         if (Object.keys(this.errors).length > 0) {
@@ -432,6 +440,7 @@ export default {
           });
           return;
         }
+
         this.isAssignVehicleModal = true;
         this.isAssignOperatorModal = false;
       } catch (error) {
@@ -475,6 +484,7 @@ export default {
         });
         this.isAssignVehicleModal = false;
         this.isAssignOperatorModal = false;
+        await this.getAllActivity();
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -485,7 +495,7 @@ export default {
     },
     async getSingleTransitInfo() {
       try {
-        const res = await this.fetchSingleActivity({
+        await this.fetchSingleActivity({
           id: this.movementId,
         });
       } catch (error) {
@@ -494,6 +504,19 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      }
+    },
+    async getAllActivity() {
+      try {
+        let page = 1;
+        let limit = 10;
+        await this.fetchAllActivities({
+          sortBy: this.sortBy,
+          page: page,
+          limit: limit,
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
   },

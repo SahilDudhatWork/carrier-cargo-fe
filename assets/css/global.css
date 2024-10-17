@@ -34,3 +34,7 @@
   .mx-datepicker-main .mx-calendar {
     width: 382px !important;
   }
+
+  .error-border .mx-input {
+    border: 1px solid red !important; 
+  }

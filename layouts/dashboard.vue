@@ -131,12 +131,17 @@
                 >
                   <Nuxt-link
                     :to="tab.href"
-                    class="flex items-center gap-2 ml-5 py-[20px]"
+                    class="flex items-center gap-2 ml-5 py-[20px] group relative"
                   >
                     <img
                       :src="previousPath == tab.href ? tab.svg : tab.blackSvg"
                       alt=""
                     />
+                    <div v-if="!isShow" :class="['tooltip', 'visible-tooltip']">
+                      <span>
+                        {{ tab?.name }}
+                      </span>
+                    </div>
                     <span
                       v-if="isShow"
                       class="flex gap-4 font-medium text-sm text-justify"
@@ -297,5 +302,25 @@ export default {
 }
 .slide-in-right {
   animation: slideInRight 0.5s ease-in-out forwards;
+}
+.tooltip {
+  position: absolute;
+  z-index: 999;
+  left: 36px;
+  top: 32px;
+  transform: translateY(-50%);
+  background-color: #3683d5;
+  color: white;
+  font-size: 16px;
+  padding: 5px 35px;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+.group:hover .visible-tooltip {
+  opacity: 1;
+  visibility: visible;
+  display: block;
 }
 </style>

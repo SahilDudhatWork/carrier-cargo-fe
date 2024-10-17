@@ -274,7 +274,8 @@ export default async (ctx, inject) => {
     };
     if (fieldsToValidate.includes("selectedCarrierReference")) {
       validateField(
-        form.selectedCarrierReference,
+        form.selectedCarrierReference.key &&
+          form.selectedCarrierReference.label,
         "selectedCarrierReference",
         "Please select an option"
       );

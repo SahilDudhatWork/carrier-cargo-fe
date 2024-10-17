@@ -2,11 +2,25 @@ import $axios from "@/plugins/axios";
 
 export const state = () => ({
   singleActivity: {},
+  temporarySelected: {
+    selectedOperatorData: null,
+    selectedCarrierReferenceData: { key: "", label: "" },
+    selectedVehicleData: null,
+  },
 });
 
 export const getters = {
   getSingleActivity(state) {
     return state.singleActivity;
+  },
+  getSelectedOperatorData(state) {
+    return state.temporarySelected.selectedOperatorData;
+  },
+  getSelectedVehicleData(state) {
+    return state.temporarySelected.selectedVehicleData;
+  },
+  getSelectedCarrierReferenceData(state) {
+    return state.temporarySelected.selectedCarrierReferenceData;
   },
 };
 
@@ -14,9 +28,27 @@ export const mutations = {
   setSingleActivity(state, payload) {
     state.singleActivity = payload;
   },
+  setSelectedOperatorData(state, payload) {
+    state.temporarySelected.selectedOperatorData = payload;
+  },
+  setSelectedVehicleData(state, payload) {
+    state.temporarySelected.selectedVehicleData = payload;
+  },
+  setSelectedCarrierReferenceData(state, payload) {
+    state.temporarySelected.selectedCarrierReferenceData = payload;
+  },
 };
 
 export const actions = {
+  updateSelectedOperator({ commit }, operatorData) {
+    commit("setSelectedOperatorData", operatorData);
+  },
+  updateSelectedVehicle({ commit }, vehicleData) {
+    commit("setSelectedVehicleData", vehicleData);
+  },
+  updateSelectedCarrierReference({ commit }, carrierReferenceData) {
+    commit("setSelectedCarrierReferenceData", carrierReferenceData);
+  },
   async fetchAllActivities(ctx, payload) {
     try {
       const sortBy = payload?.sortBy || "";

@@ -79,11 +79,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
-                  :class="
-                    errors?.mxPlatesExpirationDate
-                      ? 'border border-red-600 rounded-lg'
-                      : ''
-                  "
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.mxPlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span class="error-msg" v-if="errors?.mxPlatesExpirationDate">{{
@@ -134,6 +133,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.usPlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span class="error-msg" v-if="errors?.usPlatesExpirationDate">{{
@@ -184,6 +187,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.mxInsurancePlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span
@@ -235,6 +242,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.usInsurancePlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span
@@ -283,22 +294,6 @@
                 :isSelected="selectModeOfTransportation(item._id)"
                 @select="selectModeOfTransportationItem(item._id)"
               />
-              <!-- <Transportation
-                v-for="(item, index) in locations?.modeOfTransportation?.FTL"
-                :key="index"
-                :item="item"
-                :isSelected="selectModeOfTransportation(item._id)"
-                @select="selectModeOfTransportationItem(item._id)"
-                v-if="selectedTypeOfTransportation.includes('FTL')"
-              />
-              <Transportation
-                v-for="(item, index) in locations?.modeOfTransportation?.LTL"
-                :key="index"
-                :item="item"
-                :isSelected="selectModeOfTransportation(item._id)"
-                @select="selectModeOfTransportationItem(item._id)"
-                v-if="selectedTypeOfTransportation.includes('LTL')"
-              /> -->
             </div>
           </div>
           <div class="flex justify-center">
@@ -517,11 +512,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
-</style>

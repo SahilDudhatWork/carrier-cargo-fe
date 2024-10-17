@@ -961,10 +961,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
-</style>

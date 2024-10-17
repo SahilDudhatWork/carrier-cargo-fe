@@ -79,6 +79,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.mxPlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span class="error-msg" v-if="errors?.mxPlatesExpirationDate">{{
@@ -129,6 +133,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.usPlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span class="error-msg" v-if="errors?.usPlatesExpirationDate">{{
@@ -179,6 +187,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.mxInsurancePlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span
@@ -230,6 +242,10 @@
                   :lang="lang"
                   :clearable="false"
                   :format="customFormat"
+                  :class="[
+                    'group',
+                    { 'error-border': errors?.usInsurancePlatesExpirationDate },
+                  ]"
                 />
               </div>
               <span
@@ -539,11 +555,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.error-msg {
-  font-size: 14px;
-  font-weight: 400;
-  color: red;
-}
-</style>

@@ -182,7 +182,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {
@@ -201,10 +201,7 @@ export default {
     },
   },
   data() {
-    return {
-      selectedCarrierReferenceData: { key: "", label: "" },
-      selectedOperatorData: null,
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -212,6 +209,8 @@ export default {
       operatorPaginationData: "operator/getOperatorPaginationData",
       profileData: "auth/getUserProfile",
       getSingleActivity: "activity/getSingleActivity",
+      selectedOperatorData: "activity/getSelectedOperatorData",
+      selectedCarrierReferenceData: "activity/getSelectedCarrierReferenceData",
     }),
     operatorPaginationText() {
       return this.generateOperatorPaginationText(this.operatorPaginationData);
@@ -228,6 +227,8 @@ export default {
   methods: {
     ...mapActions({
       fetchAllOperator: "operator/fetchAllOperator",
+      updateSelectedOperator: "activity/updateSelectedOperator",
+      updateSelectedCarrierReference: "activity/updateSelectedCarrierReference",
     }),
     generateOperatorPaginationText(pagination) {
       const { current_page, limit, total } = pagination;
@@ -237,11 +238,10 @@ export default {
       return `${start}-${end} of ${total}`;
     },
     selectOperator(operator) {
-      this.selectedOperatorData = operator;
+      this.updateSelectedOperator(operator);
     },
     getCarrierReferenceValue(item) {
-      this.selectedCarrierReferenceData = item;
-      console.log(item, "item");
+      this.updateSelectedCarrierReference(item);
     },
     async prevPage() {
       try {
@@ -299,9 +299,15 @@ export default {
         });
       }
     },
-    async getAllOperator() {
+    async getAllOperator(payload) {
       try {
-        await this.fetchAllOperator();
+        let { page, limit } = payload;
+        page = page || 1;
+        limit = limit || 10;
+        await this.fetchAllOperator({
+          page: page,
+          limit: limit,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -309,14 +315,15 @@ export default {
   },
   async mounted() {
     try {
-      await this.getAllOperator();
+      await this.getAllOperator({ sortBy: "all" });
       if (this.requestReassign) {
-        this.selectedOperatorData =
-          this.getSingleActivity?.operatorData || null;
-        this.selectedCarrierReferenceData.key =
-          this.getSingleActivity?.carrierReference?._id || null;
-        this.selectedCarrierReferenceData.label =
-          this.getSingleActivity?.carrierReference?.contactName || null;
+        this.updateSelectedOperator(
+          this.getSingleActivity?.operatorData || null
+        );
+        this.updateSelectedCarrierReference({
+          key: this.getSingleActivity?.carrierReference?._id || null,
+          label: this.getSingleActivity?.carrierReference?.contactName || null,
+        });
       }
     } catch (error) {
       console.log(error);

@@ -164,15 +164,14 @@ export default {
     },
   },
   data() {
-    return {
-      selectedVehicleData: null,
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       allVehicleData: "vehicle/getAllVehicleData",
       vehiclePaginationData: "vehicle/getVehiclePaginationData",
       getSingleActivity: "activity/getSingleActivity",
+      selectedVehicleData: "activity/getSelectedVehicleData",
     }),
     vehiclePaginationText() {
       return this.generateVehiclePaginationText(this.vehiclePaginationData);
@@ -189,9 +188,10 @@ export default {
   methods: {
     ...mapActions({
       fetchAllVehicle: "vehicle/fetchAllVehicle",
+      updateSelectedVehicle: "activity/updateSelectedVehicle",
     }),
     selectVehicle(vehicle) {
-      this.selectedVehicleData = vehicle;
+      this.updateSelectedVehicle(vehicle);
     },
     async prevPage() {
       try {
@@ -274,7 +274,7 @@ export default {
     try {
       await this.getAllVehicle({ sortBy: "all" });
       if (this.requestReassign) {
-        this.selectedVehicleData = this.getSingleActivity?.vehicleData || null;
+        this.updateSelectedVehicle(this.getSingleActivity?.vehicleData || null);
       }
     } catch (error) {
       console.log(error);
