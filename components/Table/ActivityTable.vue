@@ -484,7 +484,7 @@ export default {
         });
         this.isAssignVehicleModal = false;
         this.isAssignOperatorModal = false;
-        await this.getAllActivity();
+        this.$emit("activityUpdated");
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -504,19 +504,6 @@ export default {
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
-      }
-    },
-    async getAllActivity() {
-      try {
-        let page = 1;
-        let limit = 10;
-        await this.fetchAllActivities({
-          sortBy: this.sortBy,
-          page: page,
-          limit: limit,
-        });
-      } catch (error) {
-        console.log(error);
       }
     },
   },

@@ -35,6 +35,7 @@
         :sortBy="sortBy"
         @handleSeeMoreClick="handleSeeMoreClick"
         :activityPaginationData="activityPaginationData"
+        @activityUpdated="handleActivityUpdate"
       />
     </div>
   </div>
@@ -138,8 +139,8 @@ export default {
         });
       }
     },
-    closeModal() {
-      this.isModal = false;
+    async handleActivityUpdate() {
+      await this.getAllActivity({ sortBy: this.sortBy, page: 1, limit: 10 });
     },
     async getAllActivity(payload) {
       let { sortBy, page, limit, keyWord } = payload;
