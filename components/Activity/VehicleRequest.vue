@@ -5,7 +5,7 @@
         VEHICLE INFO
       </h1>
       <div class="bg-[#F7F7F7] px-5 py-4 rounded-lg">
-        <div class="grid grid-cols-3 gap-y-3">
+        <div class="grid sm:grid-cols-3 grid-cols-2 gap-y-3">
           <div>
             <p class="text-[#1E1E1E] font-medium text-xs">Vehicle Name</p>
             <p class="text-[#686868] font-normal text-xs">
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="bg-[#E6E6E6] h-[1px] w-full mt-4 mb-3"></div>
-        <div class="grid grid-cols-3">
+        <div class="grid sm:grid-cols-3 grid-cols-2">
           <div>
             <p class="text-[#1E1E1E] font-medium text-sm">Drive Type</p>
             <p class="text-[#686868] font-normal text-xs">

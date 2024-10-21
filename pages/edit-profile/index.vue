@@ -6,7 +6,7 @@
           <img
             src="@/static/Images/edit-profile-truck-imag.webp"
             alt=""
-            class="w-full h-[400px]"
+            class="w-full xl:h-[400px] sm:h-[300px] h-200px"
           />
         </div>
         <div class="mx-16 relative">
@@ -14,17 +14,17 @@
             v-if="profileURL"
             :src="profileURL"
             alt=""
-            class="rounded-full absolute w-[300px] -top-36 h-[300px] object-cover border-[17px] border-white"
+            class="rounded-full absolute xxl:w-[300px] sm:w-[230px] xl:-top-36 -top-10 xl:h-[300px] sm:h-[230px] xs:h-[215px] h-[165px] object-cover border-[17px] border-white"
           />
           <img
             v-else
             src="@/static/Images/edit-profile-circle-imag.webp"
             alt=""
-            class="rounded-full absolute w-[300px] -top-36 h-[300px] object-cover border-[17px] border-white"
+            class="rounded-full absolute xxl:w-[300px] sm:w-[230px] xl:-top-36 -top-10 xl:h-[300px] sm:h-[230px] xs:h-[215px] h-[165px] object-cover border-[17px] border-white"
           />
           <label class="cursor-pointer">
             <p
-              class="text-[#3683D5] font-normal text-sm absolute top-44 left-20 cursor-pointer"
+              class="text-[#3683D5] font-normal sm:text-sm absolute xs:top-44 top-32 xxxl:left-20 lg:left-14 sm:left-14 xs:left-9 left-0 cursor-pointer sm:w-auto w-full"
             >
               Change profile picture
             </p>
@@ -38,12 +38,77 @@
         </div>
       </div>
       <div class="mt-56 mx-10">
+        <div class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+          <nuxt-link to="/operator">
+            <div class="xl:w-[370px] cursor-pointer">
+              <h1 class="text-[#151515] font-normal text-xs mb-3">Operators</h1>
+              <div class="border border-[#E6E6E6] rounded-lg p-3">
+                <div class="flex justify-between">
+                  <h1 class="text-[#1E1E1E] font-medium text-sm">
+                    {{ formData?.operators?.total }} Operators
+                  </h1>
+                </div>
+                <div class="grid grid-cols-2 mt-3">
+                  <div>
+                    <p class="text-[#686868] font-light text-xs mb-1.5">
+                      Active operators
+                    </p>
+                    <p class="text-[#151515] font-medium text-sm">
+                      {{ formData?.operators?.active }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-[#686868] font-light text-xs mb-1.5">
+                      Out of duty operators
+                    </p>
+                    <p class="text-[#151515] font-medium text-sm">
+                      {{ formData?.operators?.deactive }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nuxt-link>
+          <nuxt-link to="/vehicle">
+            <div class="xl:w-[370px] cursor-pointer">
+              <h1 class="text-[#151515] font-normal text-xs mb-3">Vehicles</h1>
+              <div class="border border-[#E6E6E6] rounded-lg p-3">
+                <div class="flex justify-between">
+                  <h1 class="text-[#1E1E1E] font-medium text-sm">
+                    {{ formData?.vehicles?.total }} Vehicles
+                  </h1>
+                </div>
+                <div class="grid grid-cols-2 mt-3">
+                  <div>
+                    <p class="text-[#686868] font-light text-xs mb-1.5">
+                      Active vehicles
+                    </p>
+                    <p class="text-[#151515] font-medium text-sm">
+                      {{ formData?.vehicles?.active }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-[#686868] font-light text-xs mb-1.5">
+                      Out of duty vehicles
+                    </p>
+                    <p class="text-[#151515] font-medium text-sm">
+                      {{ formData?.vehicles?.deactive }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nuxt-link>
+        </div>
+
         <form
           class="space-y-4 md:space-y-6 mt-6"
           @submit.prevent="upateUserProfile"
         >
           <div class="">
-            <div class="grid grid-cols-3 gap-y-2">
+            <div
+              class="grid lg:grid-cols-3 sm:grid-cols-2 xxxl:gap-0 xl:!gap-14 gap-4 grid-cols-1 !gap-y-2"
+            >
               <div>
                 <label
                   for="Company name"
@@ -364,7 +429,7 @@
 
             <div
               v-if="selectedLabel != 'Select option'"
-              class="grid grid-cols-3 mt-1"
+              class="grid lg:grid-cols-3 sm:grid-cols-2 xxxl:gap-0 xl:!gap-14 gap-4 grid-cols-1mt-1"
             >
               <div
                 v-for="(reference, key) in formData.commercialReference"
@@ -501,7 +566,7 @@
           </div>
           <div class="flex justify-center mt-4">
             <button
-              class="mb-5 w-[20%] text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
+              class="mb-5 sm:w-[20%] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
             >
               Update Profile
             </button>

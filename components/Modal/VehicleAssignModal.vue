@@ -13,11 +13,13 @@
     >
       <template #content>
         <div>
-          <div class="flex justify-between items-center mt-5 mb-6">
+          <div
+            class="flex justify-between items-center sm:flex-row flex-col mt-5 mb-6"
+          >
             <h1 class="font-semibold text-lg text-[#3683D5]">Assign Vehicle</h1>
             <div
               v-if="allVehicleData?.length > 0"
-              class="flex justify-end gap-5 items-center"
+              class="flex justify-end sm:gap-5 gap-2 items-center sm:mt-0 mt-3"
             >
               <span>{{ vehiclePaginationText }}</span>
               <button
@@ -124,7 +126,7 @@
           </div>
           <div
             v-if="allVehicleData.length > 0"
-            class="grid grid-cols-2 gap-y-5 overflow-y-auto h-[480px]"
+            class="grid sm:grid-cols-2 grid-cols-1 gap-y-5 xl:gap-0 gap-3 overflow-y-auto h-[480px]"
           >
             <AssignVehicle
               v-for="item in allVehicleData"

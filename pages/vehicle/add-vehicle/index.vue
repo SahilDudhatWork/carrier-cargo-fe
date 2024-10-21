@@ -12,7 +12,7 @@
       </div>
       <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="addVehicle">
         <div>
-          <div class="grid grid-cols-3 gap-y-3">
+          <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3">
             <div>
               <label
                 for="VehicleName"
@@ -257,7 +257,9 @@
           </div>
           <div class="mt-3">
             <h1 class="font-normal text-[#1E1E1E] text-sm">Types Of Service</h1>
-            <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
+            <div
+              class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-1 mt-3 gap-4"
+            >
               <Transportation
                 v-for="(item, index) of locations?.typeOfService"
                 :key="index"
@@ -270,7 +272,9 @@
               <h1 class="font-normal text-[#1E1E1E] text-sm">
                 Type of Transportation
               </h1>
-              <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
+              <div
+                class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-1 mt-3 gap-4"
+              >
                 <Transportation
                   v-for="(item, index) of locations?.typeOfTransportation"
                   :key="index"
@@ -286,7 +290,9 @@
             >
               Mode of Transportation
             </h1>
-            <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
+            <div
+              class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-1 mt-3 gap-4"
+            >
               <Transportation
                 v-for="(item, index) in filteredModes"
                 :key="index"
@@ -298,7 +304,7 @@
           </div>
           <div class="flex justify-center">
             <button
-              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-8 py-[15px] text-center mt-8 mr-40"
+              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-8 py-[15px] text-center mt-8 sm:mr-40"
             >
               Add Vehicle
             </button>

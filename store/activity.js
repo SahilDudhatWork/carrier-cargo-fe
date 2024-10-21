@@ -4,7 +4,7 @@ export const state = () => ({
   singleActivity: {},
   temporarySelected: {
     selectedOperatorData: null,
-    selectedCarrierReferenceData: { key: "", label: "" },
+    carrierReferenceData: null,
     selectedVehicleData: null,
   },
 });
@@ -20,7 +20,7 @@ export const getters = {
     return state.temporarySelected.selectedVehicleData;
   },
   getSelectedCarrierReferenceData(state) {
-    return state.temporarySelected.selectedCarrierReferenceData;
+    return state.temporarySelected.carrierReferenceData;
   },
 };
 
@@ -34,8 +34,8 @@ export const mutations = {
   setSelectedVehicleData(state, payload) {
     state.temporarySelected.selectedVehicleData = payload;
   },
-  setSelectedCarrierReferenceData(state, payload) {
-    state.temporarySelected.selectedCarrierReferenceData = payload;
+  setCarrierReferenceData(state, payload) {
+    state.temporarySelected.carrierReferenceData = payload;
   },
 };
 
@@ -46,8 +46,8 @@ export const actions = {
   updateSelectedVehicle({ commit }, vehicleData) {
     commit("setSelectedVehicleData", vehicleData);
   },
-  updateSelectedCarrierReference({ commit }, carrierReferenceData) {
-    commit("setSelectedCarrierReferenceData", carrierReferenceData);
+  updateCarrierReference({ commit }, carrierReferenceData) {
+    commit("setCarrierReferenceData", carrierReferenceData);
   },
   async fetchAllActivities(ctx, payload) {
     try {

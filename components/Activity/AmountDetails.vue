@@ -4,17 +4,8 @@
       <h1 class="text-[#B9B9B9] text-[10px] font-semibold mb-4">
         AMOUNT DETAILS
       </h1>
-      <div>
-        <p class="text-[#1E1E1E] font-medium text-sm">
-          {{ activitySingleData?.amountDetails?.price
-          }}{{ activitySingleData?.amountDetails?.currency }}
-        </p>
-        <p class="text-[#B9B9B9] font-normal text-[10px]">
-          Payment Mode: {{ activitySingleData?.amountDetails?.paymentMode }}
-        </p>
-      </div>
     </div>
-    <div class="mt-3 grid grid-cols-3 gap-y-5">
+    <div class="mt-3 grid sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-y-5">
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Drive Type</p>
         <p class="text-[#686868] font-light text-[10px] pt-0.5">

@@ -272,12 +272,11 @@ export default async (ctx, inject) => {
         setError(`${fieldName}`, `${errorLabel} is required`);
       }
     };
-    if (fieldsToValidate.includes("selectedCarrierReference")) {
+    if (fieldsToValidate.includes("carrierReference")) {
       validateField(
-        form.selectedCarrierReference.key &&
-          form.selectedCarrierReference.label,
-        "selectedCarrierReference",
-        "Please select an option"
+        form?.carrierReference,
+        "carrierReference",
+        "carrier reference"
       );
     }
     if (fieldsToValidate.includes("selectedOperator")) {

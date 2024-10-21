@@ -13,7 +13,7 @@
               </th>
               <th
                 scope="col"
-                class="pr-4 py-3 text-[#000000] font-normal text-[12px]"
+                class="sm:pr-4 px-4 py-3 text-[#000000] font-normal text-[12px]"
               >
                 Vehicle ID
               </th>
@@ -58,7 +58,7 @@
               <td class="pl-3">#</td>
               <th
                 scope="row"
-                class="pr-4 text-[#000000] font-normal text-[12px]"
+                class="sm:pr-4 px-4 text-[#000000] font-normal text-[12px]"
               >
                 <span class="border-b border-black">{{ item?._id }}</span>
               </th>
