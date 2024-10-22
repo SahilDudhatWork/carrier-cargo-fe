@@ -13,7 +13,7 @@
               </th>
               <th
                 scope="col"
-                class="pr-4 py-3 text-[#000000] font-normal text-[12px]"
+                class="sm:pr-4 px-4 py-3 text-[#000000] font-normal text-[12px]"
               >
                 Movement ID
               </th>
@@ -27,7 +27,7 @@
                 scope="col"
                 class="px-6 py-3 text-[#000000] font-normal text-[12px]"
               >
-                Amount
+                Port & Bridge
               </th>
               <th
                 scope="col"
@@ -82,7 +82,7 @@
               <td class="pl-3">#</td>
               <th
                 scope="row"
-                class="pr-4 text-[#000000] font-normal text-[12px]"
+                class="sm:pr-4 px-4 text-[#000000] font-normal text-[12px]"
               >
                 <span class="border-b border-black">{{
                   item?.movementId
@@ -91,34 +91,32 @@
 
               <td class="px-6 py-6">
                 <span
-                  class="text-[#FEFEFE] font-medium text-[10px] py-0.5 px-3.5 bg-[#FFAA00] rounded"
+                  v-if="formatStatus"
+                  class="text-[#FEFEFE] font-medium text-[10px] py-0.5 px-3.5 rounded"
+                  :style="{ backgroundColor: buttonColor(item.status) }"
                   >{{ formatStatus(item) }}</span
                 >
               </td>
               <td class="px-6 py-6">
                 <div class="flex flex-col">
-                  <span class="text-[#000000] font-normal text-xs pt-1"
-                    >{{ item?.amountDetails?.price
-                    }}{{ item?.amountDetails?.currency }}</span
-                  >
-                  <span class="text-[#989898] font-normal text-[10px] pt-1">{{
-                    item?.amountDetails?.paymentMode
+                  <span class="text-[#000000] font-normal text-xs pt-1">{{
+                    item?.port_BridgeOfCrossing
                   }}</span>
                 </div>
               </td>
               <td class="px-6 py-6">
-                <div class="flex flex-col">
+                <div class="flex flex-col" v-if="item?.userData">
                   <span class="text-[#000000] font-normal text-xs pt-1">{{
-                    item?.userReference?.contactName
+                    item?.userData?.contactName
                   }}</span>
                   <span class="text-[#989898] font-normal text-[10px] pt-1"
-                    >+{{ item?.userReference?.countryCode }}
-                    {{ item?.userReference?.contactNo }}</span
+                    >+{{ item?.userData?.countryCode }}
+                    {{ item?.userData?.contactNumber }}</span
                   >
                 </div>
               </td>
 
-              <template v-if="item?.status == 'Pending'">
+              <template v-if="item?.status === 'NewAssignments'">
                 <td class="py-6">
                   <span
                     class="text-[#2AA1EB] font-normal text-xs border-b border-[#2AA1EB]"
@@ -127,9 +125,9 @@
                   >
                 </td>
               </template>
-              <template v-else>
+              <template v-if="item?.status === 'InProgress'">
                 <td>
-                  <div class="flex flex-col">
+                  <div class="flex flex-col" v-if="item?.operatorData">
                     <span class="text-[#000000] font-normal text-xs pt-1">{{
                       item?.operatorData?.operatorName
                     }}</span>
@@ -150,7 +148,11 @@
                   </div>
                 </td>
               </template>
-              <template v-if="item?.status == 'InProgress'">
+              <template
+                v-if="
+                  item?.status === 'InProgress' || item?.status === 'Pending'
+                "
+              >
                 <td class="py-6">
                   <span
                     class="text-[#2AA1EB] font-normal text-xs border-b border-[#2AA1EB]"
@@ -336,7 +338,7 @@ export default {
       isAssignVehicleModal: false,
       selectedOperator: null,
       selectedVehicle: null,
-      selectedCarrierReference: null,
+      carrierReference: null,
       errors: {},
       requestReassign: false,
     };
@@ -358,15 +360,16 @@ export default {
     formatStatus() {
       return (item) => {
         if (!item) return "";
-
-        if (item.status === "Pending") {
+        if (item?.status === "NewAssignments") {
+          return "NEW-ASSIGNMENTS";
+        } else if (item?.status === "Pending") {
           return "PENDING";
-        } else if (item.status === "InProgress") {
+        } else if (item?.status === "InProgress") {
           return "IN-PROGRESS";
-        } else if (item.status === "Completed") {
+        } else if (item?.status === "Completed") {
           return "COMPLETED";
         } else {
-          return item.status;
+          return item?.status;
         }
       };
     },
@@ -376,10 +379,24 @@ export default {
       updateActivity: "activity/updateActivity",
       fetchSingleActivity: "activity/fetchSingleActivity",
       updateSelectedOperator: "activity/updateSelectedOperator",
-      updateSelectedCarrierReference: "activity/updateSelectedCarrierReference",
+      updateCarrierReference: "activity/updateCarrierReference",
       updateSelectedVehicle: "activity/updateSelectedVehicle",
       fetchAllActivities: "activity/fetchAllActivities",
+      validateCarrierReference: "activity/validateCarrierReference",
     }),
+    buttonColor(status) {
+      if (status === "NewAssignments") {
+        return "#023770";
+      } else if (status === "Pending") {
+        return "#989898";
+      } else if (status === "InProgress") {
+        return "#FFAA00";
+      } else if (status === "Completed") {
+        return "#3ECC48";
+      } else {
+        return "#FFAA00";
+      }
+    },
     selectVehicle(vehicle) {
       this.selectedVehicle = vehicle;
     },
@@ -398,8 +415,8 @@ export default {
       this.requestReassign = false;
       this.isAssignOperatorModal = true;
       this.updateSelectedOperator(null);
-      this.updateSelectedCarrierReference({});
-      this.updateSelectedVehicle({});
+      this.updateCarrierReference(null);
+      this.updateSelectedVehicle(null);
     },
     async reAssignRequest(id) {
       document.body.style.overflow = "hidden";
@@ -414,37 +431,42 @@ export default {
       this.isAssignOperatorModal = true;
       this.isAssignVehicleModal = false;
     },
-    async handleAssignOperator(selectedOperator, selectedCarrierReference) {
-      try {
-        this.selectedCarrierReference = selectedCarrierReference;
-        this.selectedOperator = selectedOperator;
-        const form = {
-          selectedCarrierReference: this.selectedCarrierReference,
-          selectedOperator: this.selectedOperator,
-        };
-        this.errors = await this.$validateActivityModal({
-          form: form,
-          fieldsToValidate: ["selectedCarrierReference", "selectedOperator"],
+    async handleAssignOperator(selectedOperator, carrierReference) {
+      this.carrierReference = carrierReference;
+      this.selectedOperator = selectedOperator;
+      const form = {
+        carrierReference: this.carrierReference,
+        selectedOperator: this.selectedOperator,
+      };
+      this.errors = await this.$validateActivityModal({
+        form: form,
+        fieldsToValidate: ["carrierReference", "selectedOperator"],
+      });
+      if (this.errors) {
+        this.errors.forEach((item) => {
+          this.errors.carrierReference = item.carrierReference;
+          console.log(item, "this.errors");
         });
-        if (this.errors) {
-          this.errors.forEach((item) => {
-            this.errors.selectedCarrierReference =
-              item.selectedCarrierReference;
-            console.log(item, "this.errors");
-          });
-        }
-        if (Object.keys(this.errors).length > 0) {
-          this.$toast.open({
-            message: "Please fix the errors before submitting.",
-            type: "error",
-          });
-          return;
-        }
-
+      }
+      if (Object.keys(this.errors).length > 0) {
+        this.$toast.open({
+          message: "Please fix the errors before submitting.",
+          type: "error",
+        });
+        return;
+      }
+      try {
+        await this.validateCarrierReference({
+          carrierReference: this.carrierReference,
+        });
         this.isAssignVehicleModal = true;
         this.isAssignOperatorModal = false;
       } catch (error) {
         console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
       }
     },
     async handleAssignVehicle(selectedVehicle) {
@@ -459,8 +481,7 @@ export default {
         });
         if (this.errors) {
           this.errors.forEach((item) => {
-            this.errors.selectedCarrierReference =
-              item.selectedCarrierReference;
+            this.errors.carrierReference = item.carrierReference;
           });
         }
         if (Object.keys(this.errors).length > 0) {
@@ -473,7 +494,7 @@ export default {
         const formData = {
           operatorId: this.selectedOperator?._id,
           vehicleId: this.selectedVehicle?._id,
-          carrierReference: this.selectedCarrierReference?.key,
+          carrierReference: this.carrierReference,
         };
         const res = await this.updateActivity({
           formData: formData,

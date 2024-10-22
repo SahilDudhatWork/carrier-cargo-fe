@@ -86,4 +86,15 @@ export const actions = {
       throw error;
     }
   },
+  async validateCarrierReference(ctx, payload) {
+    try {
+      const response = await $axios.post(
+        "v1/carrier/movement/reference/validate",
+        payload
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

@@ -11,7 +11,7 @@
     </div>
     <div>
       <h1 class="text-[#B9B9B9] font-semibold text-[10px] mb-5">UPDATES</h1>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-4 sm:flex-row flex-col">
         <p class="text-[#1E1E1E] font-medium text-[10px]">
           User’s details info uploaded
         </p>
@@ -21,9 +21,17 @@
           <img src="@/static/svg/qr-code.svg" alt="" />
           <p class="font-medium text-xs text-[#151515]">QR code uploaded</p>
         </div>
-        <P class="text-[#3683D5] font-normal text-[10px]">Generate & Upload</P>
+        <div>
+          <button
+            @click="uploadQrCode"
+            class="text-[#3683D5] font-normal text-[10px] cursor-pointer"
+          >
+            Generate & Upload
+          </button>
+          <input type="file" ref="qrInput" class="hidden" />
+        </div>
       </div>
-      <div class="mt-4 mb-4">
+      <div class="mt-4 mb-4 flex sm:justify-normal justify-center">
         <button
           class="text-[#FFFFFF] font-semibold text-sm rounded-md px-5 py-2 bg-gradient-to-r from-[#0464CB] to-[#2AA1EB]"
         >
@@ -38,6 +46,10 @@
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     <div class="mt-5">
       <UserInfo :activitySingleData="activitySingleData" />
+    </div>
+    <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
+    <div class="mt-5">
+      <CarrierInfo :activitySingleData="activitySingleData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     <div class="mt-5" v-if="activitySingleData?.status !== 'Pending'">
@@ -59,6 +71,9 @@
     <div class="mt-5">
       <Locations :activitySingleData="activitySingleData" />
     </div>
+    <div class="mt-5">
+      <ProofOfPhotography />
+    </div>
   </div>
 </template>
 
@@ -75,6 +90,9 @@ export default {
     ...mapActions({
       fetchSingleActivity: "activity/fetchSingleActivity",
     }),
+    uploadQrCode() {
+      this.$refs.qrInput.click();
+    },
     async getSingleTransitInfo() {
       try {
         const res = await this.fetchSingleActivity({

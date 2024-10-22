@@ -6,11 +6,7 @@
           SERVICE DETAILS
         </h1>
         <span
-          :class="
-            activitySingleData?.status == 'Pending'
-              ? 'bg-[#FFAA00]'
-              : 'bg-[#3ECC48]'
-          "
+          :style="{ backgroundColor: buttonColor }"
           class="text-[#FEFEFE] font-medium text-[10px] rounded px-[17px] py-[1px]"
           >{{ formatStatus(activitySingleData) }}</span
         >
@@ -83,8 +79,9 @@ export default {
     formatStatus() {
       return (item) => {
         if (!item) return "";
-
-        if (item.status === "Pending") {
+        if (item?.status === "NewAssignments") {
+          return "NEW-ASSIGNMENTS";
+        } else if (item.status === "Pending") {
           return "PENDING";
         } else if (item.status === "InProgress") {
           return "IN-PROGRESS";
@@ -94,6 +91,19 @@ export default {
           return item.status;
         }
       };
+    },
+    buttonColor() {
+      if (this.activitySingleData?.status === "NewAssignments") {
+        return "#023770";
+      } else if (this.activitySingleData?.status === "Pending") {
+        return "#989898";
+      } else if (this.activitySingleData?.status === "InProgress") {
+        return "#FFAA00";
+      } else if (this.activitySingleData?.status === "Completed") {
+        return "#3ECC48";
+      } else {
+        return "#FFAA00";
+      }
     },
   },
 };

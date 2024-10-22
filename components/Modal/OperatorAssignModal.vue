@@ -35,29 +35,6 @@
                 errors?.carrierReference
               }}</span>
             </div>
-            <!-- <label
-              for="email"
-              class="block mb-1 text-sm font-medium text-[#3683D5]"
-              >Carrier Reference</label
-            >
-            <div v-if="formatRef.length > 0">
-              <Dropdown
-                :items="formatRef"
-                :selectedLabel="selectedCarrierReferenceData?.label"
-                @getValue="getCarrierReferenceValue"
-                :errors="errors?.selectedCarrierReference"
-              />
-              <span class="error-msg" v-if="errors?.selectedCarrierReference">{{
-                errors?.selectedCarrierReference
-              }}</span>
-            </div> -->
-            <!-- <div v-else>
-              <h1
-                class="font-semibold text-xl text-[#989898] mt-5 flex justify-center mb-5"
-              >
-                You don't have any carrier reference
-              </h1>
-            </div> -->
           </div>
           <div
             class="flex justify-between items-center sm:flex-row flex-col mt-5 mb-6"
@@ -235,14 +212,11 @@ export default {
     operatorPaginationText() {
       return this.generateOperatorPaginationText(this.operatorPaginationData);
     },
-    // formatRef() {
-    //   return this.profileData?.commercialReference?.map((user) => {
-    //     return {
-    //       key: user._id,
-    //       label: user?.contactName,
-    //     };
-    //   });
-    // },
+  },
+  watch: {
+    carrierReferenceData(value) {
+      this.updateCarrierReference(value);
+    },
   },
   methods: {
     ...mapActions({
@@ -260,9 +234,6 @@ export default {
     selectOperator(operator) {
       this.updateSelectedOperator(operator);
     },
-    // getCarrierReferenceValue(item) {
-    //   this.updateCarrierReference(item);
-    // },
     async prevPage() {
       try {
         await this.getAllOperator({
@@ -334,6 +305,7 @@ export default {
     },
   },
   async mounted() {
+    this.carrierReferenceData = this.carrierReference || null;
     try {
       await this.getAllOperator({ sortBy: "all" });
       if (this.requestReassign) {
@@ -342,7 +314,7 @@ export default {
         );
         this.updateCarrierReference(
           (this.carrierReferenceData =
-            this.getSingleActivity.carrierReference.contactName || null)
+            this.getSingleActivity.carrierReference || null)
         );
       }
     } catch (error) {
