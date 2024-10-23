@@ -12,7 +12,7 @@
     color: red;
   }
   
-  .group .mx-datepicker .mx-input {
+  /* .group .mx-datepicker .mx-input {
     background-color: white !important;
     cursor: pointer !important;
     border: 1px solid 	#E8E8E8;
@@ -37,4 +37,63 @@
 
   .error-border .mx-input {
     border: 1px solid red !important; 
+  } */
+
+/* @media (min-width: 1441px) {
+  .mx-datepicker-main{ 
+    left: 957.5px !important;
+    position: absolute !important;
   }
+  .mx-datepicker-main .mx-time{ 
+    width: 382px !important;
+  }
+  .group .mx-input-wrapper {
+    width: 382px !important;
+  }
+  .mx-datepicker-main .mx-calendar {
+    width: 382px !important;
+  }
+} */
+
+
+/* @media (max-width: 320px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1441px) {
+  ::v-deep .vdpComponent input {
+    width: 360px;
+  }
+} */

@@ -102,7 +102,7 @@ export default {
       } else if (this.activitySingleData?.status === "Completed") {
         return "#3ECC48";
       } else {
-        return "#FFAA00";
+        return "#000000";
       }
     },
   },

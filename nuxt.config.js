@@ -33,6 +33,8 @@ export default {
     "~/plugins/downloadFile.js",
     "~/plugins/moment.js",
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
+    "~/plugins/statusPlugin.js",
+    { src: "~/plugins/vue-datepicker.js", ssr: false },
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],

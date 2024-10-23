@@ -394,7 +394,7 @@ export default {
       } else if (status === "Completed") {
         return "#3ECC48";
       } else {
-        return "#FFAA00";
+        return "#000000";
       }
     },
     selectVehicle(vehicle) {

@@ -23,12 +23,17 @@
         </div>
         <div>
           <button
-            @click="uploadQrCode"
+            @click="uploadQrCodeFile"
             class="text-[#3683D5] font-normal text-[10px] cursor-pointer"
           >
             Generate & Upload
           </button>
-          <input type="file" ref="qrInput" class="hidden" />
+          <input
+            type="file"
+            ref="qrInput"
+            class="hidden"
+            @change="handleFileUpload"
+          />
         </div>
       </div>
       <div class="mt-4 mb-4 flex sm:justify-normal justify-center">
@@ -45,14 +50,19 @@
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     <div class="mt-5">
-      <UserInfo :activitySingleData="activitySingleData" />
+      <UserInfo
+        :activitySingleData="activitySingleData"
+        @uploadQrCode="changeQrCode"
+      />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5">
-      <CarrierInfo :activitySingleData="activitySingleData" />
+    <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
+      <div class="mt-5">
+        <CarrierInfo :activitySingleData="activitySingleData" />
+      </div>
+      <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
-    <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5" v-if="activitySingleData?.status !== 'Pending'">
+    <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
       <div class="mt-5">
         <VehicleRequest :activitySingleData="activitySingleData" />
       </div>
@@ -62,7 +72,7 @@
       <ServiceDetails :activitySingleData="activitySingleData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5" v-if="activitySingleData?.status !== 'Pending'">
+    <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
       <div>
         <OperatorInfo :activitySingleData="activitySingleData" />
       </div>
@@ -71,7 +81,42 @@
     <div class="mt-5">
       <Locations :activitySingleData="activitySingleData" />
     </div>
-    <div class="mt-5">
+    <div class="mt-5" v-if="activitySingleData?.status === 'InProgress'">
+      <div
+        v-if="!isUploadComplete && !isProofOfPhotography"
+        class="flex justify-center"
+      >
+        <button
+          @click="isProofOfPhotography = !isProofOfPhotography"
+          class="rounded-lg text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] flex justify-between py-3 px-5 sm:gap-14 gap-2 items-center"
+        >
+          Movement Completed
+        </button>
+      </div>
+      <UploadDocument
+        v-if="isProofOfPhotography"
+        title="Proof Uploading"
+        description="share proof of documents."
+        buttonText="Upload"
+        :showInput="true"
+        @file-uploaded="handleProofOfPhotographyUpload"
+      />
+      <UploadDocument
+        v-if="isUploadComplete"
+        title="Movement Completed"
+        description="share your experience with us."
+        buttonText="Share Review"
+        @handleClick="shareRiview"
+        :showInput="false"
+      />
+    </div>
+    <div>
+      <ShareReview :isModal="false" :activitySingleData="activitySingleData" />
+    </div>
+    <div
+      class="mt-5"
+      v-if="$checkProofOfPhotography(activitySingleData?.status)"
+    >
       <ProofOfPhotography />
     </div>
   </div>
@@ -84,14 +129,105 @@ export default {
   data() {
     return {
       activitySingleData: {},
+      isProofOfPhotography: false,
+      isUploadComplete: false,
     };
   },
   methods: {
     ...mapActions({
       fetchSingleActivity: "activity/fetchSingleActivity",
+      uploadFile: "activity/uploadFile",
+      movementComplete: "activity/movementComplete",
     }),
-    uploadQrCode() {
+    shareRiview() {
+      console.log("share review");
+    },
+    async changeQrCode({ file, movementId }) {
+      try {
+        const formData = new FormData();
+        formData.append("qrCode", file);
+        formData.append("movementId", movementId);
+        const res = await this.uploadFile({
+          id: movementId,
+          data: formData,
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+        await this.getSingleTransitInfo();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    async handleProofOfPhotographyUpload(file) {
+      try {
+        const formData = new FormData();
+        formData.append("proofOfPhotography", file);
+        formData.append("movementId", this.movementId);
+        const res = await this.uploadFile({
+          id: this.movementId,
+          data: formData,
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+        await this.movementCompleted();
+        this.isUploadComplete = true;
+        this.isProofOfPhotography = false;
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    uploadQrCodeFile() {
       this.$refs.qrInput.click();
+    },
+    async movementCompleted() {
+      try {
+        await this.movementComplete({
+          movementId: this.movementId,
+        });
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    handleFileUpload(event) {
+      this.qrCode = event.target.files[0];
+      if (this.qrCode) {
+        this.uploadQrCode();
+      }
+    },
+    async uploadQrCode() {
+      try {
+        const formData = new FormData();
+        formData.append("qrCode", this.qrCode);
+        formData.append("movementId", this.movementId);
+        const res = await this.uploadFile({
+          id: this.movementId,
+          data: formData,
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+        await this.getSingleTransitInfo();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
     },
     async getSingleTransitInfo() {
       try {

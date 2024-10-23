@@ -12,14 +12,14 @@
         />
         <div>
           <p class="text-[#1E1E1E] font-medium text-sm">
-            {{ activitySingleData?.userData?.contactName }}
+            {{ activitySingleData?.carrierData?.contactName }}
           </p>
           <p class="text-[#686868] font-normal text-xs">
-            {{ activitySingleData?.userData?.companyName }}, +{{
-              activitySingleData?.userData?.countryCode
+            {{ activitySingleData?.carrierData?.companyName }}, +{{
+              activitySingleData?.carrierData?.countryCode
             }}
-            {{ activitySingleData?.userData?.contactNumber }},
-            {{ activitySingleData?.userData?.email }}
+            {{ activitySingleData?.carrierData?.contactNumber }},
+            {{ activitySingleData?.carrierData?.email }}
           </p>
         </div>
       </div>

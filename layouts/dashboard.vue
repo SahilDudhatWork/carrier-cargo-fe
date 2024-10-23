@@ -2,7 +2,7 @@
   <div>
     <header>
       <nav
-        class="!fixed z-50 bg-white sm:ml-[15rem] w-full"
+        class="!fixed z-50 bg-white w-full"
         :class="isShow ? 'sm:ml-[14rem]' : 'sm:ml-[3.5rem]'"
       >
         <div class="flex justify-between items-center w-full">
@@ -173,7 +173,7 @@
       <div
         v-if="isSidebarOpen"
         @click="isSidebarOpen = false"
-        class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30"
+        class="bg-gray-900/50 dark:bg-gray-900/80 fixed sm:inset-full inset-0 z-30"
       ></div>
       <div class="mt-24">
         <Nuxt />

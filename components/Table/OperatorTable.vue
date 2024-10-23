@@ -13,7 +13,7 @@
               </th>
               <th
                 scope="col"
-                class="pr-4 py-3 text-[#000000] font-normal text-[12px]"
+                class="px-4 py-3 text-[#000000] font-normal text-[12px]"
               >
                 Operator ID
               </th>
@@ -58,7 +58,7 @@
               <td class="pl-3">#</td>
               <th
                 scope="row"
-                class="pr-4 ftext-[#000000] font-normal text-[12px]"
+                class="px-4 ftext-[#000000] font-normal text-[12px]"
               >
                 <span class="border-b border-black">{{ item?.accountId }}</span>
               </th>

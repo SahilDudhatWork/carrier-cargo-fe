@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="rounded-2xl py-[12px] px-4 mb-3 flex justify-between cursor-pointer w-[382px]"
+      class="rounded-2xl py-[12px] px-4 mb-3 flex justify-between cursor-pointer lg:w-[382px] w-full"
       :class="
         isSelected ? 'border border-[#3683D5]' : 'border border-[#E7E7E7] '
       "

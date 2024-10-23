@@ -19,12 +19,19 @@
           description="(Lorem ipsum doit sum to en la pat)"
         />
       </div>
-      <div class="mt-4 bg-[#F7F7F7] px-2 rounded-lg py-2">
+      <div
+        class="mt-4 bg-[#F7F7F7] px-2 rounded-lg py-2"
+        v-if="$checkQr(activitySingleData?.status)"
+      >
         <p class="text-[#1E1E1E] font-normal text-xs">
           You received an <span class="font-semibold">QR code</span> from
           carrier for further verification with user.
         </p>
-        <img src="@/static/Images/qr.webp" alt="" class="mt-2" />
+        <img
+          :src="activitySingleData?.qrCode"
+          alt=""
+          class="mt-2 w-[100px] h-[100px]"
+        />
         <div class="mt-3">
           <span
             @click="fileUpload"
@@ -32,7 +39,12 @@
           >
             Change QR code
           </span>
-          <input type="file" ref="fileInput" class="hidden" />
+          <input
+            type="file"
+            ref="fileInput"
+            class="hidden"
+            @change="handleFileUpload"
+          />
         </div>
       </div>
     </div>
@@ -47,9 +59,24 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {};
+  },
   methods: {
     fileUpload() {
       this.$refs.fileInput.click();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.uploadQrCode(file);
+      }
+    },
+    uploadQrCode(file) {
+      this.$emit("uploadQrCode", {
+        file,
+        movementId: this.activitySingleData?.movementId,
+      });
     },
   },
 };

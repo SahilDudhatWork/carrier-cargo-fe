@@ -86,6 +86,25 @@ export const actions = {
       throw error;
     }
   },
+  async uploadFile(ctx, { id, data }) {
+    try {
+      const response = await $axios.post(`/v1/common/qr&proof&doc/${id}`, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async movementComplete(ctx, payload) {
+    try {
+      const response = await $axios.put(
+        `/v1/carrier/movement/complete/${payload.movementId}`,
+        payload
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   async validateCarrierReference(ctx, payload) {
     try {
       const response = await $axios.post(

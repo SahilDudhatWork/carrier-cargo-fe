@@ -12,7 +12,9 @@
       </div>
       <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="EditOperator">
         <div>
-          <div class="grid grid-cols-3 gap-y-3">
+          <div
+            class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3"
+          >
             <div>
               <label
                 for="VehicleName"
@@ -66,23 +68,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Plates Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.mxPlatesExpirationDate"
-                  placeholder="MX Plates Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.mxPlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.mxPlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span class="error-msg" v-if="errors?.mxPlatesExpirationDate">{{
@@ -120,23 +113,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Plates Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.usPlatesExpirationDate"
-                  placeholder="FAST ID Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.usPlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none px-3"
+                  :class="
+                    errors.usPlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span class="error-msg" v-if="errors?.usPlatesExpirationDate">{{
@@ -174,23 +158,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Insurance Policy Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.mxInsurancePlatesExpirationDate"
-                  placeholder="MX Insurance Policy Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.mxInsurancePlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full px-3 rounded-lg focus:outline-none"
+                  :class="
+                    errors.mxInsurancePlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span
@@ -229,23 +204,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Insurance Policy Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.usInsurancePlatesExpirationDate"
-                  placeholder="US Insurance Policy Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.usInsurancePlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full px-3 rounded-lg focus:outline-none"
+                  :class="
+                    errors.usInsurancePlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span
@@ -257,7 +223,9 @@
           </div>
           <div class="mt-3">
             <h1 class="font-normal text-[#1E1E1E] text-sm">Types Of Service</h1>
-            <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
+            <div
+              class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3 mt-3"
+            >
               <Transportation
                 v-for="(item, index) of locations?.typeOfService"
                 :key="`service-${index}`"
@@ -270,7 +238,9 @@
               <h1 class="font-normal text-[#1E1E1E] text-sm">
                 Type of Transportation
               </h1>
-              <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
+              <div
+                class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3 mt-3"
+              >
                 <Transportation
                   v-for="(item, index) of locations?.typeOfTransportation"
                   :key="`transportation-${index}`"
@@ -289,7 +259,9 @@
             >
               Mode of Transportation
             </h1>
-            <div class="grid grid-cols-3 gap-y-1 mt-3 gap-4">
+            <div
+              class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3 mt-3"
+            >
               <Transportation
                 v-for="(item, index) in locations?.modeOfTransportation?.FTL"
                 :key="`mode-FTL-${index}`"
@@ -310,7 +282,7 @@
           </div>
           <div class="flex justify-center">
             <button
-              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-8 py-[15px] text-center mt-8 mr-40"
+              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-8 py-[15px] text-center mt-8 sm:mr-40"
             >
               Update Vehicle
             </button>
@@ -330,24 +302,6 @@ export default {
       isPassword: false,
       errors: {},
       locations: {},
-      customFormat: "YYYY-MM-DD",
-      lang: {
-        days: ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"],
-        months: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-      },
       countries: [
         {
           key: 1,
@@ -374,13 +328,13 @@ export default {
         vehicleName: "",
         countryCode: 1,
         mxPlates: "",
-        mxPlatesExpirationDate: "",
+        mxPlatesExpirationDate: new Date().toISOString().slice(0, 10),
         usPlates: "",
-        usPlatesExpirationDate: "",
+        usPlatesExpirationDate: new Date().toISOString().slice(0, 10),
         mxInsurancePlates: "",
-        mxInsurancePlatesExpirationDate: "",
+        mxInsurancePlatesExpirationDate: new Date().toISOString().slice(0, 10),
         usInsurancePlates: "",
-        usInsurancePlatesExpirationDate: "",
+        usInsurancePlatesExpirationDate: new Date().toISOString().slice(0, 10),
       },
     };
   },
@@ -515,6 +469,13 @@ export default {
         this.selectedModeOfTransportationItem.push(id);
       }
     },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
   },
   async asyncData({ params, store, redirect }) {
     const id = params.pathMatch;
@@ -526,32 +487,100 @@ export default {
   },
   async beforeMount() {
     await this.CarrierTransiInfo();
-    if (this.getSingleVehicleData) {
-      this.formData = this.$lodash.cloneDeep(this.getSingleVehicleData);
-      this.selectedTypeOfServiceItem = [
-        ...this.getSingleVehicleData.typeOfService,
-      ];
-      this.selectedTypeOfTransportationItem = [
-        ...this.getSingleVehicleData.typeOfTransportation,
-      ];
+    this.formData = { ...this.getSingleVehicleData };
+    this.selectedTypeOfServiceItem = [
+      ...this.getSingleVehicleData.typeOfService,
+    ];
+    this.selectedTypeOfTransportationItem = [
+      ...this.getSingleVehicleData.typeOfTransportation,
+    ];
+    this.selectedModeOfTransportationItem = [
+      ...this.getSingleVehicleData.modeOfTransportation,
+      ...this.getSingleVehicleData.modeOfTransportation,
+    ];
 
-      this.selectedModeOfTransportationItem = [
-        ...this.getSingleVehicleData.modeOfTransportation,
-        ...this.getSingleVehicleData.modeOfTransportation,
-      ];
-      this.formData.usPlatesExpirationDate = new Date(
-        this.getSingleVehicleData.usPlatesExpirationDate
+    if (this.formData.mxPlatesExpirationDate) {
+      this.formData.mxPlatesExpirationDate = this.formatDate(
+        this.formData.mxPlatesExpirationDate
       );
-      this.formData.mxInsurancePlatesExpirationDate = new Date(
-        this.getSingleVehicleData.mxInsurancePlatesExpirationDate
+    }
+    if (this.formData.usPlatesExpirationDate) {
+      this.formData.usPlatesExpirationDate = this.formatDate(
+        this.formData.usPlatesExpirationDate
       );
-      this.formData.mxPlatesExpirationDate = new Date(
-        this.getSingleVehicleData.mxPlatesExpirationDate
+    }
+    if (this.formData.mxInsurancePlatesExpirationDate) {
+      this.formData.mxInsurancePlatesExpirationDate = this.formatDate(
+        this.formData.mxInsurancePlatesExpirationDate
       );
-      this.formData.usInsurancePlatesExpirationDate = new Date(
-        this.getSingleVehicleData.usInsurancePlatesExpirationDate
+    }
+    if (this.formData.usInsurancePlatesExpirationDate) {
+      this.formData.usInsurancePlatesExpirationDate = this.formatDate(
+        this.formData.usInsurancePlatesExpirationDate
       );
     }
   },
 };
 </script>
+
+<style scoped>
+::v-deep .vdpComponent input {
+  font-size: 16px;
+  height: 52px !important;
+  padding-right: 0px !important;
+}
+::v-deep .vdpInnerWrap {
+  width: auto !important;
+  max-width: fit-content;
+}
+::v-deep .vdpOuterWrap {
+  position: absolute;
+  z-index: 999 !important;
+}
+::v-deep .vdpComponent input:focus-visible {
+  border: none !important;
+  outline: none !important;
+  inset: 0 !important;
+}
+@media (max-width: 320px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1441px) {
+  ::v-deep .vdpComponent input {
+    width: 360px;
+  }
+}
+</style>

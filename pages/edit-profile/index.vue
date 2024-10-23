@@ -37,7 +37,7 @@
           </label>
         </div>
       </div>
-      <div class="mt-56 mx-10">
+      <div class="mt-56 xxl:mx-10">
         <div class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
           <nuxt-link to="/operator">
             <div class="xl:w-[370px] cursor-pointer">
@@ -107,7 +107,7 @@
         >
           <div class="">
             <div
-              class="grid lg:grid-cols-3 sm:grid-cols-2 xxxl:gap-0 xl:!gap-14 gap-4 grid-cols-1 !gap-y-2"
+              class="grid lg:grid-cols-3 sm:grid-cols-2 xxxl:gap-0 xl:!gap-14 gap-5 grid-cols-1 !gap-y-2"
             >
               <div>
                 <label

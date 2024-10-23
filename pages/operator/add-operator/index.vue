@@ -12,7 +12,9 @@
       </div>
       <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="addOperator">
         <div>
-          <div class="grid grid-cols-3 gap-y-3">
+          <div
+            class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3"
+          >
             <div>
               <label
                 for="Company name"
@@ -103,23 +105,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Plates Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.mxIdBadgeExpirationDate"
-                  placeholder="MX Plates Expiration Date"
-                  :lang="lang"
-                  :format="customFormat"
-                  :clearable="false"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.mxIdBadgeExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.mxIdBadgeExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span class="error-msg" v-if="errors?.mxIdBadgeExpirationDate">{{
@@ -157,23 +150,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >FAST ID Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.fastIdExpirationDate"
-                  placeholder="FAST ID Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.fastIdExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.fastIdExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span class="error-msg" v-if="errors?.fastIdExpirationDate">{{
@@ -211,23 +195,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Driver's License Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.mxDriversLicenseExpirationDate"
-                  placeholder="MX Driver's License Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.mxDriversLicenseExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.mxDriversLicenseExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span
@@ -266,23 +241,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Driver's License Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.usDriversLicenseExpirationDate"
-                  placeholder="US Driver's License Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.usDriversLicenseExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.usDriversLicenseExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span
@@ -294,7 +260,7 @@
           </div>
           <div class="flex justify-center">
             <button
-              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-8 py-[15px] text-center mt-8 mr-40"
+              class="text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-8 py-[15px] text-center mt-8 sm:mr-40"
             >
               Add Operator
             </button>
@@ -313,24 +279,6 @@ export default {
     return {
       isPassword: false,
       errors: {},
-      customFormat: "DD-MM-YYYY",
-      lang: {
-        days: ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"],
-        months: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-      },
       countries: [
         {
           key: 1,
@@ -346,13 +294,13 @@ export default {
         operatorNumber: "",
         countryCode: 1,
         mxIdBadge: "",
-        mxIdBadgeExpirationDate: "",
+        mxIdBadgeExpirationDate: new Date().toISOString().slice(0, 10),
         fastId: "",
-        fastIdExpirationDate: "",
+        fastIdExpirationDate: new Date().toISOString().slice(0, 10),
         mxDriversLicense: "",
-        mxDriversLicenseExpirationDate: "",
+        mxDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
         usDriversLicense: "",
-        usDriversLicenseExpirationDate: "",
+        usDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
       },
     };
   },
@@ -413,3 +361,65 @@ export default {
   async mounted() {},
 };
 </script>
+
+<style scoped>
+::v-deep .vdpComponent input {
+  font-size: 16px;
+  height: 52px !important;
+  padding-right: 0px !important;
+}
+::v-deep .vdpInnerWrap {
+  width: auto !important;
+  max-width: fit-content;
+}
+::v-deep .vdpOuterWrap {
+  position: absolute;
+  z-index: 999 !important;
+}
+::v-deep .vdpComponent input:focus-visible {
+  border: none !important;
+  outline: none !important;
+  inset: 0 !important;
+}
+@media (max-width: 320px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1441px) {
+  ::v-deep .vdpComponent input {
+    width: 360px;
+  }
+}
+</style>

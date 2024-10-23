@@ -12,7 +12,9 @@
       </div>
       <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="addVehicle">
         <div>
-          <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3">
+          <div
+            class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3"
+          >
             <div>
               <label
                 for="VehicleName"
@@ -66,23 +68,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Plates Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.mxPlatesExpirationDate"
-                  placeholder="MX Plates Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.mxPlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.mxPlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span class="error-msg" v-if="errors?.mxPlatesExpirationDate">{{
@@ -120,23 +113,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Plates Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.usPlatesExpirationDate"
-                  placeholder="FAST ID Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.usPlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none px-3"
+                  :class="
+                    errors.usPlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span class="error-msg" v-if="errors?.usPlatesExpirationDate">{{
@@ -174,23 +158,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Insurance Policy Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.mxInsurancePlatesExpirationDate"
-                  placeholder="MX Insurance Policy Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.mxInsurancePlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full px-3 rounded-lg focus:outline-none"
+                  :class="
+                    errors.mxInsurancePlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span
@@ -229,23 +204,14 @@
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Insurance Policy Expiration Date *</label
                 >
-                <div class="relative">
-                  <img
-                    src="@/static/svg/calendar.svg"
-                    alt=""
-                    class="absolute z-50 top-4 right-[11rem]"
-                  />
-                </div>
-                <DatePicker
+                <VueDatePick
                   v-model="formData.usInsurancePlatesExpirationDate"
-                  placeholder="US Insurance Policy Expiration Date"
-                  :lang="lang"
-                  :clearable="false"
-                  :format="customFormat"
-                  :class="[
-                    'group',
-                    { 'error-border': errors?.usInsurancePlatesExpirationDate },
-                  ]"
+                  class="xl:w-[382px] block w-full px-3 rounded-lg focus:outline-none"
+                  :class="
+                    errors.usInsurancePlatesExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
                 />
               </div>
               <span
@@ -258,7 +224,7 @@
           <div class="mt-3">
             <h1 class="font-normal text-[#1E1E1E] text-sm">Types Of Service</h1>
             <div
-              class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-1 mt-3 gap-4"
+              class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3 mt-3"
             >
               <Transportation
                 v-for="(item, index) of locations?.typeOfService"
@@ -273,7 +239,7 @@
                 Type of Transportation
               </h1>
               <div
-                class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-1 mt-3 gap-4"
+                class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3 mt-3"
               >
                 <Transportation
                   v-for="(item, index) of locations?.typeOfTransportation"
@@ -291,7 +257,7 @@
               Mode of Transportation
             </h1>
             <div
-              class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-1 mt-3 gap-4"
+              class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3 mt-3"
             >
               <Transportation
                 v-for="(item, index) in filteredModes"
@@ -316,6 +282,7 @@
 </template>
 
 <script>
+import { VueDatePick } from "vue-date-pick";
 import { mapActions, mapGetters } from "vuex";
 export default {
   layout: "dashboard",
@@ -323,24 +290,6 @@ export default {
     return {
       isPassword: false,
       errors: {},
-      customFormat: "DD-MM-YYYY",
-      lang: {
-        days: ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"],
-        months: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-      },
       locations: {},
       selectedTypeOfServiceItem: [],
       selectedTypeOfTransportationItem: [],
@@ -359,13 +308,13 @@ export default {
         vehicleName: "",
         countryCode: 1,
         mxPlates: "",
-        mxPlatesExpirationDate: "",
+        mxPlatesExpirationDate: new Date().toISOString().slice(0, 10),
         usPlates: "",
-        usPlatesExpirationDate: "",
+        usPlatesExpirationDate: new Date().toISOString().slice(0, 10),
         mxInsurancePlates: "",
-        mxInsurancePlatesExpirationDate: "",
+        mxInsurancePlatesExpirationDate: new Date().toISOString().slice(0, 10),
         usInsurancePlates: "",
-        usInsurancePlatesExpirationDate: "",
+        usInsurancePlatesExpirationDate: new Date().toISOString().slice(0, 10),
       },
     };
   },
@@ -518,3 +467,65 @@ export default {
   },
 };
 </script>
+<style scoped>
+::v-deep .vdpComponent input {
+  font-size: 16px;
+  height: 52px !important;
+  padding-right: 0px !important;
+}
+::v-deep .vdpInnerWrap {
+  width: auto !important;
+  max-width: fit-content;
+}
+::v-deep .vdpOuterWrap {
+  position: absolute;
+  z-index: 999 !important;
+}
+::v-deep .vdpComponent input:focus-visible {
+  border: none !important;
+  outline: none !important;
+  inset: 0 !important;
+}
+
+@media (max-width: 320px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  ::v-deep .vdpComponent input {
+    width: 270px;
+  }
+}
+
+@media (min-width: 376px) and (max-width: 425px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  ::v-deep .vdpComponent input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1441px) {
+  ::v-deep .vdpComponent input {
+    width: 360px;
+  }
+}
+</style>
