@@ -80,7 +80,6 @@ export const actions = {
         `v1/carrier/operator/${accountId}`,
         payload
       );
-      console.log(accountId, "accountId");
       return response;
     } catch (error) {
       throw error;

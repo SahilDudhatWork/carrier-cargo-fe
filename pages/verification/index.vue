@@ -73,6 +73,7 @@
 import { mapActions } from "vuex";
 
 export default {
+  middleware: "guest",
   data() {
     return {
       otp: Array(6).fill(""),

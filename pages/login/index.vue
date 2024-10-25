@@ -107,6 +107,7 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+  middleware: "guest",
   data() {
     return {
       isPassword: false,
