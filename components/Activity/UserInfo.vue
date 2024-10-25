@@ -9,11 +9,12 @@
           </p>
           <p class="text-[#686868] font-normal text-xs">
             (+{{ activitySingleData?.userData?.countryCode }}
-            {{ activitySingleData?.userData?.contactNumber }})
+            {{ activitySingleData?.userData?.contactNumber }},
+            {{ activitySingleData?.userData?.email }})
           </p>
         </div>
       </div>
-      <div class="mt-5">
+      <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
         <Document
           title="User’s required Information"
           description="(Lorem ipsum doit sum to en la pat)"
@@ -21,7 +22,10 @@
       </div>
       <div
         class="mt-4 bg-[#F7F7F7] px-2 rounded-lg py-2"
-        v-if="$checkQr(activitySingleData?.status)"
+        v-if="
+          $checkUserUpload(activitySingleData?.status) &&
+          activitySingleData?.qrCode !== null
+        "
       >
         <p class="text-[#1E1E1E] font-normal text-xs">
           You received an <span class="font-semibold">QR code</span> from
@@ -32,7 +36,13 @@
           alt=""
           class="mt-2 w-[100px] h-[100px]"
         />
-        <div class="mt-3">
+        <div
+          class="mt-3"
+          v-if="
+            activitySingleData?.status !== 'NewAssignments' &&
+            activitySingleData?.status !== 'Completed'
+          "
+        >
           <span
             @click="fileUpload"
             class="cursor-pointer bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] bg-clip-text text-transparent font-normal text-sm border-b border-[#0464CB]"

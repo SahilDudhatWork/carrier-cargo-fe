@@ -2,7 +2,10 @@
   <div style="z-index: 999" class="fixed top-0 w-full lef-0">
     <div class="fixed inset-0" v-if="isModal">
       <div class="flex items-center justify-center min-h-screen">
-        <div class="fixed inset-0 transition-opacity" @click="closeModal">
+        <div
+          class="fixed inset-0 transition-opacity"
+          @click="$emit('closeModal')"
+        >
           <div class="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div class="max-w-4xl mx-auto z-50 bg-white rounded-md">
@@ -26,7 +29,7 @@
               <p class="text-[#111111] font-normal text-lg">Delete Item</p>
             </div>
             <svg
-              @click="closeModal"
+              @click="$emit('closeModal')"
               aria-hidden="true"
               class="text-gray-400 dark:text-gray-500 w-8 h-8 mb-3.5 mr-2 mt-2 cursor-pointer"
               fill="currentColor"
@@ -66,14 +69,14 @@
                 class="flex gap-3 justify-end border-t border-gray-200 pt-5 mb-4"
               >
                 <button
-                  @click="closeModal"
+                  @click="$emit('closeModal')"
                   type="button"
                   class="border border-gray-400 text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-400 font-medium !rounded-xl text-lg px-5 py-2 text-center"
                 >
                   No, cancel
                 </button>
                 <button
-                  @click="handleSubmit"
+                  @click="$emit('handleSubmit')"
                   type="button"
                   class="mx-5 text-white bg-gradient-to-r from-red-600 to-red-500 font-medium rounded-lg text-lg px-5 py-2 text-center"
                 >
@@ -98,14 +101,6 @@ export default {
       type: Boolean,
       required: true,
       default: false,
-    },
-  },
-  methods: {
-    closeModal() {
-      this.$emit("close");
-    },
-    handleSubmit() {
-      this.$emit("handleSubmit");
     },
   },
 };

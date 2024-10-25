@@ -125,7 +125,7 @@
                   >
                 </td>
               </template>
-              <template v-if="item?.status === 'InProgress'">
+              <template v-if="$checkQr(item?.status)">
                 <td>
                   <div class="flex flex-col" v-if="item?.operatorData">
                     <span class="text-[#000000] font-normal text-xs pt-1">{{
@@ -374,6 +374,22 @@ export default {
       };
     },
   },
+  watch: {
+    isAssignOperatorModal(value) {
+      if (value) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    },
+    isAssignVehicleModal(value) {
+      if (value) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    },
+  },
   methods: {
     ...mapActions({
       updateActivity: "activity/updateActivity",
@@ -401,16 +417,13 @@ export default {
       this.selectedVehicle = vehicle;
     },
     closeAssignOperatorModal() {
-      document.body.style.overflow = "";
       this.isAssignOperatorModal = false;
     },
     closeAssignVehicleModal() {
-      document.body.style.overflow = "";
       this.isAssignVehicleModal = false;
       this.isAssignOperatorModal = false;
     },
     async acceptRequest(id) {
-      document.body.style.overflow = "hidden";
       this.movementId = id;
       this.requestReassign = false;
       this.isAssignOperatorModal = true;
@@ -419,7 +432,6 @@ export default {
       this.updateSelectedVehicle(null);
     },
     async reAssignRequest(id) {
-      document.body.style.overflow = "hidden";
       this.movementId = id;
       await this.getSingleTransitInfo();
       this.requestReassign = true;

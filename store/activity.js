@@ -94,6 +94,14 @@ export const actions = {
       throw error;
     }
   },
+  async createRating(ctx, { id, data }) {
+    try {
+      const response = await $axios.post(`/v1/carrier/rating/${id}`, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   async movementComplete(ctx, payload) {
     try {
       const response = await $axios.put(

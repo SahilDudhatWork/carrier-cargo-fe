@@ -184,6 +184,7 @@ export default {
     isAssignOperatorModal: {
       type: Boolean,
       default: false,
+      required: true,
     },
     errors: {
       type: [Object, Array],

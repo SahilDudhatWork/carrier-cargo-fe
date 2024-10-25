@@ -2,13 +2,16 @@
   <div style="z-index: 999" class="fixed top-0 w-full lef-0">
     <div class="fixed inset-0 mt-10" v-if="isModal">
       <div class="flex items-center justify-center min-h-screen">
-        <div class="fixed inset-0 transition-opacity" @click="closeModal">
+        <div
+          class="fixed inset-0 transition-opacity"
+          @click="$emit('closeModal')"
+        >
           <div class="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div class="max-w-4xl mx-auto z-50 bg-white rounded-md">
           <div
             class="flex flex-col items-end mx-2 my-1 cursor-pointer"
-            @click="closeModal"
+            @click="$emit('closeModal')"
           >
             <img src="@/static/Images/close.webp" alt="" />
           </div>
@@ -55,11 +58,6 @@ export default {
     isModal: {
       type: Boolean,
       required: true,
-    },
-  },
-  methods: {
-    closeModal() {
-      this.$emit("close");
     },
   },
 };

@@ -9,31 +9,37 @@
         {{ activitySingleData.movementId }}
       </h1>
     </div>
-    <div>
+    <div v-if="$checkUserUpload(activitySingleData?.status)">
       <h1 class="text-[#B9B9B9] font-semibold text-[10px] mb-5">UPDATES</h1>
       <div class="flex items-center gap-4 sm:flex-row flex-col">
         <p class="text-[#1E1E1E] font-medium text-[10px]">
           User’s details info uploaded
         </p>
         <p class="text-[#3683D5] font-normal text-[10px]">view details</p>
-        <span class="bg-[#E6E6E6] w-[1px] h-2"></span>
-        <div class="flex gap-1 items-center">
-          <img src="@/static/svg/qr-code.svg" alt="" />
-          <p class="font-medium text-xs text-[#151515]">QR code uploaded</p>
-        </div>
-        <div>
-          <button
-            @click="uploadQrCodeFile"
-            class="text-[#3683D5] font-normal text-[10px] cursor-pointer"
-          >
-            Generate & Upload
-          </button>
-          <input
-            type="file"
-            ref="qrInput"
-            class="hidden"
-            @change="handleFileUpload"
-          />
+        <div
+          v-if="activitySingleData?.status !== 'Completed'"
+          class="flex gap-1 items-center"
+        >
+          <span class="bg-[#E6E6E6] w-[1px] h-2"></span>
+
+          <div class="flex gap-1 items-center">
+            <img src="@/static/svg/qr-code.svg" alt="" />
+            <p class="font-medium text-xs text-[#151515]">QR code uploaded</p>
+          </div>
+          <div>
+            <button
+              @click="uploadQrCodeFile"
+              class="text-[#3683D5] font-normal text-[10px] cursor-pointer"
+            >
+              Generate & Upload
+            </button>
+            <input
+              type="file"
+              ref="qrInput"
+              class="hidden"
+              @change="handleFileUpload"
+            />
+          </div>
         </div>
       </div>
       <div class="mt-4 mb-4 flex sm:justify-normal justify-center">
@@ -101,8 +107,18 @@
         :showInput="true"
         @file-uploaded="handleProofOfPhotographyUpload"
       />
+    </div>
+    <div
+      v-if="
+        (activitySingleData?.status === 'InProgress' && isUploadComplete) ||
+        activitySingleData?.status === 'Completed'
+      "
+    >
       <UploadDocument
-        v-if="isUploadComplete"
+        v-if="
+          isUploadComplete ||
+          (!activitySingleData?.ratings && activitySingleData?.ratings !== '')
+        "
         title="Movement Completed"
         description="share your experience with us."
         buttonText="Share Review"
@@ -111,13 +127,18 @@
       />
     </div>
     <div>
-      <ShareReview :isModal="false" :activitySingleData="activitySingleData" />
+      <ShareReviewModal
+        :isModal="isShareReviewModal"
+        :activitySingleData="activitySingleData"
+        @handleSubmit="handleshareRiview"
+        @closeModal="closeShareReviewModal"
+      />
     </div>
     <div
       class="mt-5"
       v-if="$checkProofOfPhotography(activitySingleData?.status)"
     >
-      <ProofOfPhotography />
+      <ProofOfPhotography :activitySingleData="activitySingleData" />
     </div>
   </div>
 </template>
@@ -128,6 +149,7 @@ export default {
   layout: "dashboard",
   data() {
     return {
+      isShareReviewModal: false,
       activitySingleData: {},
       isProofOfPhotography: false,
       isUploadComplete: false,
@@ -136,11 +158,38 @@ export default {
   methods: {
     ...mapActions({
       fetchSingleActivity: "activity/fetchSingleActivity",
+      createRating: "activity/createRating",
       uploadFile: "activity/uploadFile",
       movementComplete: "activity/movementComplete",
     }),
     shareRiview() {
-      console.log("share review");
+      this.isShareReviewModal = !this.isShareReviewModal;
+    },
+    async handleshareRiview(formData) {
+      try {
+        const reviewData = {
+          rating: formData.rating,
+          experience: formData.experience,
+        };
+        const res = await this.createRating({
+          id: this.movementId,
+          data: reviewData,
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+        this.isShareReviewModal = false;
+        await this.getSingleTransitInfo();
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+    closeShareReviewModal() {
+      this.isShareReviewModal = false;
     },
     async changeQrCode({ file, movementId }) {
       try {
@@ -246,6 +295,10 @@ export default {
   },
   async beforeMount() {
     await this.getSingleTransitInfo();
+    if (this.isProofOfPhotography) {
+      this.isUploadComplete = false;
+      console.log(this.isUploadComplete, "isUploadComplete");
+    }
   },
   async asyncData({ params }) {
     return {
