@@ -118,7 +118,10 @@ export default {
     async resendCode() {
       try {
         let accessEmail = this.$cookies.get("email");
-        const res = await this.sendOtp({ email: accessEmail });
+        const res = await this.sendOtp({
+          email: accessEmail,
+          otp_type: "login",
+        });
         this.$toast.open({
           message: res.msg,
         });

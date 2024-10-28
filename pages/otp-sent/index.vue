@@ -35,6 +35,7 @@
                 >
                   Didn’t get it?
                   <span
+                    @click="resendCode"
                     class="font-medium text-sm text-[#1E1E1E] border-b border-[#1E1E1E] cursor-pointer"
                     >Resend code</span
                   >
@@ -71,6 +72,7 @@
 import { mapActions } from "vuex";
 
 export default {
+  middleware: "guest",
   data() {
     return {
       otp: Array(6).fill(""),
@@ -80,7 +82,26 @@ export default {
   methods: {
     ...mapActions({
       verifyOtp: "auth/verifyOtp",
+      sendOtp: "auth/sendOtp",
     }),
+    async resendCode() {
+      try {
+        let accessEmail = this.$cookies.get("email");
+        const res = await this.sendOtp({
+          email: accessEmail,
+          otp_type: "forgot",
+        });
+        this.$toast.open({
+          message: res.msg,
+        });
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
     async veryfyCode() {
       try {
         if (this.otp.some((digit) => digit === "")) {

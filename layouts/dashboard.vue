@@ -58,7 +58,13 @@
                 class="flex gap-2 cursor-pointer"
                 @click="isDropdown = !isDropdown"
               >
-                <img src="@/static/Images/header-image.webp" alt="" />
+                <img
+                  :src="profileData?.profilePicture"
+                  alt=""
+                  class="w-[32px] h-[32px] rounded-full"
+                  v-if="profileData?.profilePicture"
+                />
+                <img src="@/static/Images/header-image.webp" alt="" v-else />
                 <img src="@/static/svg/down-arrow.svg" alt="" />
               </div>
             </div>

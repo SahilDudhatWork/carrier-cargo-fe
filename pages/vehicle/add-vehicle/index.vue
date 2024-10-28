@@ -17,7 +17,7 @@
           >
             <div>
               <label
-                for="VehicleName"
+                for="Vehicle Name"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >Vehicle Name *</label
               >
@@ -85,7 +85,7 @@
 
             <div>
               <label
-                for="Company name"
+                for="US Plates"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >US Plates *</label
               >
@@ -109,7 +109,7 @@
             <div>
               <div class="relative group cursor-pointer">
                 <label
-                  for="Company name"
+                  for="US Plates Expiration Date"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Plates Expiration Date *</label
                 >
@@ -130,7 +130,7 @@
 
             <div>
               <label
-                for="Company name"
+                for="MX Insurance Policy"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >MX Insurance Policy *</label
               >
@@ -176,7 +176,7 @@
             </div>
             <div>
               <label
-                for="Company name"
+                for="US Insurance Policy"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >US Insurance Policy *</label
               >

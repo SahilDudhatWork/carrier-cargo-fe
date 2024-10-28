@@ -18,6 +18,11 @@
               @submit.prevent="changePassword"
             >
               <div class="relative">
+                <label
+                  for="createPassword"
+                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
+                  >Create Password</label
+                >
                 <svg
                   @click="togglePasswordVisibility"
                   xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +30,7 @@
                   viewBox="0 0 24 24"
                   stroke-width="2"
                   stroke="currentColor"
-                  class="cursor-pointer w-6 h-6 absolute xl:right-12 lg:right-3 sm:right-3 right-2 top-3"
+                  class="cursor-pointer w-6 h-6 absolute xl:right-12 lg:right-3 sm:right-3 right-2 top-10"
                 >
                   <path
                     v-if="!isCreatePassword"
@@ -53,10 +58,14 @@
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px]"
                   placeholder="New Password"
                   v-model="password"
-                  @input="validatePasswords"
                 />
               </div>
               <div class="!m-0 relative">
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-normal text-[#4B4B4B] mt-3"
+                  >Password</label
+                >
                 <svg
                   @click="togglePassword"
                   xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +73,7 @@
                   viewBox="0 0 24 24"
                   stroke-width="2"
                   stroke="currentColor"
-                  class="cursor-pointer w-6 h-6 absolute xl:right-12 lg:right-3 sm:right-3 right-2 top-3"
+                  class="cursor-pointer w-6 h-6 absolute xl:right-12 lg:right-3 sm:right-3 right-2 top-10"
                 >
                   <path
                     v-if="!isPassword"
@@ -92,7 +101,6 @@
                   placeholder="Re-enter password"
                   class="xl:w-[382px] border border-gray-300 text-gray-900 rounded-lg block w-full px-3 py-[13px] mt-3"
                   v-model="confirmPassword"
-                  @input="validatePasswords"
                 />
               </div>
               <button
@@ -131,6 +139,7 @@
 import { mapActions } from "vuex";
 
 export default {
+  middleware: "guest",
   data() {
     return {
       password: "",
@@ -149,27 +158,25 @@ export default {
     togglePassword() {
       this.isPassword = !this.isPassword;
     },
-    validatePasswords() {
-      if (
-        this.password &&
-        this.confirmPassword &&
-        this.password !== this.confirmPassword
-      ) {
-        this.$toast.open({
-          message: this.$i18n.t("matchPasswordMessage"),
-          type: "error",
-        });
-      } else if (
-        this.password &&
-        this.confirmPassword &&
-        this.password === this.confirmPassword
-      ) {
-        console.log("Passwords match!");
-      }
-    },
     async changePassword() {
       try {
-        this.validatePasswords();
+        if (
+          this.password &&
+          this.confirmPassword &&
+          this.password !== this.confirmPassword
+        ) {
+          this.$toast.open({
+            message: this.$i18n.t("matchPasswordMessage"),
+            type: "error",
+          });
+          return;
+        } else if (
+          this.password &&
+          this.confirmPassword &&
+          this.password === this.confirmPassword
+        ) {
+          console.log("Passwords match!");
+        }
         if ((!this.password, !this.confirmPassword)) {
           this.$toast.open({
             message: this.$i18n.t("requiredErrorMessage"),

@@ -17,7 +17,7 @@
           >
             <div>
               <label
-                for="Company name"
+                for="Operator Name"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >Operator Name *</label
               >
@@ -40,7 +40,7 @@
             </div>
             <div>
               <label
-                for="ContactNo"
+                for="Operator Mobile No"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >Operator Mobile No. *</label
               >
@@ -77,7 +77,7 @@
             </div>
             <div>
               <label
-                for="Company name"
+                for="MX ID Badge"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >MX ID Badge *</label
               >
@@ -101,7 +101,7 @@
             <div>
               <div class="relative group cursor-pointer">
                 <label
-                  for="Company name"
+                  for="MX ID Badge Expiration Date"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX ID Badge Expiration Date *</label
                 >
@@ -121,7 +121,7 @@
             </div>
             <div>
               <label
-                for="Company name"
+                for="FAST ID"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >FAST ID *</label
               >
@@ -145,7 +145,7 @@
             <div>
               <div class="relative group cursor-pointer">
                 <label
-                  for="Company name"
+                  for="FAST ID Expiration Date"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >FAST ID Expiration Date *</label
                 >
@@ -165,7 +165,7 @@
             </div>
             <div>
               <label
-                for="Company name"
+                for="MX Driver's License"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >MX Driver's License *</label
               >
@@ -189,7 +189,7 @@
             <div>
               <div class="relative group cursor-pointer">
                 <label
-                  for="Company name"
+                  for="MX Driver's License Expiration Date"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >MX Driver's License Expiration Date *</label
                 >
@@ -211,7 +211,7 @@
             </div>
             <div>
               <label
-                for="Company name"
+                for="US Driver's License"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                 >US Driver's License *</label
               >
@@ -235,7 +235,7 @@
             <div>
               <div class="relative group cursor-pointer">
                 <label
-                  for="Company name"
+                  for="US Driver's License Expiration Date"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >US Driver's License Expiration Date *</label
                 >

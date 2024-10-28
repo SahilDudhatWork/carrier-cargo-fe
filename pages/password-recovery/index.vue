@@ -19,7 +19,7 @@
             >
               <div>
                 <label
-                  for="email"
+                  for="Email Address"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
                   >Email Address</label
                 >
@@ -58,6 +58,7 @@
 import { mapActions } from "vuex";
 
 export default {
+  middleware: "guest",
   data() {
     return {
       forgetEmail: "",
@@ -75,7 +76,10 @@ export default {
             type: "error",
           });
         } else {
-          const res = await this.sendOtp({ email: this.forgetEmail });
+          const res = await this.sendOtp({
+            email: this.forgetEmail,
+            otp_type: "forgot",
+          });
           this.$toast.open({
             message: res.msg,
           });
