@@ -31,7 +31,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="Name"
+                placeholder="Operator Name"
                 v-model="formData.operatorName"
               />
               <span class="error-msg" v-if="errors.operatorName">{{
@@ -64,7 +64,7 @@
                         : 'border border-gray-300'
                     "
                     id="ContactNo"
-                    placeholder="Operator No."
+                    placeholder="Operator Mobile No."
                     class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] bg-white pl-24 focus:outline-none mb-1"
                     v-model="formData.operatorNumber"
                     @input="validateContactInput"

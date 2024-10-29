@@ -31,7 +31,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="Name"
+                placeholder="Vehicle Name"
                 v-model="formData.vehicleName"
               />
               <span class="error-msg" v-if="errors.vehicleName">{{

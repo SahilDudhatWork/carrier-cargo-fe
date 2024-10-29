@@ -115,10 +115,7 @@
       "
     >
       <UploadDocument
-        v-if="
-          isUploadComplete ||
-          (!activitySingleData?.ratings && activitySingleData?.ratings !== '')
-        "
+        v-if="!activitySingleData?.ratings?.carrierToUser"
         title="Movement Completed"
         description="share your experience with us."
         buttonText="Share Review"
@@ -130,7 +127,7 @@
       <ShareReviewModal
         :isModal="isShareReviewModal"
         :activitySingleData="activitySingleData"
-        @handleSubmit="handleshareRiview"
+        @handleSubmit="handleShareRiview"
         @closeModal="closeShareReviewModal"
       />
     </div>
@@ -165,7 +162,7 @@ export default {
     shareRiview() {
       this.isShareReviewModal = !this.isShareReviewModal;
     },
-    async handleshareRiview(formData) {
+    async handleShareRiview(formData) {
       try {
         const reviewData = {
           rating: formData.rating,
@@ -179,6 +176,7 @@ export default {
           message: res.msg,
         });
         this.isShareReviewModal = false;
+        this.isUploadComplete = false;
         await this.getSingleTransitInfo();
       } catch (error) {
         console.log(error);
@@ -297,7 +295,6 @@ export default {
     await this.getSingleTransitInfo();
     if (this.isProofOfPhotography) {
       this.isUploadComplete = false;
-      console.log(this.isUploadComplete, "isUploadComplete");
     }
   },
   async asyncData({ params }) {
