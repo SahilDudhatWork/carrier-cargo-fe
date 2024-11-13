@@ -148,8 +148,9 @@
                     :to="tab.href"
                     class="flex items-center gap-2 ml-5 py-[20px] group relative"
                     :class="{
-          'pointer-events-none': !isVerified && tab.name !== 'Dashboard',
-        }"
+                      'pointer-events-none':
+                        !isVerified && tab.name !== 'Dashboard',
+                    }"
                   >
                     <img
                       :src="previousPath == tab.href ? tab.svg : tab.blackSvg"
@@ -212,8 +213,8 @@ export default {
       profileData: "auth/getUserProfile",
     }),
     isVerified() {
-    return this.profileData && this.profileData.verifyByAdmin;
-  }
+      return this.profileData && this.profileData.verifyByAdmin;
+    },
   },
   data() {
     return {
@@ -336,6 +337,7 @@ export default {
   visibility: hidden;
   transition: opacity 0.2s ease;
 }
+
 .group:hover .visible-tooltip {
   opacity: 1;
   visibility: visible;
