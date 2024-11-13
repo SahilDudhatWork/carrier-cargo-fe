@@ -134,7 +134,7 @@
             </div>
             <div class="flex justify-center mt-12">
               <ul
-                class="flex flex-col text-white text-xl font-medium cursor-pointer w-full justify-center"
+                class="flex flex-col text-white text-xl font-medium w-full justify-center"
               >
                 <li
                   v-for="(tab, key) in sideBarItems"
@@ -147,6 +147,9 @@
                   <Nuxt-link
                     :to="tab.href"
                     class="flex items-center gap-2 ml-5 py-[20px] group relative"
+                    :class="{
+          'pointer-events-none': !isVerified && tab.name !== 'Dashboard',
+        }"
                   >
                     <img
                       :src="previousPath == tab.href ? tab.svg : tab.blackSvg"
@@ -208,6 +211,9 @@ export default {
     ...mapGetters({
       profileData: "auth/getUserProfile",
     }),
+    isVerified() {
+    return this.profileData && this.profileData.verifyByAdmin;
+  }
   },
   data() {
     return {
