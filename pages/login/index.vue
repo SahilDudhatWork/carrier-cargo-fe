@@ -116,6 +116,8 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
 export default {
   middleware: "guest",
   data() {
@@ -143,7 +145,7 @@ export default {
           });
         } else {
           this.formData.email = this.formData.email.toLowerCase();
-          const res = await this.signin(this.formData);
+          await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, { expires: 1 });
 
           this.$toast.open({
@@ -159,6 +161,17 @@ export default {
         });
       }
     },
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.formData.webToken = token;
+      }
+    },
+  },
+  mounted() {
+    this.activate();
   },
 };
 </script>

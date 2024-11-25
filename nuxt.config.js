@@ -35,11 +35,14 @@ export default {
     { src: "~/plugins/vue2-datepicker.js", mode: "client" },
     "~/plugins/statusPlugin.js",
     { src: "~/plugins/vue-datepicker.js", ssr: false },
+    "~/plugins/firebase.js",
+    "~/plugins/service-worker.js",
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],
 
   buildModules: [
+    "@nuxtjs/dotenv",
     [
       "nuxt-i18n",
       {

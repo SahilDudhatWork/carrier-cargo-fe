@@ -124,4 +124,15 @@ export const actions = {
       throw error;
     }
   },
+  async updateNotificationToken(ctx, payload) {
+    try {
+      const response = await $axios.put(
+        "/v1/carrier/notification/token",
+        payload
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

@@ -579,6 +579,8 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
 export default {
   layout: "dashboard",
   data() {
@@ -859,6 +861,7 @@ export default {
         formData.append("countryCode", this.formData.countryCode);
         formData.append("email", this.formData.email.toLowerCase());
         formData.append("profilePicture", this.formData.profilePicture);
+        formData.append("webToken", this.formData.webToken);
         if (
           this.formData.companyFormationType &&
           this.formData.companyFormationType != null
@@ -1032,10 +1035,18 @@ export default {
         });
       }
     },
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.formData.webToken = token;
+      }
+    },
   },
-
   async mounted() {
     try {
+      this.activate();
       await this.profile();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
       this.profileURL = this.formData?.profilePicture || "";

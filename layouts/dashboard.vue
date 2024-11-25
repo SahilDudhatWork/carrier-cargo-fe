@@ -189,7 +189,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import dashboardSvg from "@/static/svg/dashboard.svg";
 import blackDashboardSvg from "@/static/svg/black-dashboard.svg";
 import activitySvg from "@/static/svg/activity.svg";
@@ -201,6 +201,8 @@ import blackUserSvg from "@/static/svg/black-user.svg";
 import settingsSvg from "@/static/svg/settings.svg";
 import blackSettingsSvg from "@/static/svg/black-settings.svg";
 import Cookies from "js-cookie";
+import { getToken } from "firebase/messaging";
+import { messaging } from "@/plugins/firebase";
 
 export default {
   middleware: "auth",
@@ -263,10 +265,18 @@ export default {
       this.updateActiveTab(newPath);
     },
   },
+  mounted() {
+    this.activate().then(() => {
+      this.notificationToken();
+    });
+  },
   beforeMount() {
     this.updateActiveTab(this.$router.history.current.fullPath);
   },
   methods: {
+    ...mapActions({
+      updateNotificationToken: "activity/updateNotificationToken",
+    }),
     closeDropdown() {
       this.isDropdown = false;
     },
@@ -296,6 +306,23 @@ export default {
           ...item,
           isActive: path.startsWith(item.href),
         }));
+      }
+    },
+    async activate() {
+      const token = await getToken(messaging, {
+        vapidKey: process.env.NOTIFICATION_KEY,
+      });
+      if (token) {
+        this.webToken = token;
+      }
+    },
+    async notificationToken() {
+      try {
+        await this.updateNotificationToken({
+          webToken: this.webToken,
+        });
+      } catch (error) {
+        console.log(error, "error");
       }
     },
   },
