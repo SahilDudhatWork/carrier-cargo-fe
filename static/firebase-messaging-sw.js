@@ -9,8 +9,8 @@ const firebaseConfig = {
   projectId: "notification-92dce",
   storageBucket: "notification-92dce.firebasestorage.app",
   messagingSenderId: "431799702508",
-  appId: "1:431799702508:web:92b3226cba7feb102de6c9",
-  measurementId: "G-QTSDLX2C42",
+  appId: "1:431799702508:web:53f6f24c1c2a1d612de6c9",
+  measurementId: "G-V6HKETCQZQ",
 };
 
 firebase.initializeApp(firebaseConfig);
