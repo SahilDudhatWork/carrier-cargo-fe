@@ -292,9 +292,67 @@ export default async (ctx, inject) => {
     return errors;
   };
 
+  const validateRole = async ({ form }) => {
+    const errors = [];
+
+    const isEmpty = (value) => {
+      return typeof value === "string" ? value.trim() === "" : !value;
+    };
+
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    if (isEmpty(form.roleTitle)) {
+      setError("roleTitle", "role-title is required");
+    }
+
+    return errors;
+  };
+
+  const validateSubCarrierForm = async ({
+    form,
+    isEdit = false,
+    selectedLabel,
+  }) => {
+    const errors = {};
+    const isEmpty = (value) => {
+      return typeof value === "string" ? value.trim() === "" : !value;
+    };
+    const setError = (fieldName, message) => {
+      errors[fieldName] = message;
+    };
+
+    const validateField = (field, fieldName, errorLabel) => {
+      if (isEmpty(field)) {
+        setError(fieldName, `${errorLabel} is required`);
+      }
+    };
+
+    validateField(form.contactName, "contactName", "contact-name");
+    validateField(form.contactNumber, "contactNumber", "contact-number");
+    validateField(form.email, "email", "email");
+    if (!isEdit) {
+      validateField(form.password, "password", "password");
+    }
+    if (selectedLabel === "Select option") {
+      setError("selectedLabel", "Please select an option");
+    }
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError("email", "Invalid email format");
+    }
+    if (!(await validatePhoneNumber(form.contactNumber))) {
+      setError("contactNumber", "Invalid contact-number format");
+    }
+
+    return errors;
+  };
+
   inject("validateFormData", validateFormData);
   inject("validateOperatorField", validateOperatorField);
   inject("validateVehicleField", validateVehicleField);
   inject("validateActivityModal", validateActivityModal);
+  inject("validateSubCarrierForm", validateSubCarrierForm);
+  inject("validateRole", validateRole);
   inject("validateNumber", validateNumber);
 };

@@ -457,7 +457,6 @@ export default {
       if (this.errors) {
         this.errors.forEach((item) => {
           this.errors.carrierReference = item.carrierReference;
-          console.log(item, "this.errors");
         });
       }
       if (Object.keys(this.errors).length > 0) {

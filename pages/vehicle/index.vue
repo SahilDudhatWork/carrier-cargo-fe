@@ -27,6 +27,7 @@
         buttonText="Add Vehicle"
         listWidth="90%"
         @add="addVehicle"
+        :isAddBtn="checkPermission?.add"
       />
     </div>
     <div class="mt-6">
@@ -43,6 +44,8 @@
         @prevPage="prevPage"
         @nextPage="nextPage"
         @lastPage="lastPage"
+        :isEditBtn="checkPermission?.edit"
+        :isDeleteBtn="checkPermission?.delete"
       />
       <DeleteAlertModal
         :isModal="isModal"
@@ -69,9 +72,13 @@ export default {
     ...mapGetters({
       allVehicleData: "vehicle/getAllVehicleData",
       vehiclePaginationData: "vehicle/getVehiclePaginationData",
+      getSinglePermission: "auth/getSinglePermission",
     }),
     paginationText() {
       return this.generatePaginationText(this.vehiclePaginationData);
+    },
+    checkPermission() {
+      return this.getSinglePermission("Vehicle");
     },
   },
   methods: {

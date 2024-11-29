@@ -43,6 +43,7 @@
               </th>
               <th
                 scope="col"
+                v-if="isEditBtn || isDeleteBtn"
                 class="px-3 py-3 rounded-tr-lg text-[#000000] font-normal text-[12px]"
               >
                 Actions
@@ -90,14 +91,19 @@
               >
                 {{ item?.status }}
               </td>
-              <td class="flex items-center gap-2">
+              <td
+                class="flex items-center gap-2"
+                v-if="isEditBtn || isDeleteBtn"
+              >
                 <img
+                  v-if="isEditBtn"
                   src="@/static/svg/edit-icon.svg"
                   alt=""
                   class="w-[17px] h-[17px] mt-6"
                   @click="editOperator(item)"
                 />
                 <img
+                  v-if="isDeleteBtn"
                   src="@/static/svg/delete-icon.svg"
                   alt=""
                   class="w-[20px] h-[20px] mt-6"
@@ -239,6 +245,14 @@ export default {
     paginationText: {
       type: String,
       default: "",
+    },
+    isEditBtn: {
+      type: Boolean,
+      default: false,
+    },
+    isDeleteBtn: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

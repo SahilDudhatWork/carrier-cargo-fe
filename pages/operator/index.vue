@@ -27,6 +27,7 @@
         buttonText="Add Operator"
         listWidth="89%"
         @add="addOperator"
+        :isAddBtn="checkPermission?.add"
       />
     </div>
     <div class="mt-6">
@@ -43,6 +44,8 @@
         @prevPage="prevPage"
         @nextPage="nextPage"
         @lastPage="lastPage"
+        :isEditBtn="checkPermission?.edit"
+        :isDeleteBtn="checkPermission?.delete"
       />
       <DeleteAlertModal
         :isModal="isModal"
@@ -69,7 +72,11 @@ export default {
     ...mapGetters({
       allOperatorData: "operator/getAllOperatorData",
       operatorPaginationData: "operator/getOperatorPaginationData",
+      getSinglePermission: "auth/getSinglePermission",
     }),
+    checkPermission() {
+      return this.getSinglePermission("Operator");
+    },
     paginationText() {
       return this.generatePaginationText(this.operatorPaginationData);
     },

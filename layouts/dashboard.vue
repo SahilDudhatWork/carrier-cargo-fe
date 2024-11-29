@@ -144,7 +144,7 @@
                     previousPath == tab.href ? 'bg-[#3683D5] text-white' : ''
                   "
                 >
-                  <Nuxt-link
+                  <nuxt-link
                     :to="tab.href"
                     class="flex items-center gap-2 ml-5 py-[20px] group relative"
                     :class="{
@@ -171,7 +171,7 @@
                       "
                       >{{ tab.name }}</span
                     >
-                  </Nuxt-link>
+                  </nuxt-link>
                 </li>
               </ul>
             </div>
@@ -204,18 +204,23 @@ import userSvg from "@/static/svg/user.svg";
 import blackUserSvg from "@/static/svg/black-user.svg";
 import settingsSvg from "@/static/svg/settings.svg";
 import blackSettingsSvg from "@/static/svg/black-settings.svg";
+import manageRoleSvg from "@/static/svg/manage-role.svg";
+import subCarrierSvg from "@/static/svg/sub-carrier.svg";
+import blackSubCarrierSvg from "@/static/svg/black-sub-carrier.svg";
+import blackManageRoleSvg from "@/static/svg/black-manage-role.svg";
 import Cookies from "js-cookie";
 import { getToken } from "firebase/messaging";
 import { messaging } from "@/plugins/firebase";
 
 export default {
-  middleware: "auth",
+  middleware: ["auth", "permissionCheck"],
   computed: {
     ...mapGetters({
       profileData: "auth/getUserProfile",
+      permissionsData: "auth/getPermissionsData",
     }),
     isVerified() {
-      return this.profileData && this.profileData.verifyByAdmin;
+      return this.profileData && this.profileData?.verifyByAdmin;
     },
   },
   data() {
@@ -254,6 +259,20 @@ export default {
           blackSvg: blackUserSvg,
         },
         {
+          name: "Manage Role",
+          href: "/manage-role",
+          isActive: false,
+          svg: manageRoleSvg,
+          blackSvg: blackManageRoleSvg,
+        },
+        {
+          name: "Sub Carrier",
+          href: "/sub-carrier",
+          isActive: false,
+          svg: subCarrierSvg,
+          blackSvg: blackSubCarrierSvg,
+        },
+        {
           name: "Settings",
           href: "/settings",
           isActive: false,
@@ -272,17 +291,10 @@ export default {
       this.updateActiveTab(newPath);
     },
   },
-  mounted() {
-    this.activate().then(() => {
-      this.notificationToken();
-    });
-  },
-  beforeMount() {
-    this.updateActiveTab(this.$router.history.current.fullPath);
-  },
   methods: {
     ...mapActions({
       updateNotificationToken: "activity/updateNotificationToken",
+      checkPermissions: "auth/checkPermissions",
     }),
     closeDropdown() {
       this.isDropdown = false;
@@ -295,7 +307,7 @@ export default {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
-    toggleSidebarItems(href) {
+    toggleSidebarItems() {
       this.previousPath = this.$router.history.current.fullPath;
       this.isSidebarOpen = false;
     },
@@ -332,6 +344,32 @@ export default {
         console.log(error, "error");
       }
     },
+    async fetchPermissions() {
+      try {
+        await this.checkPermissions();
+        if (this.permissionsData && this.permissionsData.menuDetails) {
+          this.sideBarItems = this.sideBarItems.filter((item) => {
+            const matchedMenu = this.permissionsData.menuDetails.find(
+              (menu) => menu.menuTitle === item.name
+            );
+            return matchedMenu?.read;
+          });
+        } else {
+          console.warn("menuDetails not found in API response.");
+        }
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
+  },
+  mounted() {
+    this.activate().then(() => {
+      this.notificationToken();
+    });
+  },
+  beforeMount() {
+    this.fetchPermissions();
+    this.updateActiveTab(this.$router.history.current.fullPath);
   },
 };
 </script>

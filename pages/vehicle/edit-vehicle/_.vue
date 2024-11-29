@@ -3,7 +3,7 @@
     <div>
       <div class="flex items-center gap-3 mb-5">
         <h1 class="text-[#989898] font-normal text-[12px] cursor-pointer">
-          <nuxt-link to="/Vehicle">VEHICLE</nuxt-link>
+          <nuxt-link to="/vehicle">VEHICLE</nuxt-link>
         </h1>
         <img src="@/static/svg/right-arrow.svg" alt="" />
         <p class="text-[#1E1E1E] font-normal text-[12px] cursor-pointer">

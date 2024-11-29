@@ -84,6 +84,7 @@ export default {
     ...mapActions({
       verifyCarrierOtp: "auth/verifyCarrierOtp",
       sendOtp: "auth/sendOtp",
+      checkPermissions: "auth/checkPermissions",
     }),
     async veryfyCode() {
       try {
@@ -99,13 +100,28 @@ export default {
             otpString += this.otp[i];
           }
           const accessEmail = this.$cookies.get("email");
-
-          const res = await this.verifyCarrierOtp({
+          await this.verifyCarrierOtp({
             email: accessEmail,
             otp: parseInt(otpString),
           });
+
           this.$cookies.remove("email");
-          this.$router.push("/dashboard");
+
+          const response = await this.checkPermissions();
+
+          if (response && response.data && response.data.menuDetails) {
+            const filteredMenu = response.data.menuDetails.filter(
+              (menu) => menu.read
+            );
+
+            if (filteredMenu.length > 0) {
+              this.$router.push(filteredMenu[0].to);
+            } else {
+              this.$router.push("/dashboard");
+            }
+          } else {
+            this.$router.push("/dashboard");
+          }
         }
       } catch (error) {
         console.log(error);

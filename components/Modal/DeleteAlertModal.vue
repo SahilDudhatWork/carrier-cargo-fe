@@ -2,10 +2,7 @@
   <div style="z-index: 999" class="fixed top-0 w-full lef-0">
     <div class="fixed inset-0" v-if="isModal">
       <div class="flex items-center justify-center min-h-screen">
-        <div
-          class="fixed inset-0 transition-opacity"
-          @click="$emit('closeModal')"
-        >
+        <div class="fixed inset-0 transition-opacity" @click="$emit('close')">
           <div class="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div class="max-w-4xl mx-auto z-50 bg-white rounded-md">
@@ -29,7 +26,7 @@
               <p class="text-[#111111] font-normal text-lg">Delete Item</p>
             </div>
             <svg
-              @click="$emit('closeModal')"
+              @click="$emit('close')"
               aria-hidden="true"
               class="text-gray-400 dark:text-gray-500 w-8 h-8 mb-3.5 mr-2 mt-2 cursor-pointer"
               fill="currentColor"
@@ -69,7 +66,7 @@
                 class="flex gap-3 justify-end border-t border-gray-200 pt-5 mb-4"
               >
                 <button
-                  @click="$emit('closeModal')"
+                  @click="$emit('close')"
                   type="button"
                   class="border border-gray-400 text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-400 font-medium !rounded-xl text-lg px-5 py-2 text-center"
                 >
