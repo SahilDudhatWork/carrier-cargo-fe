@@ -280,7 +280,6 @@ export default {
           blackSvg: blackSettingsSvg,
         },
       ],
-      activeTab: "",
       previousPath: "/dashboard",
       userName: "",
     };
