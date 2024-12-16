@@ -62,13 +62,13 @@
       />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
+    <div class="mt-5" v-if="activitySingleData?.carrierData">
       <div class="mt-5">
         <CarrierInfo :activitySingleData="activitySingleData" />
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
-    <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
+    <div class="mt-5" v-if="activitySingleData?.vehicleData">
       <div class="mt-5">
         <VehicleRequest :activitySingleData="activitySingleData" />
       </div>
@@ -78,7 +78,7 @@
       <ServiceDetails :activitySingleData="activitySingleData" />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
+    <div class="mt-5" v-if="activitySingleData?.operatorData">
       <div>
         <OperatorInfo :activitySingleData="activitySingleData" />
       </div>
