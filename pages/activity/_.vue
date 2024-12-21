@@ -84,6 +84,21 @@
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
+    <div
+      class="mt-7"
+      v-if="
+        activitySingleData?.operatorData?.accountId &&
+        location?.lat &&
+        location?.long
+      "
+    >
+      <GoogleMap
+        :addressDetails="location"
+        height="300px"
+        :isMarkerEnabled="false"
+      />
+      <div class="bg-[#E6E6E6] h-[1px] w-full mt-7"></div>
+    </div>
     <div class="mt-5">
       <Locations :activitySingleData="activitySingleData" />
     </div>
@@ -150,6 +165,7 @@ export default {
       activitySingleData: {},
       isProofOfPhotography: false,
       isUploadComplete: false,
+      location: {},
     };
   },
   methods: {
@@ -158,6 +174,7 @@ export default {
       createRating: "activity/createRating",
       uploadFile: "activity/uploadFile",
       movementComplete: "activity/movementComplete",
+      fetchLocation: "activity/fetchLocation",
     }),
     shareRiview() {
       this.isShareReviewModal = !this.isShareReviewModal;
@@ -290,9 +307,24 @@ export default {
         });
       }
     },
+    async getLocation() {
+      try {
+        const accountId = this.activitySingleData?.operatorData?.accountId;
+        if (!accountId) {
+          return;
+        }
+        const res = await this.fetchLocation({
+          id: accountId,
+        });
+        this.location = res?.data;
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
   },
   async beforeMount() {
     await this.getSingleTransitInfo();
+    await this.getLocation();
     if (this.isProofOfPhotography) {
       this.isUploadComplete = false;
     }
