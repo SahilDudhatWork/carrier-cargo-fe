@@ -33,22 +33,22 @@ export default async function ({ store, route, redirect, from }) {
         "/dashboard": { action: "read", permission: "Dashboard" },
       };
 
-      const currentPath = route.fullPath
-        .replace(/\/+$/, "")
-        .split("?")[0]
-        .split("#")[0];
-
-      let currentPermission = null;
-
-      for (const path in permissions) {
-        const regexPattern = path.replace(/:\w+/g, "\\w+");
-        const regex = new RegExp(`^${regexPattern}$`);
-
-        if (regex.test(currentPath)) {
-          currentPermission = permissions[path];
-          break;
-        }
+      let currentPath = route.fullPath;
+      if (route.params.pathMatch) {
+        currentPath = route.fullPath.replace(`/${route.params.pathMatch}`, "");
       }
+      let currentPermission = null;
+      currentPermission = currentPath ? permissions[currentPath] : null;
+
+      // for (const path in permissions) {
+      //   const regexPattern = path.replace(/:\w+/g, "\\w+");
+      //   const regex = new RegExp(`^${regexPattern}$`);
+
+      //   if (regex.test(currentPath)) {
+      //     currentPermission = permissions[path];
+      //     break;
+      //   }
+      // }
 
       if (currentPermission && currentPermission !== null) {
         const { action, permission } = currentPermission;
