@@ -126,17 +126,21 @@
           </div>
           <div
             v-if="allVehicleData.length > 0"
-            class="grid sm:grid-cols-2 grid-cols-1 gap-y-5 xl:gap-0 gap-3 overflow-y-auto h-[480px]"
+            class="overflow-y-auto sm:h-[480px] h-[400px]"
           >
-            <AssignVehicle
-              v-for="item in allVehicleData"
-              :key="item._id"
-              :allVehicleData="item"
-              :isSelected="
-                selectedVehicleData && selectedVehicleData._id === item._id
-              "
-              @selectVehicle="selectVehicle(item)"
-            />
+            <div
+              class="grid sm:grid-cols-2 grid-cols-1 !gap-y-5 xl:gap-0 gap-3"
+            >
+              <AssignVehicle
+                v-for="item in allVehicleData"
+                :key="item._id"
+                :allVehicleData="item"
+                :isSelected="
+                  selectedVehicleData && selectedVehicleData._id === item._id
+                "
+                @selectVehicle="selectVehicle(item)"
+              />
+            </div>
           </div>
           <div v-else>
             <h1

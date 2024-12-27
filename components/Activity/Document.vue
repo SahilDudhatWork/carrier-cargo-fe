@@ -1,7 +1,8 @@
 <template>
   <div>
     <div
-      class="bg-[#F5F9FD] py-3 w-[326px] px-4 flex justify-between items-center rounded-lg"
+      @click="$emit('handleClick')"
+      class="bg-[#F5F9FD] py-3 w-[326px] px-4 flex justify-between items-center rounded-lg cursor-pointer"
     >
       <div>
         <h1 class="text-[#1E1E1E] font-medium text-xs">

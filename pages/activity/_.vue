@@ -59,6 +59,7 @@
       <UserInfo
         :activitySingleData="activitySingleData"
         @uploadQrCode="changeQrCode"
+        @downloadDocument="downloadDocument"
       />
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
@@ -218,7 +219,6 @@ export default {
         this.$toast.open({
           message: res.msg,
         });
-        await this.getSingleTransitInfo();
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -230,7 +230,9 @@ export default {
     async handleProofOfPhotographyUpload(file) {
       try {
         const formData = new FormData();
-        formData.append("proofOfPhotography", file);
+        for (let i = 0; i < file.length; i++) {
+          formData.append(`proofOfPhotography`, file[i]);
+        }
         formData.append("movementId", this.movementId);
         const res = await this.uploadFile({
           id: this.movementId,
@@ -242,6 +244,7 @@ export default {
         await this.movementCompleted();
         this.isUploadComplete = true;
         this.isProofOfPhotography = false;
+        await this.getSingleTransitInfo();
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -319,6 +322,27 @@ export default {
         this.location = res?.data;
       } catch (error) {
         console.log(error, "error");
+      }
+    },
+    async downloadDocument() {
+      const zip = new this.$jszip();
+      try {
+        for (let i = 0; i < this.activitySingleData?.documents.length; i++) {
+          const response = await fetch(this.activitySingleData?.documents[i]);
+          const blob = await response.blob();
+          const fileName = this.activitySingleData?.documents[i]
+            .split("/")
+            .pop();
+          zip.file(fileName, blob);
+        }
+        const content = await zip.generateAsync({ type: "blob" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(content);
+        link.download = "documents.zip";
+        link.click();
+        URL.revokeObjectURL(link.href);
+      } catch (error) {
+        console.error("Error downloading documents:", error);
       }
     },
   },

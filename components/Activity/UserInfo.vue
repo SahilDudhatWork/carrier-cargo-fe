@@ -14,8 +14,9 @@
           </p>
         </div>
       </div>
-      <div class="mt-5" v-if="$checkUserUpload(activitySingleData?.status)">
+      <div class="mt-5" v-if="activitySingleData?.documents">
         <Document
+          @handleClick="$emit('downloadDocument')"
           title="User’s required Information"
           description="(Lorem ipsum doit sum to en la pat)"
         />

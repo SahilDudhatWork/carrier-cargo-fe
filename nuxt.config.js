@@ -38,6 +38,7 @@ export default {
     "~/plugins/firebase.js",
     "~/plugins/service-worker.js",
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
+    "~/plugins/jszip.js",
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],

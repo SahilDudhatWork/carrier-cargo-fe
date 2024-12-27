@@ -19,6 +19,7 @@
           type="file"
           ref="fileInput"
           class="hidden"
+          multiple="true"
           @change="handleFileUpload"
         />
       </div>
@@ -56,7 +57,7 @@ export default {
       }
     },
     handleFileUpload(event) {
-      const file = event.target.files[0];
+      const file = event.target.files;
       this.$emit("file-uploaded", file);
     },
   },
