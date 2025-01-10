@@ -152,6 +152,14 @@
         </div>
       </template>
     </AssignModal>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -170,7 +178,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isLoading: false,
+    };
   },
   computed: {
     ...mapGetters({
@@ -267,12 +277,15 @@ export default {
         let { page, limit } = payload;
         page = page || 1;
         limit = limit || 10;
+        this.isLoading = true;
         await this.fetchAllVehicle({
           page: page,
           limit: limit,
         });
       } catch (error) {
         console.log(error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },

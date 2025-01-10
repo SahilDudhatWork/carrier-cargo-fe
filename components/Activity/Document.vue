@@ -13,10 +13,7 @@
         </p>
       </div>
       <div>
-        <label>
-          <img src="@/static/svg/download.svg" alt="" class="cursor-pointer" />
-          <input type="file" class="hidden" />
-        </label>
+        <img src="@/static/svg/download.svg" alt="" class="cursor-pointer" />
       </div>
     </div>
   </div>
