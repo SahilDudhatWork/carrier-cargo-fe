@@ -9,7 +9,7 @@
         {{ activitySingleData.movementId }}
       </h1>
     </div>
-    <div v-if="$checkUserUpload(activitySingleData?.status)">
+    <!-- <div v-if="$checkUserUpload(activitySingleData?.status)">
       <h1 class="text-[#B9B9B9] font-semibold text-[10px] mb-5">UPDATES</h1>
       <div class="flex items-center gap-4 sm:flex-row flex-col">
         <p class="text-[#1E1E1E] font-medium text-[10px]">
@@ -37,6 +37,7 @@
               type="file"
               ref="qrInput"
               class="hidden"
+              multiple="true"
               @change="handleFileUpload"
             />
           </div>
@@ -50,7 +51,7 @@
         </button>
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
-    </div>
+    </div> -->
     <div class="mt-5">
       <AmountDetails :activitySingleData="activitySingleData" />
     </div>
@@ -58,14 +59,126 @@
     <div class="mt-5">
       <UserInfo
         :activitySingleData="activitySingleData"
-        @uploadQrCode="changeQrCode"
-        @downloadDocument="downloadDocument"
+        @downloadDocument="downloadFileItem"
       />
+      <div
+        class="mt-4 bg-[#F7F7F7] px-2 rounded-lg py-2"
+        v-if="
+          activitySingleData?.documents && activitySingleData?.documents.length
+        "
+      >
+        <p class="text-[#1E1E1E] font-normal text-xs">
+          You received an <span class="font-semibold">QR code</span> from
+          carrier for further verification with user.
+        </p>
+        <div class="flex flex-wrap gap-4 mt-3">
+          <div v-for="(doc, key) in activitySingleData?.documents" :key="key">
+            <img
+              v-if="
+                fileTypes[doc] === 'application/pdf' || fileTypes[doc] === 'pdf'
+              "
+              src="@/static/svg/pdf.svg"
+              alt="PDF Preview"
+              class="mt-2 w-[100px] h-[100px] cursor-pointer"
+              @click="downloadFileItem(doc)"
+            />
+            <img
+              v-else-if="
+                fileTypes[doc] === 'application/msword' ||
+                fileTypes[doc] === 'doc' ||
+                fileTypes[doc] === 'document'
+              "
+              src="@/static/svg/doc.svg"
+              alt="DOC Preview"
+              class="mt-2 w-[100px] h-[100px] cursor-pointer"
+              @click="downloadFileItem(doc)"
+            />
+
+            <img
+              v-else-if="
+                fileTypes[doc] === 'image' ||
+                fileTypes[doc] === 'jpg' ||
+                fileTypes[doc] === 'jpeg' ||
+                fileTypes[doc] === 'png' ||
+                fileTypes[doc] === 'gif' ||
+                fileTypes[doc] === 'webp'
+              "
+              :src="doc"
+              alt="Image Preview"
+              class="mt-2 w-[100px] h-[100px] cursor-pointer"
+              @click="downloadFileItem(doc)"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     <div class="mt-5" v-if="activitySingleData?.carrierData">
       <div class="mt-5">
         <CarrierInfo :activitySingleData="activitySingleData" />
+        <div class="mt-4">
+          <h1 class="text-[#B9B9B9] text-[10px] font-semibold">CARRIER DOC</h1>
+          <div>
+            <button
+              @click="uploadQrCodeFile"
+              class="text-[#3683D5] font-normal text-xs cursor-pointer"
+            >
+              Upload doc
+            </button>
+            <input
+              type="file"
+              ref="qrInput"
+              class="hidden"
+              multiple="true"
+              @change="handleFileUpload"
+            />
+          </div>
+          <div
+            class="flex flex-wrap gap-4 mt-3"
+            v-if="
+              activitySingleData?.qrCode && activitySingleData?.qrCode.length
+            "
+          >
+            <div v-for="(doc, key) in activitySingleData?.qrCode" :key="key">
+              <img
+                v-if="
+                  fileTypes[doc] === 'application/pdf' ||
+                  fileTypes[doc] === 'pdf'
+                "
+                src="@/static/svg/pdf.svg"
+                alt="PDF Preview"
+                class="mt-2 w-[100px] h-[100px] cursor-pointer"
+                @click="downloadFileItem(doc)"
+              />
+              <img
+                v-else-if="
+                  fileTypes[doc] === 'application/msword' ||
+                  fileTypes[doc] === 'doc' ||
+                  fileTypes[doc] === 'document'
+                "
+                src="@/static/svg/doc.svg"
+                alt="DOC Preview"
+                class="mt-2 w-[100px] h-[100px] cursor-pointer"
+                @click="downloadFileItem(doc)"
+              />
+
+              <img
+                v-else-if="
+                  fileTypes[doc] === 'image' ||
+                  fileTypes[doc] === 'jpg' ||
+                  fileTypes[doc] === 'jpeg' ||
+                  fileTypes[doc] === 'png' ||
+                  fileTypes[doc] === 'gif' ||
+                  fileTypes[doc] === 'webp'
+                "
+                :src="doc"
+                alt="Image Preview"
+                class="mt-2 w-[100px] h-[100px] cursor-pointer"
+                @click="downloadFileItem(doc)"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
@@ -85,18 +198,18 @@
       </div>
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     </div>
-    <div
-      class="mt-7"
-      v-if="
-        activitySingleData?.operatorData?.accountId &&
-        location?.lat &&
-        location?.long
-      "
-    >
+    <div class="mt-7">
+      <p
+        class="text-[#000000] font-bold text-lg mb-2"
+        v-if="!location?.lat && !location?.long"
+      >
+        Operator location not found
+      </p>
       <GoogleMap
         :addressDetails="location"
         height="300px"
         :isMarkerEnabled="false"
+        :isShowMarker="location?.lat && location?.long ? true : false"
       />
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-7"></div>
     </div>
@@ -167,7 +280,16 @@ export default {
       isProofOfPhotography: false,
       isUploadComplete: false,
       location: {},
+      fileTypes: {},
     };
+  },
+  watch: {
+    activitySingleData: {
+      deep: true,
+      handler(item) {
+        this.checkFileTypes([...item.qrCode, ...item.documents]);
+      },
+    },
   },
   methods: {
     ...mapActions({
@@ -177,6 +299,29 @@ export default {
       movementComplete: "activity/movementComplete",
       fetchLocation: "activity/fetchLocation",
     }),
+    getFileTypeFromUrl(url) {
+      const extension = url.split(".").pop().toLowerCase();
+      const fileTypes = {
+        pdf: "pdf",
+        doc: "document",
+        docx: "document",
+        jpg: "image",
+        jpeg: "image",
+        png: "image",
+        gif: "image",
+        webp: "image",
+        mp4: "video",
+        mp3: "audio",
+        txt: "text",
+      };
+      return fileTypes[extension] || "unknown";
+    },
+    async checkFileTypes(urls) {
+      for (let url of urls) {
+        const fileType = this.getFileTypeFromUrl(url);
+        this.$set(this.fileTypes, url, fileType);
+      }
+    },
     shareRiview() {
       this.isShareReviewModal = !this.isShareReviewModal;
     },
@@ -207,26 +352,26 @@ export default {
     closeShareReviewModal() {
       this.isShareReviewModal = false;
     },
-    async changeQrCode({ file, movementId }) {
-      try {
-        const formData = new FormData();
-        formData.append("qrCode", file);
-        formData.append("movementId", movementId);
-        const res = await this.uploadFile({
-          id: movementId,
-          data: formData,
-        });
-        this.$toast.open({
-          message: res.msg,
-        });
-      } catch (error) {
-        console.log(error);
-        this.$toast.open({
-          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
-          type: "error",
-        });
-      }
-    },
+    // async changeQrCode({ file, movementId }) {
+    //   try {
+    //     const formData = new FormData();
+    //     formData.append("qrCode", file);
+    //     formData.append("movementId", movementId);
+    //     const res = await this.uploadFile({
+    //       id: movementId,
+    //       data: formData,
+    //     });
+    //     this.$toast.open({
+    //       message: res.msg,
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //     this.$toast.open({
+    //       message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+    //       type: "error",
+    //     });
+    //   }
+    // },
     async handleProofOfPhotographyUpload(file) {
       try {
         const formData = new FormData();
@@ -270,7 +415,7 @@ export default {
       }
     },
     handleFileUpload(event) {
-      this.qrCode = event.target.files[0];
+      this.qrCode = event.target.files;
       if (this.qrCode) {
         this.uploadQrCode();
       }
@@ -278,7 +423,9 @@ export default {
     async uploadQrCode() {
       try {
         const formData = new FormData();
-        formData.append("qrCode", this.qrCode);
+        for (let i = 0; i < this.qrCode.length; i++) {
+          formData.append(`qrCode`, this.qrCode[i]);
+        }
         formData.append("movementId", this.movementId);
         const res = await this.uploadFile({
           id: this.movementId,
@@ -324,27 +471,34 @@ export default {
         console.log(error, "error");
       }
     },
-    async downloadDocument() {
-      const zip = new this.$jszip();
-      try {
-        for (let i = 0; i < this.activitySingleData?.documents.length; i++) {
-          const response = await fetch(this.activitySingleData?.documents[i]);
-          const blob = await response.blob();
-          const fileName = this.activitySingleData?.documents[i]
-            .split("/")
-            .pop();
-          zip.file(fileName, blob);
-        }
-        const content = await zip.generateAsync({ type: "blob" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(content);
-        link.download = "documents.zip";
-        link.click();
-        URL.revokeObjectURL(link.href);
-      } catch (error) {
-        console.error("Error downloading documents:", error);
+    downloadFileItem(doc) {
+      const baseUrl = "https://cargo-storage-bucket.s3.us-east-1.amazonaws.com";
+      if (doc.startsWith(baseUrl)) {
+        const fileName = doc.split("/").pop();
+        this.$downloadFile({ src: doc, name: fileName });
       }
     },
+    // async downloadDocument() {
+    //   const zip = new this.$jszip();
+    //   try {
+    //     for (let i = 0; i < this.activitySingleData?.documents.length; i++) {
+    //       const response = await fetch(this.activitySingleData?.documents[i]);
+    //       const blob = await response.blob();
+    //       const fileName = this.activitySingleData?.documents[i]
+    //         .split("/")
+    //         .pop();
+    //       zip.file(fileName, blob);
+    //     }
+    //     const content = await zip.generateAsync({ type: "blob" });
+    //     const link = document.createElement("a");
+    //     link.href = URL.createObjectURL(content);
+    //     link.download = "documents.zip";
+    //     link.click();
+    //     URL.revokeObjectURL(link.href);
+    //   } catch (error) {
+    //     console.error("Error downloading documents:", error);
+    //   }
+    // },
   },
   async beforeMount() {
     await this.getSingleTransitInfo();

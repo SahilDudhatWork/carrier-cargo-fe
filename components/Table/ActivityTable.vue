@@ -99,9 +99,14 @@
               </td>
               <td class="px-6 py-6">
                 <div class="flex flex-col">
-                  <span class="text-[#000000] font-normal text-xs pt-1">{{
-                    item?.port_BridgeOfCrossing
-                  }}</span>
+                  <span
+                    class="text-[#000000] font-normal text-xs pt-1"
+                    v-if="item?.port_BridgeOfCrossing"
+                    >{{ item?.port_BridgeOfCrossing }}</span
+                  >
+                  <span v-else class="text-[#000000] font-normal text-xs pt-1"
+                    >N/A</span
+                  >
                 </div>
               </td>
               <td class="px-6 py-6">
@@ -112,6 +117,11 @@
                   <span class="text-[#989898] font-normal text-[10px] pt-1"
                     >+{{ item?.userData?.countryCode }}
                     {{ item?.userData?.contactNumber }}</span
+                  >
+                </div>
+                <div v-else>
+                  <span class="text-[#000000] font-normal text-xs pt-1"
+                    >N/A</span
                   >
                 </div>
               </td>

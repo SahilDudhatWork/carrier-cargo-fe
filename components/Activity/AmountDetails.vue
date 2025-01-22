@@ -21,7 +21,13 @@
       </div>
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Special Requirement</p>
-        <div class="flex flex-wrap gap-2 mt-1">
+        <div
+          class="flex flex-wrap gap-2 mt-1"
+          v-if="
+            activitySingleData?.specialRequirements &&
+            activitySingleData?.specialRequirements.length
+          "
+        >
           <p
             class="bg-[#0060C91A] px-2.5 rounded-[100px] flex items-center py-[2px]"
             v-for="(item, index) in activitySingleData?.specialRequirements"
@@ -32,12 +38,18 @@
             </span>
           </p>
         </div>
+        <div v-else>
+          <p class="text-[#686868] font-light text-[10px]">N/A</p>
+        </div>
       </div>
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Bridge of crossing</p>
-        <p class="text-[#686868] font-light text-[10px] pt-0.5">
-          {{ activitySingleData?.port_BridgeOfCrossing }}
-        </p>
+        <div v-if="activitySingleData?.port_BridgeOfCrossing">
+          <p class="text-[#686868] font-light text-[10px] pt-0.5">
+            {{ activitySingleData?.port_BridgeOfCrossing }}
+          </p>
+        </div>
+        <p v-else class="text-[#686868] font-light text-[10px] pt-0.5">N/A</p>
       </div>
       <div v-if="activitySingleData?.programming !== 'Instant'">
         <p class="text-[#1E1E1E] font-medium text-sm">Scheduled Time</p>
@@ -48,11 +60,22 @@
       </div>
       <div>
         <p class="text-[#1E1E1E] font-medium text-sm">Quantity</p>
-        <p class="text-[#686868] font-light text-[10px]">
-          {{ activitySingleData?.quantityForChains }}xChains,
-          {{ activitySingleData?.quantityForStraps }}xStraps,
-          {{ activitySingleData?.quantityForTarps }}xTarps
-        </p>
+        <div
+          v-if="
+            activitySingleData?.quantityForChains !== null ||
+            activitySingleData?.quantityForStraps !== null ||
+            activitySingleData?.quantityForTarps !== null
+          "
+        >
+          <p class="text-[#686868] font-light text-[10px]">
+            {{ activitySingleData?.quantityForChains || 0 }}xChains,
+            {{ activitySingleData?.quantityForStraps || 0 }}xStraps,
+            {{ activitySingleData?.quantityForTarps || 0 }}xTarps
+          </p>
+        </div>
+        <div v-else>
+          <p class="text-[#686868] font-light text-[10px]">N/A</p>
+        </div>
       </div>
     </div>
   </div>
