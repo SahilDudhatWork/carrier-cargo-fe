@@ -144,6 +144,8 @@ export default {
             type: "error",
           });
         } else {
+          this.$cookies.remove("token");
+          this.$cookies.remove("refreshToken");
           this.formData.email = this.formData.email.toLowerCase();
           await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, { expires: 1 });
@@ -154,11 +156,11 @@ export default {
           this.$router.push("/verification");
         }
       } catch (error) {
-        console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+        console.log(error);
       }
     },
     async activate() {

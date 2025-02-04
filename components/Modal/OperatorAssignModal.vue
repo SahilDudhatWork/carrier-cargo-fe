@@ -30,7 +30,10 @@
                 placeholder="Carrier Reference"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] focus:outline-none border border-gray-300"
                 v-model="carrierReferenceData"
+                @input="validateCarrierReference"
+                maxlength="10"
               />
+
               <span class="error-msg" v-if="errors?.carrierReference">{{
                 errors?.carrierReference
               }}</span>
@@ -234,6 +237,13 @@ export default {
       updateSelectedOperator: "activity/updateSelectedOperator",
       updateCarrierReference: "activity/updateCarrierReference",
     }),
+    validateCarrierReference(event) {
+      // Remove any non-alphanumeric characters
+      const sanitizedValue = event.target.value.replace(/[^a-zA-Z0-9]/g, "");
+      // Update the model with the sanitized value
+      this.carrierReferenceData = sanitizedValue;
+    },
+
     generateOperatorPaginationText(pagination) {
       const { current_page, limit, total } = pagination;
 
