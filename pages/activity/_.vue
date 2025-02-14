@@ -6,7 +6,7 @@
       </h1>
       <img src="@/static/svg/right-arrow.svg" alt="" />
       <h1 class="text-[#4B4B4B] font-normal text-[12px] cursor-pointer">
-        {{ activitySingleData.movementId }}
+        {{ activitySingleData?.movementId }}
       </h1>
     </div>
     <!-- <div v-if="$checkUserUpload(activitySingleData?.status)">
@@ -266,30 +266,447 @@
     >
       <ProofOfPhotography :activitySingleData="activitySingleData" />
     </div>
+    <div
+      class="mt-5"
+      v-if="
+        activitySingleData?.documents &&
+        Object.keys(activitySingleData.documents).length
+      "
+    >
+      <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
+      <div
+        class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
+        v-if="
+          activitySingleData?.typeOfService?.title === 'Northbound Service' ||
+          activitySingleData?.typeOfService?.title === 'Southbound'
+        "
+      >
+        <UploadBox
+          v-if="userProfile?.companyFormationType === 'MEXICO'"
+          v-model="formData.cartaPorteFolio"
+          :filePreview="
+            cartaPorteFolioPreview ||
+            activitySingleData?.documents?.cartaPorteFolio[0]
+          "
+          @file-selected="handleCartaPorteFolioFile"
+          title="CARTA PORTE FOLIO"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.cartaPorteFolio?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.cartaPorteFolio?.[0]
+            )
+          "
+        />
+
+        <UploadBox
+          v-model="formData.aceEManifest"
+          :filePreview="
+            aceEManifestPreview ||
+            activitySingleData?.documents?.aceEManifest[0]
+          "
+          @file-selected="handleAceEManifestFile"
+          title="ACE E MANIFEST"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.aceEManifest?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(activitySingleData?.documents?.aceEManifest?.[0])
+          "
+        />
+
+        <UploadBox
+          v-if="
+            activitySingleData?.specialRequirements?.some((req) =>
+              req.type.toLowerCase().includes('Over Size')
+            )
+          "
+          v-model="formData.oversizePermitCarrier"
+          :filePreview="
+            oversizePermitCarrierPreview ||
+            activitySingleData?.documents?.oversizePermitCarrier[0]
+          "
+          @file-selected="handleOversizePermitCarrierFile"
+          title="OVERSIZE PERMIT CARRIER"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.oversizePermitCarrier?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.oversizePermitCarrier?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="
+            activitySingleData?.specialRequirements?.some((req) =>
+              req.type.toLowerCase().includes('Over Weight')
+            )
+          "
+          v-model="formData.overweightPermit"
+          :filePreview="
+            overweightPermitPreview ||
+            activitySingleData?.documents?.overweightPermit[0]
+          "
+          @file-selected="handleOverweightPermitFile"
+          title="OVERWEIGHT PERMIT"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.overweightPermit?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.modeOfTransportation?.title === 'Reefer'"
+          v-model="formData.temperatureControlIn"
+          :filePreview="
+            temperatureControlInPreview ||
+            activitySingleData?.documents?.temperatureControlIn[0]
+          "
+          @file-selected="handleTemperatureControlInFile"
+          title="TEMPERATURE CONTROL IN"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.temperatureControlIn?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.temperatureControlIn?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.modeOfTransportation?.title === 'Reefer'"
+          v-model="formData.temperatureControlOut"
+          :filePreview="
+            temperatureControlOutPreview ||
+            activitySingleData?.documents?.temperatureControlOut[0]
+          "
+          @file-selected="handleTemperatureControlOutFile"
+          title="TEMPERATURE CONTROL OUT"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.temperatureControlOut?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.temperatureControlOut?.[0]
+            )
+          "
+        />
+
+        <UploadBox
+          v-model="formData.proofOfDelivery"
+          :filePreview="
+            proofOfDeliveryPreview ||
+            activitySingleData?.documents?.proofOfDelivery[0]
+          "
+          @file-selected="handleProofOfDeliveryFile"
+          title="PROOF OF DELIVERY"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.proofOfDelivery?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.proofOfDelivery?.[0]
+            )
+          "
+        />
+
+        <UploadBox
+          v-model="formData.damagesDiscrepancies"
+          :filePreview="
+            damagesDiscrepanciesPreview ||
+            activitySingleData?.documents?.damagesDiscrepancies[0]
+          "
+          @file-selected="handleDamagesDiscrepanciesFile"
+          title="DAMAGES / DISCREPANCIES"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.damagesDiscrepancies?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.damagesDiscrepancies?.[0]
+            )
+          "
+        />
+      </div>
+    </div>
+    <div
+      class="mt-5"
+      v-if="
+        activitySingleData?.documents &&
+        Object.values(activitySingleData.documents).some(
+          (arr) => arr.length > 0
+        )
+      "
+    >
+      <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
+      <div
+        class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
+      >
+        <UploadBox
+          v-if="activitySingleData?.documents?.cartaPorte[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.cartaPorte[0]"
+          title="CARTA PORTE"
+          :fileTypes="fileTypes[activitySingleData?.documents?.cartaPorte?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(activitySingleData?.documents?.cartaPorte?.[0])
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.doda[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.doda[0]"
+          title="DODA"
+          :fileTypes="fileTypes[activitySingleData?.documents?.doda?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(activitySingleData?.documents?.doda?.[0])
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.entryPrefileInbond[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.entryPrefileInbond[0]"
+          title="ENTRY / PREFILE / INBOND"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.entryPrefileInbond?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.entryPrefileInbond?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.itnInbondNoItnNeeded[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.itnInbondNoItnNeeded[0]"
+          title="ITN # / INBOND / NO ITN NEEDED"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.letterWithInstructionsMemo[0]"
+          :isUploadMode="false"
+          :filePreview="
+            activitySingleData?.documents?.letterWithInstructionsMemo[0]
+          "
+          title="LETTER WITH INSTRUCTIONS/ MEMO"
+          :fileTypes="
+            fileTypes[
+              activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
+            ]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.oversizeNotificationUser[0]"
+          :isUploadMode="false"
+          :filePreview="
+            activitySingleData?.documents?.oversizeNotificationUser[0]
+          "
+          title="OVERSIZE NOTIFICATION USER"
+          :fileTypes="
+            fileTypes[
+              activitySingleData?.documents?.oversizeNotificationUser?.[0]
+            ]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.oversizeNotificationUser?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.overweightPermit[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.overweightPermit[0]"
+          title="OVERWEIGHT PERMIT"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.overweightPermit?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.hazmatBol[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.hazmatBol[0]"
+          title="HAZMAT BOL"
+          :fileTypes="fileTypes[activitySingleData?.documents?.hazmatBol?.[0]]"
+          @downloadFileItem="
+            downloadFileItem(activitySingleData?.documents?.hazmatBol?.[0])
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.hazmatSdsSafetyDataSheet[0]"
+          :isUploadMode="false"
+          :filePreview="
+            activitySingleData?.documents?.hazmatSdsSafetyDataSheet[0]
+          "
+          title="HAZMAT SDS (SAFETY DATA SHEET)"
+          :fileTypes="
+            fileTypes[
+              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
+            ]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.sagarpaPackageAgriculture[0]"
+          :isUploadMode="false"
+          :filePreview="
+            activitySingleData?.documents?.sagarpaPackageAgriculture[0]
+          "
+          title="SAGARPA PACKAGE (AGRICULTURE)"
+          :fileTypes="
+            fileTypes[
+              activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
+            ]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.profepaPackageEnvironmental[0]"
+          :isUploadMode="false"
+          :filePreview="
+            activitySingleData?.documents?.profepaPackageEnvironmental[0]
+          "
+          title="PROFEPA PACKAGE (ENVIRONMENTAL)"
+          :fileTypes="
+            fileTypes[
+              activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
+            ]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.intercambioTrailerRelease[0]"
+          :isUploadMode="false"
+          :filePreview="
+            activitySingleData?.documents?.intercambioTrailerRelease[0]
+          "
+          title="INTERCAMBIO (TRAILER RELEASE)"
+          :fileTypes="
+            fileTypes[
+              activitySingleData?.documents?.intercambioTrailerRelease?.[0]
+            ]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.intercambioTrailerRelease?.[0]
+            )
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.sedenaPackage[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.sedenaPackage[0]"
+          title="SEDENA PACKAGE"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.sedenaPackage?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(activitySingleData?.documents?.sedenaPackage?.[0])
+          "
+        />
+        <UploadBox
+          v-if="activitySingleData?.documents?.damagesDiscrepancies[0]"
+          :isUploadMode="false"
+          :filePreview="activitySingleData?.documents?.damagesDiscrepancies[0]"
+          title="DAMAGES / DISCREPANCIES"
+          :fileTypes="
+            fileTypes[activitySingleData?.documents?.damagesDiscrepancies?.[0]]
+          "
+          @downloadFileItem="
+            downloadFileItem(
+              activitySingleData?.documents?.damagesDiscrepancies?.[0]
+            )
+          "
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   layout: "dashboard",
   data() {
     return {
       isShareReviewModal: false,
-      activitySingleData: {},
       isProofOfPhotography: false,
       isUploadComplete: false,
       location: {},
       fileTypes: {},
+      formData: {
+        cartaPorteFolio: null,
+        aceEManifest: null,
+        oversizePermitCarrier: null,
+        overweightPermit: null,
+        temperatureControlIn: null,
+        temperatureControlOut: null,
+        proofOfDelivery: null,
+        damagesDiscrepancies: null,
+      },
+      cartaPorteFolioPreview: null,
+      aceEManifestPreview: null,
+      oversizePermitCarrierPreview: null,
+      overweightPermitPreview: null,
+      temperatureControlInPreview: null,
+      temperatureControlOutPreview: null,
+      proofOfDeliveryPreview: null,
+      damagesDiscrepanciesPreview: null,
     };
   },
   watch: {
     activitySingleData: {
       deep: true,
       handler(item) {
-        this.checkFileTypes([...item.qrCode, ...item.documents]);
+        const qrCode = Array.isArray(item?.qrCode) ? item?.qrCode : [];
+        const documents = item?.documents
+          ? Object.values(item?.documents).flat()
+          : [];
+
+        this.checkFileTypes([...qrCode, ...documents]);
       },
     },
+  },
+  computed: {
+    ...mapGetters({
+      activitySingleData: "activity/getSingleActivity",
+      userProfile: "auth/getUserProfile",
+    }),
   },
   methods: {
     ...mapActions({
@@ -298,7 +715,90 @@ export default {
       uploadFile: "activity/uploadFile",
       movementComplete: "activity/movementComplete",
       fetchLocation: "activity/fetchLocation",
+      uploadDocuments: "activity/uploadDocuments",
     }),
+    async handleCartaPorteFolioFile(file) {
+      this.formData.cartaPorteFolio = file;
+      this.cartaPorteFolioPreview = file ? URL.createObjectURL(file) : null;
+      await this.uploadDocumentFiles("cartaPorteFolio", file);
+    },
+
+    async handleAceEManifestFile(file) {
+      this.formData.aceEManifest = file;
+      this.aceEManifestPreview = file ? URL.createObjectURL(file) : null;
+      await this.uploadDocumentFiles("aceEManifest", file);
+    },
+
+    async handleOversizePermitCarrierFile(file) {
+      this.formData.oversizePermitCarrier = file;
+      this.oversizePermitCarrierPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("oversizePermitCarrier", file);
+    },
+
+    async handleOverweightPermitFile(file) {
+      this.formData.overweightPermit = file;
+      this.overweightPermitPreview = file ? URL.createObjectURL(file) : null;
+      await this.uploadDocumentFiles("overweightPermit", file);
+    },
+
+    async handleTemperatureControlInFile(file) {
+      this.formData.temperatureControlIn = file;
+      this.temperatureControlInPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("temperatureControlIn", file);
+    },
+
+    async handleTemperatureControlOutFile(file) {
+      this.formData.temperatureControlOut = file;
+      this.temperatureControlOutPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("temperatureControlOut", file);
+    },
+
+    async handleProofOfDeliveryFile(file) {
+      this.formData.proofOfDelivery = file;
+      this.proofOfDeliveryPreview = file ? URL.createObjectURL(file) : null;
+      await this.uploadDocumentFiles("proofOfDelivery", file);
+    },
+
+    async handleDamagesDiscrepanciesFile(file) {
+      this.formData.damagesDiscrepancies = file;
+      this.damagesDiscrepanciesPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("damagesDiscrepancies", file);
+    },
+
+    async uploadDocumentFiles(fileName, file) {
+      try {
+        const formData = new FormData();
+        formData.append(fileName, file);
+        formData.append("movementId", this.movementId);
+
+        const res = await this.uploadDocuments({
+          id: this.movementId,
+          data: formData,
+        });
+
+        this.$toast.open({
+          message: res.msg,
+          type: "success",
+        });
+
+        await this.getSingleTransitInfo();
+      } catch (error) {
+        console.error(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      }
+    },
+
     getFileTypeFromUrl(url) {
       const extension = url.split(".").pop().toLowerCase();
       const fileTypes = {
@@ -445,10 +945,9 @@ export default {
     },
     async getSingleTransitInfo() {
       try {
-        const res = await this.fetchSingleActivity({
+        await this.fetchSingleActivity({
           id: this.movementId,
         });
-        this.activitySingleData = res.data;
       } catch (error) {
         console.log(error);
         this.$toast.open({
@@ -500,9 +999,11 @@ export default {
     //   }
     // },
   },
-  async beforeMount() {
+  async mounted() {
     await this.getSingleTransitInfo();
     await this.getLocation();
+  },
+  async beforeMount() {
     if (this.isProofOfPhotography) {
       this.isUploadComplete = false;
     }

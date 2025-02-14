@@ -146,4 +146,15 @@ export const actions = {
       throw error;
     }
   },
+  async uploadDocuments(ctx, { id, data }) {
+    try {
+      const response = await $axios.post(
+        `/v1/common/qr&proof/doc/carrier/${id}`,
+        data
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
