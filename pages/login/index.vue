@@ -95,7 +95,7 @@
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
-                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
                     />
                   </div>
                   <div class="ml-3 text-sm">
@@ -144,6 +144,8 @@ export default {
             type: "error",
           });
         } else {
+          this.$cookies.remove("token");
+          this.$cookies.remove("refreshToken");
           this.formData.email = this.formData.email.toLowerCase();
           await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, { expires: 1 });
@@ -154,11 +156,11 @@ export default {
           this.$router.push("/verification");
         }
       } catch (error) {
-        console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+        console.log(error);
       }
     },
     async activate() {
