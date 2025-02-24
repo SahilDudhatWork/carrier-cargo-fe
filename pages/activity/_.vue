@@ -55,9 +55,13 @@
     <div class="mt-5">
       <AmountDetails :activitySingleData="activitySingleData" />
     </div>
-    <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
+    <div
+      class="bg-[#E6E6E6] h-[1px] w-full mt-6"
+      v-if="activitySingleData?.userData"
+    ></div>
     <div class="mt-5">
       <UserInfo
+        v-if="activitySingleData?.userData"
         :activitySingleData="activitySingleData"
         @downloadDocument="downloadFileItem"
       />
@@ -655,6 +659,14 @@
         />
       </div>
     </div>
+    <loading
+      :active="isLoader"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -664,6 +676,7 @@ export default {
   layout: "dashboard",
   data() {
     return {
+      isLoader: false,
       isShareReviewModal: false,
       isProofOfPhotography: false,
       isUploadComplete: false,
@@ -826,6 +839,7 @@ export default {
       this.isShareReviewModal = !this.isShareReviewModal;
     },
     async handleShareRiview(formData) {
+      this.isLoader = true;
       try {
         const reviewData = {
           rating: formData.rating,
@@ -840,13 +854,17 @@ export default {
         });
         this.isShareReviewModal = false;
         this.isUploadComplete = false;
+        this.isLoader = false;
         await this.getSingleTransitInfo();
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     closeShareReviewModal() {
@@ -873,6 +891,7 @@ export default {
     //   }
     // },
     async handleProofOfPhotographyUpload(file) {
+      this.isLoader = true;
       try {
         const formData = new FormData();
         for (let i = 0; i < file.length; i++) {
@@ -890,12 +909,16 @@ export default {
         this.isUploadComplete = true;
         this.isProofOfPhotography = false;
         await this.getSingleTransitInfo();
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     uploadQrCodeFile() {
@@ -921,6 +944,7 @@ export default {
       }
     },
     async uploadQrCode() {
+      this.isLoader = true;
       try {
         const formData = new FormData();
         for (let i = 0; i < this.qrCode.length; i++) {
@@ -935,25 +959,34 @@ export default {
           message: res.msg,
         });
         await this.getSingleTransitInfo();
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async getSingleTransitInfo() {
+      this.isLoader = true;
       try {
         await this.fetchSingleActivity({
           id: this.movementId,
         });
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async getLocation() {

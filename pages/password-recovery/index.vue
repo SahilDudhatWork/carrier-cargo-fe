@@ -13,10 +13,7 @@
               Enter email address to get password recovery mail on registered
               email
             </p>
-            <form
-              class="space-y-4 md:space-y-6 mt-6"
-              @submit.prevent="sendCode"
-            >
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div>
                 <label
                   for="Email Address"
@@ -32,12 +29,17 @@
                   placeholder="Email"
                 />
               </div>
-              <button
-                type="submit"
-                class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isLoader"
+                :disabled="isLoader"
+                :styled="true"
+                class="!xl:w-[382px] !w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 h-[54px] !text-center"
+                @click.native="sendCode"
               >
                 Continue
-              </button>
+              </VueLoadingButton>
               <p class="text-sm font-normal text-[#1E1E1E] max-w-[362px] mt-12">
                 By creating an account or signing you have read and agree to our
                 <span class="font-medium text-sm text-[#1E1E1E]"
@@ -62,6 +64,7 @@ export default {
   data() {
     return {
       forgetEmail: "",
+      isLoader: false,
     };
   },
   methods: {
@@ -69,6 +72,7 @@ export default {
       sendOtp: "auth/sendOtp",
     }),
     async sendCode() {
+      this.isLoader = true;
       try {
         if (!this.forgetEmail) {
           this.$toast.open({
@@ -85,13 +89,17 @@ export default {
           });
           this.$cookies.set("email", this.forgetEmail, { expires: 1 });
           this.$router.push("/otp-sent");
+          this.isLoader = false;
         }
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
   },

@@ -101,9 +101,9 @@
             <div>
               <div class="relative group cursor-pointer">
                 <label
-                  for="MX ID Badge Expiration Date"
+                  for="License Expiration Date"
                   class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                  >MX ID Badge Expiration Date *</label
+                  >License Expiration Date *</label
                 >
                 <VueDatePick
                   v-model="formData.mxIdBadgeExpirationDate"
@@ -255,6 +255,50 @@
                 >{{ errors?.usDriversLicenseExpirationDate }}</span
               >
             </div>
+            <div>
+              <div class="relative group cursor-pointer">
+                <label
+                  for="Visa Expiration Date"
+                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
+                  >Visa Expiration Date *</label
+                >
+                <VueDatePick
+                  v-model="formData.visaExpirationDate"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.visaExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
+                />
+              </div>
+              <span class="error-msg" v-if="errors?.visaExpirationDate">{{
+                errors?.visaExpirationDate
+              }}</span>
+            </div>
+            <div>
+              <div class="relative group cursor-pointer">
+                <label
+                  for="Customs Badge Expiration Date"
+                  class="block mb-2 text-sm font-normal text-[#4B4B4B]"
+                  >Customs Badge Expiration Date *</label
+                >
+                <VueDatePick
+                  v-model="formData.customsBadgeExpirationDate"
+                  class="xl:w-[382px] block w-full rounded-lg focus:outline-none text-base px-3"
+                  :class="
+                    errors.customsBadgeExpirationDate
+                      ? 'border border-red-600'
+                      : 'border border-gray-300'
+                  "
+                />
+              </div>
+              <span
+                class="error-msg"
+                v-if="errors?.customsBadgeExpirationDate"
+                >{{ errors?.customsBadgeExpirationDate }}</span
+              >
+            </div>
           </div>
           <div class="flex justify-center">
             <button
@@ -266,6 +310,14 @@
         </div>
       </form>
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -276,6 +328,7 @@ export default {
   data() {
     return {
       isPassword: false,
+      isLoading: false,
       errors: {},
       countries: [
         {
@@ -307,6 +360,8 @@ export default {
         mxDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
         usDriversLicense: "",
         usDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
+        visaExpirationDate: new Date().toISOString().slice(0, 10),
+        customsBadgeExpirationDate: new Date().toISOString().slice(0, 10),
       },
     };
   },
@@ -330,6 +385,7 @@ export default {
     },
 
     async EditOperator() {
+      this.isLoading = true;
       try {
         this.errors = await this.$validateOperatorField({
           form: this.formData,
@@ -346,12 +402,16 @@ export default {
           message: response.msg,
         });
         this.$router.push("/operator");
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     formatDate(dateString) {
@@ -361,17 +421,28 @@ export default {
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     },
+    async getSingleOperator() {
+      this.isLoading = true;
+      try {
+        await this.fetchSingleOperator({
+          accountId: this.accountId,
+        });
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
-  async asyncData({ params, store, redirect }) {
-    const id = params.pathMatch;
-    try {
-      await store.dispatch("operator/fetchSingleOperator", { accountId: id });
-    } catch (error) {
-      return redirect("/operator");
-    }
-  },
-  async beforeMount() {
-    this.formData = { ...this.getSingleOperatorData };
+  async mounted() {
+    await this.getSingleOperator();
+    this.formData = await { ...this.getSingleOperatorData };
 
     if (this.formData.fastIdExpirationDate) {
       this.formData.fastIdExpirationDate = this.formatDate(
@@ -393,6 +464,21 @@ export default {
         this.formData.usDriversLicenseExpirationDate
       );
     }
+    if (this.formData.visaExpirationDate) {
+      this.formData.visaExpirationDate = this.formatDate(
+        this.formData.visaExpirationDate
+      );
+    }
+    if (this.formData.customsBadgeExpirationDate) {
+      this.formData.customsBadgeExpirationDate = this.formatDate(
+        this.formData.customsBadgeExpirationDate
+      );
+    }
+  },
+  async asyncData({ params }) {
+    return {
+      accountId: params.pathMatch,
+    };
   },
 };
 </script>

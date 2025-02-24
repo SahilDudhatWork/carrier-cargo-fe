@@ -318,6 +318,14 @@
         @backAssignVehicle="backAssign"
       />
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -344,6 +352,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       isAssignOperatorModal: false,
       isAssignVehicleModal: false,
       selectedOperator: null,
@@ -407,7 +416,6 @@ export default {
       updateSelectedOperator: "activity/updateSelectedOperator",
       updateCarrierReference: "activity/updateCarrierReference",
       updateSelectedVehicle: "activity/updateSelectedVehicle",
-      fetchAllActivities: "activity/fetchAllActivities",
       validateCarrierReference: "activity/validateCarrierReference",
     }),
     buttonColor(status) {
@@ -454,6 +462,7 @@ export default {
       this.isAssignVehicleModal = false;
     },
     async handleAssignOperator(selectedOperator, carrierReference) {
+      this.isLoading = true;
       this.carrierReference = carrierReference;
       this.selectedOperator = selectedOperator;
       const form = {
@@ -482,15 +491,20 @@ export default {
         });
         this.isAssignVehicleModal = true;
         this.isAssignOperatorModal = false;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async handleAssignVehicle(selectedVehicle) {
+      this.isLoading = true;
       try {
         this.selectedVehicle = selectedVehicle;
         const form = {
@@ -526,26 +540,35 @@ export default {
         });
         this.isAssignVehicleModal = false;
         this.isAssignOperatorModal = false;
+        this.isLoading = false;
         this.$emit("activityUpdated");
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async getSingleTransitInfo() {
+      this.isLoading = true;
       try {
         await this.fetchSingleActivity({
           id: this.movementId,
         });
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
   },

@@ -10,7 +10,7 @@
           EDIT VEHICLE
         </p>
       </div>
-      <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="EditOperator">
+      <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="EditVehicle">
         <div>
           <div
             class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-y-3 gap-3"
@@ -290,6 +290,14 @@
         </div>
       </form>
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -300,6 +308,7 @@ export default {
   data() {
     return {
       isPassword: false,
+      isLoading: false,
       errors: {},
       locations: {},
       countries: [
@@ -374,19 +383,25 @@ export default {
       this.formData.countryCode = item.value;
     },
     async CarrierTransiInfo() {
+      this.isLoading = true;
       try {
         const res = await this.fetchCarrierTransitInfo();
         this.locations = res.data;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
 
-    async EditOperator() {
+    async EditVehicle() {
+      this.isLoading = true;
       try {
         this.errors = await this.$validateVehicleField({ form: this.formData });
         if (Object.keys(this.errors).length > 0) {
@@ -421,13 +436,17 @@ export default {
         this.$toast.open({
           message: response.msg,
         });
+        this.isLoading = false;
         this.$router.push("/vehicle");
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     selectTypeOfService(serviceId) {
@@ -476,18 +495,29 @@ export default {
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     },
+    async getSingleVehicle() {
+      this.isLoading = true;
+      try {
+        await this.fetchSingleVehicle({
+          accountId: this.accountId,
+        });
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
-  async asyncData({ params, store, redirect }) {
-    const id = params.pathMatch;
-    try {
-      await store.dispatch("vehicle/fetchSingleVehicle", { accountId: id });
-    } catch (error) {
-      return redirect("/vehicle");
-    }
-  },
-  async beforeMount() {
+  async mounted() {
+    await this.getSingleVehicle();
     await this.CarrierTransiInfo();
-    this.formData = { ...this.getSingleVehicleData };
+    this.formData = await { ...this.getSingleVehicleData };
     this.selectedTypeOfServiceItem = [
       ...this.getSingleVehicleData.typeOfService,
     ];
@@ -519,6 +549,11 @@ export default {
         this.formData.usInsurancePlatesExpirationDate
       );
     }
+  },
+  async asyncData({ params }) {
+    return {
+      accountId: params.pathMatch,
+    };
   },
 };
 </script>

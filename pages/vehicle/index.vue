@@ -53,6 +53,14 @@
         @close="closeModal"
       />
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -66,6 +74,7 @@ export default {
       isModal: false,
       search: "",
       sortBy: "all",
+      isLoading: false,
     };
   },
   computed: {
@@ -166,17 +175,30 @@ export default {
       this.$router.push("/vehicle/add-vehicle");
     },
     async getAllVehicle(payload) {
-      let { sortBy, page, limit, keyWord } = payload;
-      sortBy = sortBy || "";
-      page = page || 1;
-      limit = limit || 10;
-      keyWord = keyWord || "";
-      await this.fetchAllVehicle({
-        sortBy: sortBy,
-        page: page,
-        limit: limit,
-        keyWord: keyWord,
-      });
+      this.isLoading = true;
+      try {
+        let { sortBy, page, limit, keyWord } = payload;
+        sortBy = sortBy || "";
+        page = page || 1;
+        limit = limit || 10;
+        keyWord = keyWord || "";
+        await this.fetchAllVehicle({
+          sortBy: sortBy,
+          page: page,
+          limit: limit,
+          keyWord: keyWord,
+        });
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      } finally {
+        this.isLoading = false;
+      }
     },
     async removeVehicle(id) {
       this.isModal = true;
@@ -186,6 +208,7 @@ export default {
       this.$router.push(`vehicle/edit-vehicle/${item._id}`);
     },
     async handleVerify(item) {
+      this.isLoading = true;
       try {
         const res = await this.updateVehicleStatus({
           _id: item._id,
@@ -194,15 +217,20 @@ export default {
         this.$toast.open({
           message: res.msg,
         });
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async handleDelete() {
+      this.isLoading = true;
       try {
         const response = await this.deleteVehicle({
           _id: this.selectedId,
@@ -211,12 +239,16 @@ export default {
           message: response.msg,
         });
         this.isModal = false;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async allActionButtons(type) {

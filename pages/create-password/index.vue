@@ -13,10 +13,7 @@
               Your password must contain special characters, alphanumeric
               number, small & Large capital letters.
             </p>
-            <form
-              class="space-y-4 md:space-y-6 mt-6"
-              @submit.prevent="changePassword"
-            >
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div class="relative">
                 <label
                   for="createPassword"
@@ -103,11 +100,17 @@
                   v-model="confirmPassword"
                 />
               </div>
-              <button
-                class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isLoader"
+                :disabled="isLoader"
+                :styled="true"
+                class="!xl:w-[382px] !w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 h-[54px] !text-center"
+                @click.native="changePassword"
               >
                 Log In
-              </button>
+              </VueLoadingButton>
               <div class="flex items-center justify-between !m-0">
                 <div class="flex items-start mt-8">
                   <div class="flex items-center h-5">
@@ -146,6 +149,7 @@ export default {
       confirmPassword: "",
       isCreatePassword: false,
       isPassword: false,
+      isLoader: false,
     };
   },
   methods: {
@@ -159,6 +163,7 @@ export default {
       this.isPassword = !this.isPassword;
     },
     async changePassword() {
+      this.isLoader = true;
       try {
         if (
           this.password &&
@@ -197,13 +202,17 @@ export default {
           this.$cookies.remove("email");
           this.$cookies.remove("otpToken");
           this.$router.push("/login");
+          this.isLoader = false;
         }
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
   },

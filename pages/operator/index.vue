@@ -53,6 +53,14 @@
         @close="closeModal"
       />
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -64,6 +72,7 @@ export default {
   data() {
     return {
       isModal: false,
+      isLoading: false,
       search: "",
       sortBy: "all",
     };
@@ -165,17 +174,30 @@ export default {
       this.$router.push("/operator/add-operator");
     },
     async getAllOperator(payload) {
-      let { sortBy, page, limit, keyWord } = payload;
-      sortBy = sortBy || "";
-      page = page || 1;
-      limit = limit || 10;
-      keyWord = keyWord || "";
-      await this.fetchAllOperator({
-        sortBy: sortBy,
-        page: page,
-        limit: limit,
-        keyWord: keyWord,
-      });
+      this.isLoading = true;
+      try {
+        let { sortBy, page, limit, keyWord } = payload;
+        sortBy = sortBy || "";
+        page = page || 1;
+        limit = limit || 10;
+        keyWord = keyWord || "";
+        await this.fetchAllOperator({
+          sortBy: sortBy,
+          page: page,
+          limit: limit,
+          keyWord: keyWord,
+        });
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      } finally {
+        this.isLoading = false;
+      }
     },
     async removeOperator(id) {
       this.isModal = true;
@@ -188,6 +210,7 @@ export default {
       console.log("handleSubmit", item);
     },
     async handleDelete() {
+      this.isLoading = true;
       try {
         const response = await this.deleteOperator({
           accountId: this.selectedId,
@@ -196,12 +219,16 @@ export default {
           message: response.msg,
         });
         this.isModal = false;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async allActionButtons(type) {

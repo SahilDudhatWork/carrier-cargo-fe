@@ -164,7 +164,7 @@ export default async (ctx, inject) => {
     validateField(
       form.mxIdBadgeExpirationDate,
       "mxIdBadgeExpirationDate",
-      "mx-id-badge-expiration-date"
+      "license-expiration-date"
     );
     validateField(form.fastId, "fastId", "fast-id");
     validateField(
@@ -191,6 +191,16 @@ export default async (ctx, inject) => {
       form.usDriversLicenseExpirationDate,
       "usDriversLicenseExpirationDate",
       "us-drivers-license-expiration-date"
+    );
+    validateField(
+      form.visaExpirationDate,
+      "visaExpirationDate",
+      "visa-expiration-date"
+    );
+    validateField(
+      form.customsBadgeExpirationDate,
+      "customsBadgeExpirationDate",
+      "customs-badge-expiration-date"
     );
 
     if (!(await validatePhoneNumber(form.operatorNumber))) {

@@ -16,7 +16,7 @@
                 >Register</NuxtLink
               >
             </p>
-            <form class="space-y-4 md:space-y-6 mt-6" @submit.prevent="login">
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div>
                 <label
                   for="Email Address"
@@ -82,12 +82,18 @@
                   >Forgot password?</NuxtLink
                 >
               </div>
-              <button
-                type="submit"
-                class="w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[20px] px-5 py-[13px] text-center"
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isLoader"
+                :disabled="isLoader"
+                :styled="true"
+                class="!w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 h-[54px] !text-center"
+                @click.native="login"
               >
                 Log In
-              </button>
+              </VueLoadingButton>
+
               <div class="flex items-center justify-between !m-0">
                 <div class="flex items-start mt-8">
                   <div class="flex items-center h-5">
@@ -123,6 +129,7 @@ export default {
   data() {
     return {
       isPassword: false,
+      isLoader: false,
       formData: {
         email: "",
         password: "",
@@ -137,6 +144,7 @@ export default {
       this.isPassword = !this.isPassword;
     },
     async login() {
+      this.isLoader = true;
       try {
         if ((!this.formData.email, !this.formData.password)) {
           this.$toast.open({
@@ -149,18 +157,21 @@ export default {
           this.formData.email = this.formData.email.toLowerCase();
           await this.signin(this.formData);
           this.$cookies.set("email", this.formData?.email, { expires: 1 });
-
           this.$toast.open({
             message: this.$i18n.t("loginOTPMessage"),
           });
           this.$router.push("/verification");
+          this.isLoader = false;
         }
       } catch (error) {
+        this.isLoader = false;
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
         console.log(error);
+      } finally {
+        this.isLoader = false;
       }
     },
     async activate() {

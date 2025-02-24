@@ -40,6 +40,7 @@ export default {
     { src: "~/plugins/vue2-google-maps.js", ssr: false },
     "~/plugins/jszip.js",
     "~/plugins/loading-overlay.js",
+    "~/plugins/vue-loading-button.js",
   ],
 
   components: [{ path: "~/components/", pathPrefix: false }],

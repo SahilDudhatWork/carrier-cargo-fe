@@ -11,10 +11,7 @@
               We’ve sent an OTP on your mail please check and fill it to recover
               your password.
             </p>
-            <form
-              class="space-y-4 md:space-y-6 mt-6"
-              @submit.prevent="veryfyCode"
-            >
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div class="flex space-x-2">
                 <input
                   v-for="(digit, index) in otp"
@@ -41,11 +38,17 @@
                   >
                 </p>
               </div>
-              <button
-                class="xl:w-[382px] w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isButtonLoader"
+                :disabled="isButtonLoader"
+                :styled="true"
+                class="!xl:w-[382px] !w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 h-[54px] !text-center"
+                @click.native="veryfyCode"
               >
                 Submit
-              </button>
+              </VueLoadingButton>
               <div
                 class="text-sm font-normal text-[#1E1E1E] max-w-[362px] mt-10 !m-0"
               >
@@ -65,6 +68,14 @@
         </template>
       </Content>
     </div>
+    <loading
+      :active="isLoader"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -76,6 +87,8 @@ export default {
   data() {
     return {
       otp: Array(6).fill(""),
+      isLoader: false,
+      isButtonLoader: false,
     };
   },
   computed: {},
@@ -85,6 +98,7 @@ export default {
       sendOtp: "auth/sendOtp",
     }),
     async resendCode() {
+      this.isLoader = true;
       try {
         let accessEmail = this.$cookies.get("email");
         const res = await this.sendOtp({
@@ -94,15 +108,20 @@ export default {
         this.$toast.open({
           message: res.msg,
         });
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async veryfyCode() {
+      this.isButtonLoader = true;
       try {
         if (this.otp.some((digit) => digit === "")) {
           this.$toast.open({
@@ -122,13 +141,17 @@ export default {
           });
           this.$cookies.set("otpToken", res.data.token);
           this.$router.push("/create-password");
+          this.isButtonLoader = false;
         }
       } catch (error) {
+        this.isButtonLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isButtonLoader = false;
       }
     },
     handleInput(index) {

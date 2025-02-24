@@ -278,6 +278,14 @@
         </div>
       </form>
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -289,6 +297,7 @@ export default {
   data() {
     return {
       isPassword: false,
+      isLoading: false,
       errors: {},
       locations: {},
       selectedTypeOfServiceItem: [],
@@ -355,6 +364,7 @@ export default {
       this.formData.countryCode = item.value;
     },
     async addVehicle() {
+      this.isLoading = true;
       try {
         this.errors = await this.$validateVehicleField({ form: this.formData });
         if (Object.keys(this.errors).length > 0) {
@@ -402,24 +412,33 @@ export default {
           message: response.msg,
         });
         this.$router.push("/vehicle");
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async CarrierTransiInfo() {
+      this.isLoading = true;
       try {
         const res = await this.fetchCarrierTransitInfo();
         this.locations = res.data;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     selectTypeOfService(id) {

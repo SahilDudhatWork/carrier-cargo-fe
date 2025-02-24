@@ -38,6 +38,14 @@
         @activityUpdated="handleActivityUpdate"
       />
     </div>
+    <loading
+      :active="isLoader"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -52,6 +60,7 @@ export default {
       sortBy: "Requests",
       allActivityData: [],
       activityPaginationData: {},
+      isLoader: false,
     };
   },
   computed: {
@@ -143,19 +152,32 @@ export default {
       await this.getAllActivity({ sortBy: this.sortBy, page: 1, limit: 10 });
     },
     async getAllActivity(payload) {
-      let { sortBy, page, limit, keyWord } = payload;
-      sortBy = sortBy || "";
-      page = page || 1;
-      limit = limit || 10;
-      keyWord = keyWord || "";
-      const res = await this.fetchAllActivities({
-        sortBy: sortBy,
-        page: page,
-        limit: limit,
-        keyWord: keyWord,
-      });
-      this.allActivityData = res?.data?.response;
-      this.activityPaginationData = res?.data?.pagination;
+      try {
+        this.isLoader = true;
+        let { sortBy, page, limit, keyWord } = payload;
+        sortBy = sortBy || "";
+        page = page || 1;
+        limit = limit || 10;
+        keyWord = keyWord || "";
+        const res = await this.fetchAllActivities({
+          sortBy: sortBy,
+          page: page,
+          limit: limit,
+          keyWord: keyWord,
+        });
+        this.allActivityData = res?.data?.response;
+        this.activityPaginationData = res?.data?.pagination;
+        this.isLoader = false;
+      } catch (error) {
+        this.isLoader = false;
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      } finally {
+        this.isLoader = false;
+      }
     },
     async allActionButtons(type) {
       try {

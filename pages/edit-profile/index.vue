@@ -574,6 +574,14 @@
         </form>
       </div>
     </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      color="#007BFF"
+      loader="bars"
+      :height="70"
+      :width="70"
+    />
   </div>
 </template>
 
@@ -586,6 +594,7 @@ export default {
   data() {
     return {
       errors: {},
+      isLoading: false,
       maxFileSize: 2000000,
       profileURL: "",
       countriesList: [
@@ -842,6 +851,7 @@ export default {
       }
     },
     async upateUserProfile() {
+      this.isLoading = true;
       try {
         this.errors = await this.$validateFormData({
           form: this.formData,
@@ -1027,12 +1037,16 @@ export default {
         this.$toast.open({
           message: response.msg,
         });
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     async activate() {
@@ -1043,11 +1057,27 @@ export default {
         this.formData.webToken = token;
       }
     },
+    async getProfile() {
+      this.isLoading = true;
+      try {
+        await this.profile();
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+        this.$toast.open({
+          message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
+          type: "error",
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
   async mounted() {
     try {
       this.activate();
-      await this.profile();
+      await this.getProfile();
       this.formData = await this.$lodash.cloneDeep(this.getUserProfile);
       this.profileURL = this.formData?.profilePicture || "";
       this.selectedLabel =

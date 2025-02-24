@@ -16,10 +16,7 @@
                 >Login</NuxtLink
               >
             </p>
-            <form
-              class="space-y-4 md:space-y-6 mt-6"
-              @submit.prevent="sendRegistrationRequest"
-            >
+            <form class="space-y-4 md:space-y-6 mt-6">
               <div class="overflow-y-scroll h-[450px]">
                 <div>
                   <label
@@ -525,11 +522,22 @@
                   </div>
                 </div>
               </div>
-              <button
+              <VueLoadingButton
+                ref="loader"
+                aria-label="Post message"
+                :loading="isLoader"
+                :disabled="isLoader"
+                :styled="true"
+                class="!w-full !text-white !bg-gradient-to-r !from-[#0464CB] !to-[#2AA1EB] !font-medium !rounded-lg !text-[16px] !px-5 h-[54px] !text-center"
+                @click.native="sendRegistrationRequest"
+              >
+                Send Registration Request
+              </VueLoadingButton>
+              <!-- <button
                 class="w-full text-white bg-gradient-to-r from-[#0464CB] to-[#2AA1EB] font-medium rounded-lg text-[16px] px-5 py-[15px] text-center"
               >
                 Send Registration Request
-              </button>
+              </button> -->
               <p class="text-sm font-normal text-[#1E1E1E] max-w-[362px]">
                 By creating an account or signing you have read and agree to our
                 <span class="font-medium text-sm text-[#1E1E1E] cursor-pointer"
@@ -557,6 +565,7 @@ export default {
     return {
       password: false,
       confirmPassword: false,
+      isLoader: false,
       errors: {},
       countriesList: [
         {
@@ -753,6 +762,7 @@ export default {
       }
     },
     async sendRegistrationRequest() {
+      this.isLoader = true;
       try {
         this.errors = await this.$validateFormData({
           form: this.formData,
@@ -887,12 +897,16 @@ export default {
           message: response.msg,
         });
         this.$router.push("/login");
+        this.isLoader = false;
       } catch (error) {
+        this.isLoader = false;
         console.log(error);
         this.$toast.open({
           message: error?.response?.data?.msg,
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
     async activate() {
