@@ -851,7 +851,6 @@ export default {
       }
     },
     async upateUserProfile() {
-      this.isLoading = true;
       try {
         this.errors = await this.$validateFormData({
           form: this.formData,
@@ -1023,6 +1022,7 @@ export default {
           });
           return;
         }
+        this.isLoading = true;
         const response = await this.updateProfile(formData);
         await this.profile();
         this.formData = await this.$lodash.cloneDeep(this.getUserProfile);

@@ -1,20 +1,26 @@
 <template>
   <div>
     <VueSlickCarousel v-if="carouselItem.length" v-bind="settings">
-      <div class="w-[360px]" v-for="(item, key) in carouselItem" :key="key">
+      <div
+        class="w-[360px] max-w-[360px] overflow-hidden"
+        v-for="(item, key) in carouselItem"
+        :key="key"
+      >
         <div
           class="flex gap-4 mt-2 mr-3 py-3 h-[84px] px-3 bg-[#F7F7F7] rounded"
         >
-          <div>
-            <h1 class="text-xs text-[#151515] font-normal">
+          <div class="overflow-hidden">
+            <h1 class="text-xs text-[#151515] font-normal truncate w-full">
               {{ item?.addressDetails?.laneNumber }},
               {{ item?.addressDetails?.postalCode }}
               {{ item?.addressDetails?.additionalDetails }}
             </h1>
-            <p class="text-xs font-light text-[#686868]">
+            <p class="text-xs font-light text-[#686868] truncate w-full">
               {{ item?.addressDetails?.buildinName }}
             </p>
-            <p class="text-xs font-light text-[#686868] pt-1">items: Chains</p>
+            <p class="text-xs font-light text-[#686868] pt-1 truncate w-full">
+              items: Chains
+            </p>
           </div>
         </div>
       </div>

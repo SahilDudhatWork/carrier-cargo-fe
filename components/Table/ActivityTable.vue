@@ -462,7 +462,6 @@ export default {
       this.isAssignVehicleModal = false;
     },
     async handleAssignOperator(selectedOperator, carrierReference) {
-      this.isLoading = true;
       this.carrierReference = carrierReference;
       this.selectedOperator = selectedOperator;
       const form = {
@@ -485,6 +484,7 @@ export default {
         });
         return;
       }
+      this.isLoading = true;
       try {
         await this.validateCarrierReference({
           carrierReference: this.carrierReference,
@@ -504,7 +504,6 @@ export default {
       }
     },
     async handleAssignVehicle(selectedVehicle) {
-      this.isLoading = true;
       try {
         this.selectedVehicle = selectedVehicle;
         const form = {
@@ -531,6 +530,7 @@ export default {
           vehicleId: this.selectedVehicle?._id,
           carrierReference: this.carrierReference,
         };
+        this.isLoading = true;
         const res = await this.updateActivity({
           formData: formData,
           id: this.movementId,

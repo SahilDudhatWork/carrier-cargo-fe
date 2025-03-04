@@ -375,7 +375,6 @@ export default {
       this.formData.countryCode = item.value;
     },
     async addOperator() {
-      this.isLoading = true;
       try {
         this.errors = await this.$validateOperatorField({
           form: this.formData,
@@ -405,6 +404,7 @@ export default {
         this.formData.customsBadgeExpirationDate = this.$moment(
           this.formData.customsBadgeExpirationDate
         ).format("YYYY-MM-DD");
+        this.isLoading = true;
         const response = await this.createOperator(this.formData);
         this.$toast.open({
           message: response.msg,

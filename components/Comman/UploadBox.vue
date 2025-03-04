@@ -113,6 +113,14 @@ export default {
       fileTypesLocal: this.fileTypes,
     };
   },
+  watch: {
+    filePreview(newVal) {
+      this.filePreviewLocal = newVal;
+    },
+    fileTypes(newVal) {
+      this.fileTypesLocal = newVal;
+    },
+  },
   methods: {
     triggerFileInputClick() {
       this.$refs.fileInput.click();

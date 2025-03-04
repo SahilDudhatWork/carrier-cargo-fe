@@ -385,7 +385,6 @@ export default {
     },
 
     async EditOperator() {
-      this.isLoading = true;
       try {
         this.errors = await this.$validateOperatorField({
           form: this.formData,
@@ -397,6 +396,7 @@ export default {
           });
           return;
         }
+        this.isLoading = true;
         const response = await this.updateOperator(this.formData);
         this.$toast.open({
           message: response.msg,

@@ -364,7 +364,6 @@ export default {
       this.formData.countryCode = item.value;
     },
     async addVehicle() {
-      this.isLoading = true;
       try {
         this.errors = await this.$validateVehicleField({ form: this.formData });
         if (Object.keys(this.errors).length > 0) {
@@ -406,7 +405,7 @@ export default {
           this.formData.modeOfTransportation =
             this.selectedModeOfTransportationItem;
         }
-
+        this.isLoading = true;
         const response = await this.createVehicle(this.formData);
         this.$toast.open({
           message: response.msg,
