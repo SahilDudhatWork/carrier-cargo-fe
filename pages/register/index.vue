@@ -762,7 +762,6 @@ export default {
       }
     },
     async sendRegistrationRequest() {
-      this.isLoader = true;
       try {
         this.errors = await this.$validateFormData({
           form: this.formData,
@@ -892,6 +891,8 @@ export default {
           });
           return;
         }
+        this.isLoader = true;
+
         const response = await this.signup(formData);
         this.$toast.open({
           message: response.msg,

@@ -163,7 +163,6 @@ export default {
       this.isPassword = !this.isPassword;
     },
     async changePassword() {
-      this.isLoader = true;
       try {
         if (
           this.password &&
@@ -191,6 +190,7 @@ export default {
         } else {
           const accessEmail = this.$cookies.get("email");
           const token = this.$cookies.get("otpToken");
+          this.isLoader = true;
           const res = await this.resetPassword({
             email: accessEmail,
             password: this.password,
