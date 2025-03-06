@@ -78,6 +78,7 @@
       <img v-else src="@/static/svg/image.svg" alt="Upload Image" />
     </div>
     <input
+      v-if="!filePreviewLocal"
       type="file"
       ref="fileInput"
       style="display: none"
@@ -123,7 +124,9 @@ export default {
   },
   methods: {
     triggerFileInputClick() {
-      this.$refs.fileInput.click();
+      if (this.$refs.fileInput) {
+        this.$refs.fileInput.click();
+      }
     },
     handleFileChange(event) {
       const file = event.target.files[0];
