@@ -66,6 +66,309 @@
         @downloadDocument="downloadFileItem"
       />
       <div
+        class="mt-5"
+        v-if="
+          activitySingleData?.documents &&
+          Object.values(activitySingleData.documents).some(
+            (arr) => arr.length > 0
+          )
+        "
+      >
+        <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
+        <div
+          class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
+        >
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.cartaPorte?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.cartaPorte[0]
+            "
+            title="CARTA PORTE"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.cartaPorte?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(activitySingleData?.documents?.cartaPorte?.[0])
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.doda?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.doda[0]
+            "
+            title="DODA"
+            :fileTypes="fileTypes[activitySingleData?.documents?.doda?.[0]]"
+            @downloadFileItem="
+              downloadFileItem(activitySingleData?.documents?.doda?.[0])
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.entryPrefileInbond?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.entryPrefileInbond[0]
+            "
+            title="ENTRY / PREFILE / INBOND"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.entryPrefileInbond?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.entryPrefileInbond?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.itnInbondNoItnNeeded?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.itnInbondNoItnNeeded[0]
+            "
+            title="ITN # / INBOND / NO ITN NEEDED"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.letterWithInstructionsMemo?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.letterWithInstructionsMemo[0]
+            "
+            title="LETTER WITH INSTRUCTIONS/ MEMO"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.oversizeNotificationUser?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.oversizeNotificationUser[0]
+            "
+            title="OVERSIZE NOTIFICATION USER"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.oversizeNotificationUser?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.oversizeNotificationUser?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.overweightPermit?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.overweightPermit[0]
+            "
+            title="OVERWEIGHT PERMIT"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.overweightPermit?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.hazmatBol?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.hazmatBol[0]
+            "
+            title="HAZMAT BOL"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.hazmatBol?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(activitySingleData?.documents?.hazmatBol?.[0])
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.hazmatSdsSafetyDataSheet[0]
+            "
+            title="HAZMAT SDS (SAFETY DATA SHEET)"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.sagarpaPackageAgriculture?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.sagarpaPackageAgriculture[0]
+            "
+            title="SAGARPA PACKAGE (AGRICULTURE)"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.profepaPackageEnvironmental?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.profepaPackageEnvironmental[0]
+            "
+            title="PROFEPA PACKAGE (ENVIRONMENTAL)"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.intercambioTrailerRelease?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.intercambioTrailerRelease[0]
+            "
+            title="INTERCAMBIO (TRAILER RELEASE)"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.intercambioTrailerRelease?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.intercambioTrailerRelease?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.sedenaPackage?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.sedenaPackage[0]
+            "
+            title="SEDENA PACKAGE"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.sedenaPackage?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.sedenaPackage?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.damagesDiscrepancies?.length
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.damagesDiscrepancies[0]
+            "
+            title="DAMAGES / DISCREPANCIES"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.damagesDiscrepancies?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.damagesDiscrepancies?.[0]
+              )
+            "
+          />
+        </div>
+      </div>
+      <!-- <div
         class="mt-4 bg-[#F7F7F7] px-2 rounded-lg py-2"
         v-if="
           activitySingleData?.documents && activitySingleData?.documents.length
@@ -114,12 +417,209 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="bg-[#E6E6E6] h-[1px] w-full mt-6"></div>
     <div class="mt-5" v-if="activitySingleData?.carrierData">
       <div class="mt-5">
         <CarrierInfo :activitySingleData="activitySingleData" />
+        <div
+          class="mt-5"
+          v-if="
+            activitySingleData?.typeOfService?.title === 'Northbound Service' ||
+            activitySingleData?.typeOfService?.title === 'Southbound'
+          "
+        >
+          <h1 class="text-[#000000] font-bold text-lg mb-4">
+            Carrier documents
+          </h1>
+          <div
+            class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
+          >
+            <UploadBox
+              v-if="userProfile?.companyFormationType === 'MEXICO'"
+              v-model="formData.cartaPorteFolio"
+              :filePreview="
+                cartaPorteFolioPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.cartaPorteFolio?.[0]) ||
+                null
+              "
+              @file-selected="handleCartaPorteFolioFile"
+              title="CARTA PORTE FOLIO"
+              :fileTypes="
+                fileTypes[activitySingleData?.documents?.cartaPorteFolio?.[0]]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.cartaPorteFolio?.[0]
+                )
+              "
+            />
+
+            <UploadBox
+              v-model="formData.aceEManifest"
+              :filePreview="
+                aceEManifestPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.aceEManifest?.[0]) ||
+                null
+              "
+              @file-selected="handleAceEManifestFile"
+              title="ACE E MANIFEST"
+              :fileTypes="
+                fileTypes[activitySingleData?.documents?.aceEManifest?.[0]]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.aceEManifest?.[0]
+                )
+              "
+            />
+
+            <UploadBox
+              v-if="
+                activitySingleData?.specialRequirements?.some((req) =>
+                  req.type.includes('Over Size')
+                )
+              "
+              v-model="formData.oversizePermitCarrier"
+              :filePreview="
+                oversizePermitCarrierPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.oversizePermitCarrier?.[0]) ||
+                null
+              "
+              @file-selected="handleOversizePermitCarrierFile"
+              title="OVERSIZE PERMIT CARRIER"
+              :fileTypes="
+                fileTypes[
+                  activitySingleData?.documents?.oversizePermitCarrier?.[0]
+                ]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.oversizePermitCarrier?.[0]
+                )
+              "
+            />
+            <UploadBox
+              v-if="
+                activitySingleData?.specialRequirements?.some((req) =>
+                  req.type.includes('Over Weight')
+                )
+              "
+              v-model="formData.overweightPermit"
+              :filePreview="
+                overweightPermitPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.overweightPermit?.[0]) ||
+                null
+              "
+              @file-selected="handleOverweightPermitFile"
+              title="OVERWEIGHT PERMIT"
+              :fileTypes="
+                fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.overweightPermit?.[0]
+                )
+              "
+            />
+            <UploadBox
+              v-if="
+                activitySingleData?.modeOfTransportation?.title === 'Reefer'
+              "
+              v-model="formData.temperatureControlIn"
+              :filePreview="
+                temperatureControlInPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.temperatureControlIn?.[0]) ||
+                null
+              "
+              @file-selected="handleTemperatureControlInFile"
+              title="TEMPERATURE CONTROL IN"
+              :fileTypes="
+                fileTypes[
+                  activitySingleData?.documents?.temperatureControlIn?.[0]
+                ]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.temperatureControlIn?.[0]
+                )
+              "
+            />
+            <UploadBox
+              v-if="
+                activitySingleData?.modeOfTransportation?.title === 'Reefer'
+              "
+              v-model="formData.temperatureControlOut"
+              :filePreview="
+                temperatureControlOutPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.temperatureControlOut?.[0]) ||
+                null
+              "
+              @file-selected="handleTemperatureControlOutFile"
+              title="TEMPERATURE CONTROL OUT"
+              :fileTypes="
+                fileTypes[
+                  activitySingleData?.documents?.temperatureControlOut?.[0]
+                ]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.temperatureControlOut?.[0]
+                )
+              "
+            />
+
+            <UploadBox
+              v-model="formData.proofOfDelivery"
+              :filePreview="
+                proofOfDeliveryPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.proofOfDelivery?.[0]) ||
+                null
+              "
+              @file-selected="handleProofOfDeliveryFile"
+              title="PROOF OF DELIVERY"
+              :fileTypes="
+                fileTypes[activitySingleData?.documents?.proofOfDelivery?.[0]]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.proofOfDelivery?.[0]
+                )
+              "
+            />
+
+            <UploadBox
+              v-model="formData.damagesDiscrepancies"
+              :filePreview="
+                damagesDiscrepanciesPreview ||
+                (activitySingleData?.documents &&
+                  activitySingleData?.documents?.damagesDiscrepancies?.[0]) ||
+                null
+              "
+              @file-selected="handleDamagesDiscrepanciesFile"
+              title="DAMAGES / DISCREPANCIES"
+              :fileTypes="
+                fileTypes[
+                  activitySingleData?.documents?.damagesDiscrepancies?.[0]
+                ]
+              "
+              @downloadFileItem="
+                downloadFileItem(
+                  activitySingleData?.documents?.damagesDiscrepancies?.[0]
+                )
+              "
+            />
+          </div>
+        </div>
+
         <!-- <div class="mt-4">
           <h1 class="text-[#B9B9B9] text-[10px] font-semibold">CARRIER DOC</h1>
           <div>
@@ -270,479 +770,7 @@
     >
       <ProofOfPhotography :activitySingleData="activitySingleData" />
     </div>
-    <div
-      class="mt-5"
-      v-if="
-        activitySingleData?.typeOfService?.title === 'Northbound Service' ||
-        activitySingleData?.typeOfService?.title === 'Southbound'
-      "
-    >
-      <h1 class="text-[#000000] font-bold text-lg mb-4">Carrier documents</h1>
-      <div
-        class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
-      >
-        <UploadBox
-          v-if="userProfile?.companyFormationType === 'MEXICO'"
-          v-model="formData.cartaPorteFolio"
-          :filePreview="
-            cartaPorteFolioPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.cartaPorteFolio?.[0]) ||
-            null
-          "
-          @file-selected="handleCartaPorteFolioFile"
-          title="CARTA PORTE FOLIO"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.cartaPorteFolio?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.cartaPorteFolio?.[0]
-            )
-          "
-        />
 
-        <UploadBox
-          v-model="formData.aceEManifest"
-          :filePreview="
-            aceEManifestPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.aceEManifest?.[0]) ||
-            null
-          "
-          @file-selected="handleAceEManifestFile"
-          title="ACE E MANIFEST"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.aceEManifest?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(activitySingleData?.documents?.aceEManifest?.[0])
-          "
-        />
-
-        <UploadBox
-          v-if="
-            activitySingleData?.specialRequirements?.some((req) =>
-              req.type.toLowerCase().includes('Over Size')
-            )
-          "
-          v-model="formData.oversizePermitCarrier"
-          :filePreview="
-            oversizePermitCarrierPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.oversizePermitCarrier?.[0]) ||
-            null
-          "
-          @file-selected="handleOversizePermitCarrierFile"
-          title="OVERSIZE PERMIT CARRIER"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.oversizePermitCarrier?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.oversizePermitCarrier?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.specialRequirements?.some((req) =>
-              req.type.toLowerCase().includes('Over Weight')
-            )
-          "
-          v-model="formData.overweightPermit"
-          :filePreview="
-            overweightPermitPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.overweightPermit?.[0]) ||
-            null
-          "
-          @file-selected="handleOverweightPermitFile"
-          title="OVERWEIGHT PERMIT"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.overweightPermit?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="activitySingleData?.modeOfTransportation?.title === 'Reefer'"
-          v-model="formData.temperatureControlIn"
-          :filePreview="
-            temperatureControlInPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.temperatureControlIn?.[0]) ||
-            null
-          "
-          @file-selected="handleTemperatureControlInFile"
-          title="TEMPERATURE CONTROL IN"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.temperatureControlIn?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.temperatureControlIn?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="activitySingleData?.modeOfTransportation?.title === 'Reefer'"
-          v-model="formData.temperatureControlOut"
-          :filePreview="
-            temperatureControlOutPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.temperatureControlOut?.[0]) ||
-            null
-          "
-          @file-selected="handleTemperatureControlOutFile"
-          title="TEMPERATURE CONTROL OUT"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.temperatureControlOut?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.temperatureControlOut?.[0]
-            )
-          "
-        />
-
-        <UploadBox
-          v-model="formData.proofOfDelivery"
-          :filePreview="
-            proofOfDeliveryPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.proofOfDelivery?.[0]) ||
-            null
-          "
-          @file-selected="handleProofOfDeliveryFile"
-          title="PROOF OF DELIVERY"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.proofOfDelivery?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.proofOfDelivery?.[0]
-            )
-          "
-        />
-
-        <UploadBox
-          v-model="formData.damagesDiscrepancies"
-          :filePreview="
-            damagesDiscrepanciesPreview ||
-            (activitySingleData?.documents &&
-              activitySingleData?.documents?.damagesDiscrepancies?.[0]) ||
-            null
-          "
-          @file-selected="handleDamagesDiscrepanciesFile"
-          title="DAMAGES / DISCREPANCIES"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.damagesDiscrepancies?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.damagesDiscrepancies?.[0]
-            )
-          "
-        />
-      </div>
-    </div>
-    <div
-      class="mt-5"
-      v-if="
-        activitySingleData?.documents &&
-        Object.values(activitySingleData.documents).some(
-          (arr) => arr.length > 0
-        )
-      "
-    >
-      <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
-      <div
-        class="mt-5 grid xxl:grid-cols-6 xl:grid-cols-4 sm:grid-cols-2 grid-cols-2 lg:grid-cols-3 gap-y-5 mb-10"
-      >
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.cartaPorte?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.cartaPorte[0]
-          "
-          title="CARTA PORTE"
-          :fileTypes="fileTypes[activitySingleData?.documents?.cartaPorte?.[0]]"
-          @downloadFileItem="
-            downloadFileItem(activitySingleData?.documents?.cartaPorte?.[0])
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.doda?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.doda[0]
-          "
-          title="DODA"
-          :fileTypes="fileTypes[activitySingleData?.documents?.doda?.[0]]"
-          @downloadFileItem="
-            downloadFileItem(activitySingleData?.documents?.doda?.[0])
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.entryPrefileInbond?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.entryPrefileInbond[0]
-          "
-          title="ENTRY / PREFILE / INBOND"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.entryPrefileInbond?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.entryPrefileInbond?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.itnInbondNoItnNeeded?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.itnInbondNoItnNeeded[0]
-          "
-          title="ITN # / INBOND / NO ITN NEEDED"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.letterWithInstructionsMemo?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.letterWithInstructionsMemo[0]
-          "
-          title="LETTER WITH INSTRUCTIONS/ MEMO"
-          :fileTypes="
-            fileTypes[
-              activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
-            ]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.oversizeNotificationUser?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.oversizeNotificationUser[0]
-          "
-          title="OVERSIZE NOTIFICATION USER"
-          :fileTypes="
-            fileTypes[
-              activitySingleData?.documents?.oversizeNotificationUser?.[0]
-            ]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.oversizeNotificationUser?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.overweightPermit?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.overweightPermit[0]
-          "
-          title="OVERWEIGHT PERMIT"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.overweightPermit?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.hazmatBol?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.hazmatBol[0]
-          "
-          title="HAZMAT BOL"
-          :fileTypes="fileTypes[activitySingleData?.documents?.hazmatBol?.[0]]"
-          @downloadFileItem="
-            downloadFileItem(activitySingleData?.documents?.hazmatBol?.[0])
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.hazmatSdsSafetyDataSheet[0]
-          "
-          title="HAZMAT SDS (SAFETY DATA SHEET)"
-          :fileTypes="
-            fileTypes[
-              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
-            ]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.sagarpaPackageAgriculture?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.sagarpaPackageAgriculture[0]
-          "
-          title="SAGARPA PACKAGE (AGRICULTURE)"
-          :fileTypes="
-            fileTypes[
-              activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
-            ]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.profepaPackageEnvironmental?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.profepaPackageEnvironmental[0]
-          "
-          title="PROFEPA PACKAGE (ENVIRONMENTAL)"
-          :fileTypes="
-            fileTypes[
-              activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
-            ]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.intercambioTrailerRelease?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.intercambioTrailerRelease[0]
-          "
-          title="INTERCAMBIO (TRAILER RELEASE)"
-          :fileTypes="
-            fileTypes[
-              activitySingleData?.documents?.intercambioTrailerRelease?.[0]
-            ]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.intercambioTrailerRelease?.[0]
-            )
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.sedenaPackage?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.sedenaPackage[0]
-          "
-          title="SEDENA PACKAGE"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.sedenaPackage?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(activitySingleData?.documents?.sedenaPackage?.[0])
-          "
-        />
-        <UploadBox
-          v-if="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.damagesDiscrepancies?.length
-          "
-          :isUploadMode="false"
-          :filePreview="
-            activitySingleData?.documents &&
-            activitySingleData?.documents?.damagesDiscrepancies[0]
-          "
-          title="DAMAGES / DISCREPANCIES"
-          :fileTypes="
-            fileTypes[activitySingleData?.documents?.damagesDiscrepancies?.[0]]
-          "
-          @downloadFileItem="
-            downloadFileItem(
-              activitySingleData?.documents?.damagesDiscrepancies?.[0]
-            )
-          "
-        />
-      </div>
-    </div>
     <loading
       :active="isLoader"
       :is-full-page="true"

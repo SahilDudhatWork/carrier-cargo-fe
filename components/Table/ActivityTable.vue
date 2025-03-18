@@ -169,6 +169,13 @@
                     @click="reAssignRequest(item?.movementId)"
                     >Reassign</span
                   >
+                  <span
+                    v-if="item?.status === 'Pending'"
+                    class="text-[#FEFEFE] font-medium text-[10px] py-0.5 px-3.5 rounded"
+                    :style="{ backgroundColor: '#989898' }"
+                    @click="$emit('handleSeeMoreClick', item?.movementId)"
+                    >Upload Doc</span
+                  >
                 </td>
               </template>
               <td class="px-6 py-6">
