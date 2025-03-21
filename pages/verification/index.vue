@@ -122,20 +122,21 @@ export default {
           this.$cookies.remove("email");
 
           const response = await this.checkPermissions();
+          const redirectUrl = this.$route.query.redirect
+            ? decodeURIComponent(this.$route.query.redirect)
+            : null;
 
-          if (response && response.data && response.data.menuDetails) {
+          let targetRoute = "/dashboard";
+
+          if (response?.data?.menuDetails) {
             const filteredMenu = response.data.menuDetails.filter(
               (menu) => menu.read
             );
-
             if (filteredMenu.length > 0) {
-              this.$router.push(filteredMenu[0].to);
-            } else {
-              this.$router.push("/dashboard");
+              targetRoute = filteredMenu[0].to;
             }
-          } else {
-            this.$router.push("/dashboard");
           }
+          this.$router.push(redirectUrl || targetRoute);
         }
         this.isButtonLoader = false;
       } catch (error) {

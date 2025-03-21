@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-export default async function ({ store, redirect }) {
+export default async function ({ store, redirect, route }) {
   let token = Cookies.get("token");
   if (token) {
     try {
@@ -9,16 +9,17 @@ export default async function ({ store, redirect }) {
       if (res.data.isValid == true) {
         await store.dispatch("auth/profile");
       } else {
-        return redirect("/login");
+        return redirect(`/login?redirect=${route.fullPath}`);
       }
     } catch (error) {
       // if (error.response.data.msg.name === "TokenExpiredError") {
       Cookies.remove("refreshToken");
       Cookies.remove("token");
-      return redirect("/login");
+      return redirect(`/login?redirect=${route.fullPath}`);
+
       // }
     }
   } else {
-    return redirect("/login");
+    return redirect(`/login?redirect=${route.fullPath}`);
   }
 }
