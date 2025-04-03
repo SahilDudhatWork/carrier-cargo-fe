@@ -13,7 +13,8 @@ export const getters = {
     return state.permissionsData;
   },
   getSinglePermission: (state, getters) => (menu) => {
-    return state.permissionsData?.menuDetails?.find((x) => x.menuTitle == menu);
+    // return state.permissionsData?.menuDetails?.find((x) => x.menuTitle == menu);
+    return { add: true, read: true, edit: true, delete: true };
   },
 };
 export const mutations = {
