@@ -714,6 +714,8 @@
         height="300px"
         :isMarkerEnabled="false"
         :isShowMarker="location?.lat && location?.long ? true : false"
+        :pickUpAddressData="activitySingleData?.pickUpAddressData"
+        :dropAddressData="activitySingleData?.dropAddressData"
       />
       <div class="bg-[#E6E6E6] h-[1px] w-full mt-7"></div>
     </div>
