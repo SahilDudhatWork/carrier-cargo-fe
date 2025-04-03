@@ -213,7 +213,7 @@ import { getToken } from "firebase/messaging";
 import { messaging } from "@/plugins/firebase";
 
 export default {
-  middleware: ["auth", "permissionCheck"],
+  middleware: ["auth"],
   computed: {
     ...mapGetters({
       profileData: "auth/getUserProfile",
@@ -367,7 +367,7 @@ export default {
     });
   },
   beforeMount() {
-    this.fetchPermissions();
+    // this.fetchPermissions();
     this.updateActiveTab(this.$router.history.current.fullPath);
   },
 };

@@ -29,6 +29,8 @@ export const actions = {
   async signin(ctx, payload) {
     try {
       const response = await $axios.post(`/v1/carrier/auth/logIn`, payload);
+      this.$cookies.set("token", response?.data?.accessToken);
+      this.$cookies.set("refreshToken", response?.data?.refreshToken);
       // this.$cookies.set("token", response.data.accessToken, {
       // expires: 7,
       // path: "/",

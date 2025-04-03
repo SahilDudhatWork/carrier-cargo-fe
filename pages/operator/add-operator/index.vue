@@ -23,8 +23,8 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="OperatorName"
+                id="OperatorName"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.operatorName
@@ -83,15 +83,15 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="MXIDBadge"
+                id="MXIDBadge"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.mxIdBadge
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="MX ID Badge"
+                placeholder="MX ID Badge Number"
                 v-model="formData.mxIdBadge"
               />
               <span class="error-msg" v-if="errors.mxIdBadge">{{
@@ -128,15 +128,15 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="FAST ID"
+                id="FAST ID"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.fastId
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="FAST ID"
+                placeholder="FAST ID Number"
                 v-model="formData.fastId"
               />
               <span class="error-msg" v-if="errors.fastId">{{
@@ -173,15 +173,15 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="MXDriver"
+                id="MXDriver"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.mxDriversLicense
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="MX Driver's License"
+                placeholder="MX Driver's License Number"
                 v-model="formData.mxDriversLicense"
               />
               <span class="error-msg" v-if="errors.mxDriversLicense">{{
@@ -227,7 +227,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="US Driver's License"
+                placeholder="US Driver's License Number"
                 v-model="formData.usDriversLicense"
               />
               <span class="error-msg" v-if="errors.usDriversLicense">{{

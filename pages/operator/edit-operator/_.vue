@@ -23,8 +23,8 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="OperatorName"
+                id="OperatorName"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.operatorName
@@ -83,8 +83,8 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="MXIDBadge"
+                id="MXIDBadge"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.mxIdBadge
@@ -127,8 +127,8 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="FASTID"
+                id="FASTID"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.fastId
@@ -171,8 +171,8 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="MXDriver"
+                id="MXDriver"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.mxDriversLicense
@@ -217,8 +217,8 @@
               >
               <input
                 type="text"
-                name="CompanyName"
-                id="CompanyName"
+                name="USDriver's"
+                id="USDriver's"
                 class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[14px] focus:outline-none"
                 :class="
                   errors.usDriversLicense

@@ -156,15 +156,19 @@ export default {
           this.$cookies.remove("refreshToken");
           this.formData.email = this.formData.email.toLowerCase();
           await this.signin(this.formData);
-          this.$cookies.set("email", this.formData?.email, { expires: 1 });
+          // this.$cookies.set("email", this.formData?.email, { expires: 1 });
           this.$toast.open({
-            message: this.$i18n.t("loginOTPMessage"),
+            message: this.$i18n.t("loginMessage"),
           });
-          const redirectUrl = this.$route.query.redirect;
-          const verificationPath = redirectUrl
-            ? `/verification?redirect=${redirectUrl}`
-            : "/verification";
-          this.$router.push(verificationPath);
+
+          const redirectUrl = this.$route.query.redirect
+            ? decodeURIComponent(this.$route.query.redirect)
+            : null;
+          if (redirectUrl) {
+            this.$router.push(redirectUrl);
+          } else {
+            this.$router.push("/dashboard");
+          }
           this.isLoader = false;
         }
       } catch (error) {
