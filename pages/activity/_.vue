@@ -576,7 +576,7 @@
               "
             />
 
-            <UploadBox
+            <!-- <UploadBox
               v-model="formData.proofOfDelivery"
               :filePreview="
                 proofOfDeliveryPreview ||
@@ -594,7 +594,7 @@
                   activitySingleData?.documents?.proofOfDelivery?.[0]
                 )
               "
-            />
+            /> -->
 
             <UploadBox
               v-model="formData.damagesDiscrepancies"
@@ -803,7 +803,7 @@ export default {
         overweightPermit: null,
         temperatureControlIn: null,
         temperatureControlOut: null,
-        proofOfDelivery: null,
+        // proofOfDelivery: null,
         damagesDiscrepancies: null,
       },
       cartaPorteFolioPreview: null,
@@ -812,7 +812,7 @@ export default {
       overweightPermitPreview: null,
       temperatureControlInPreview: null,
       temperatureControlOutPreview: null,
-      proofOfDeliveryPreview: null,
+      // proofOfDeliveryPreview: null,
       damagesDiscrepanciesPreview: null,
     };
   },
@@ -887,11 +887,11 @@ export default {
       await this.uploadDocumentFiles("temperatureControlOut", file);
     },
 
-    async handleProofOfDeliveryFile(file) {
-      this.formData.proofOfDelivery = file;
-      this.proofOfDeliveryPreview = file ? URL.createObjectURL(file) : null;
-      await this.uploadDocumentFiles("proofOfDelivery", file);
-    },
+    // async handleProofOfDeliveryFile(file) {
+    //   this.formData.proofOfDelivery = file;
+    //   this.proofOfDeliveryPreview = file ? URL.createObjectURL(file) : null;
+    //   await this.uploadDocumentFiles("proofOfDelivery", file);
+    // },
 
     async handleDamagesDiscrepanciesFile(file) {
       this.formData.damagesDiscrepancies = file;

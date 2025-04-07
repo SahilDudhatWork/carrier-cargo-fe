@@ -130,36 +130,43 @@ export default {
     },
     handleFileChange(event) {
       const file = event.target.files[0];
-      const validTypes = [
+      if (!file) return;
+
+      const allowedMimeTypes = [
         "application/pdf",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "text/plain",
-        "image/jpg",
         "image/jpeg",
+        "image/jpg",
         "image/png",
+      ];
+
+      const allowedExtensions = [
         "pdf",
         "doc",
         "docx",
         "xls",
         "xlsx",
         "txt",
+        "jpg",
+        "jpeg",
+        "png",
       ];
 
-      const fileExtension = file?.name.split(".").pop().toLowerCase();
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      const isMimeValid = allowedMimeTypes.includes(file.type);
+      const isExtensionValid = allowedExtensions.includes(fileExtension);
 
-      if (
-        validTypes.includes(file.type) ||
-        validTypes.includes(fileExtension)
-      ) {
+      if (isMimeValid && isExtensionValid) {
         this.errorMessage = null;
         this.filePreviewLocal = URL.createObjectURL(file);
-        this.fileTypesLocal = file.type;
+        this.fileTypesLocal = file.type || fileExtension;
         this.$emit("file-selected", file);
       } else {
-        this.errorMessage = `Invalid file type. Only XLS, .XLSX, .TXT, .DOC, .DOCX, .JPG, .PNG, and .PDF are allowed.`;
+        this.errorMessage = `Invalid file type. Only XLS, XLSX, TXT, DOC, DOCX, JPG, JPEG, PNG, and PDF are allowed.`;
         this.filePreviewLocal = null;
         this.fileTypesLocal = null;
       }

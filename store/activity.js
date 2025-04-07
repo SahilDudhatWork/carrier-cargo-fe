@@ -88,7 +88,7 @@ export const actions = {
   },
   async uploadFile(ctx, { id, data }) {
     try {
-      const response = await $axios.post(`/v1/common/qr&proof&doc/${id}`, data);
+      const response = await $axios.post(`/v1/common/qr&proof/${id}`, data);
       return response;
     } catch (error) {
       throw error;
