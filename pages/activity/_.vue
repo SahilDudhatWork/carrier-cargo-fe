@@ -68,10 +68,8 @@
       <div
         class="mt-5"
         v-if="
-          activitySingleData?.documents &&
-          Object.values(activitySingleData.documents).some(
-            (arr) => arr.length > 0
-          )
+          activitySingleData?.reqDocFields?.User &&
+          activitySingleData?.carrierData
         "
       >
         <h1 class="text-[#000000] font-bold text-lg mb-4">User documents</h1>
@@ -80,13 +78,13 @@
         >
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.cartaPorte?.length
+              activitySingleData?.reqDocFields?.User &&
+              'cartaPorte' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.cartaPorte[0]
+              activitySingleData?.documents?.cartaPorte?.[0]
             "
             title="CARTA PORTE"
             :fileTypes="
@@ -98,13 +96,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.doda?.length
+              activitySingleData?.reqDocFields?.User &&
+              'doda' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.doda[0]
+              activitySingleData?.documents?.doda?.[0]
             "
             title="DODA"
             :fileTypes="fileTypes[activitySingleData?.documents?.doda?.[0]]"
@@ -114,13 +112,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.entryPrefileInbond?.length
+              activitySingleData?.reqDocFields?.User &&
+              'entryPrefileInbond' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.entryPrefileInbond[0]
+              activitySingleData?.documents?.entryPrefileInbond?.[0]
             "
             title="ENTRY / PREFILE / INBOND"
             :fileTypes="
@@ -134,13 +132,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.itnInbondNoItnNeeded?.length
+              activitySingleData?.reqDocFields?.User &&
+              'itnInbondNoItnNeeded' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.itnInbondNoItnNeeded[0]
+              activitySingleData?.documents?.itnInbondNoItnNeeded?.[0]
             "
             title="ITN # / INBOND / NO ITN NEEDED"
             :fileTypes="
@@ -156,13 +154,14 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.letterWithInstructionsMemo?.length
+              activitySingleData?.reqDocFields?.User &&
+              'letterWithInstructionsMemo' in
+                activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.letterWithInstructionsMemo[0]
+              activitySingleData?.documents?.letterWithInstructionsMemo?.[0]
             "
             title="LETTER WITH INSTRUCTIONS/ MEMO"
             :fileTypes="
@@ -178,13 +177,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.oversizeNotificationUser?.length
+              activitySingleData?.reqDocFields?.User &&
+              'oversizeNotificationUser' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.oversizeNotificationUser[0]
+              activitySingleData?.documents?.oversizeNotificationUser?.[0]
             "
             title="OVERSIZE NOTIFICATION USER"
             :fileTypes="
@@ -200,13 +199,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.overweightPermit?.length
+              activitySingleData?.reqDocFields?.User &&
+              'overweightPermit' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.overweightPermit[0]
+              activitySingleData?.documents?.overweightPermit?.[0]
             "
             title="OVERWEIGHT PERMIT"
             :fileTypes="
@@ -220,13 +219,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.hazmatBol?.length
+              activitySingleData?.reqDocFields?.User &&
+              'hazmatBol' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.hazmatBol[0]
+              activitySingleData?.documents?.hazmatBol?.[0]
             "
             title="HAZMAT BOL"
             :fileTypes="
@@ -238,13 +237,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.length
+              activitySingleData?.reqDocFields?.User &&
+              'hazmatSdsSafetyDataSheet' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.hazmatSdsSafetyDataSheet[0]
+              activitySingleData?.documents?.hazmatSdsSafetyDataSheet?.[0]
             "
             title="HAZMAT SDS (SAFETY DATA SHEET)"
             :fileTypes="
@@ -260,13 +259,14 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.sagarpaPackageAgriculture?.length
+              activitySingleData?.reqDocFields?.User &&
+              'sagarpaPackageAgriculture' in
+                activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.sagarpaPackageAgriculture[0]
+              activitySingleData?.documents?.sagarpaPackageAgriculture?.[0]
             "
             title="SAGARPA PACKAGE (AGRICULTURE)"
             :fileTypes="
@@ -282,13 +282,14 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.profepaPackageEnvironmental?.length
+              activitySingleData?.reqDocFields?.User &&
+              'profepaPackageEnvironmental' in
+                activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.profepaPackageEnvironmental[0]
+              activitySingleData?.documents?.profepaPackageEnvironmental?.[0]
             "
             title="PROFEPA PACKAGE (ENVIRONMENTAL)"
             :fileTypes="
@@ -304,13 +305,14 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.intercambioTrailerRelease?.length
+              activitySingleData?.reqDocFields?.User &&
+              'intercambioTrailerRelease' in
+                activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.intercambioTrailerRelease[0]
+              activitySingleData?.documents?.intercambioTrailerRelease?.[0]
             "
             title="INTERCAMBIO (TRAILER RELEASE)"
             :fileTypes="
@@ -326,13 +328,13 @@
           />
           <UploadBox
             v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.sedenaPackage?.length
+              activitySingleData?.reqDocFields?.User &&
+              'sedenaPackage' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.sedenaPackage[0]
+              activitySingleData?.documents?.sedenaPackage?.[0]
             "
             title="SEDENA PACKAGE"
             :fileTypes="
@@ -345,24 +347,38 @@
             "
           />
           <UploadBox
-            v-if="
-              activitySingleData?.documents &&
-              activitySingleData?.documents?.damagesDiscrepancies?.length
-            "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.damagesDiscrepancies[0]
+              activitySingleData?.documents?.damagesDiscrepanciesForUser?.[0]
             "
             title="DAMAGES / DISCREPANCIES"
             :fileTypes="
               fileTypes[
-                activitySingleData?.documents?.damagesDiscrepancies?.[0]
+                activitySingleData?.documents?.damagesDiscrepanciesForUser?.[0]
               ]
             "
             @downloadFileItem="
               downloadFileItem(
-                activitySingleData?.documents?.damagesDiscrepancies?.[0]
+                activitySingleData?.documents?.damagesDiscrepanciesForUser?.[0]
+              )
+            "
+          />
+
+          <UploadBox
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents?.proofOfDeliveryForUser?.[0]
+            "
+            title="PROOF OF DELIVERY"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.proofOfDeliveryForUser?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.proofOfDeliveryForUser?.[0]
               )
             "
           />
@@ -576,44 +592,27 @@
               "
             />
 
-            <!-- <UploadBox
-              v-model="formData.proofOfDelivery"
-              :filePreview="
-                proofOfDeliveryPreview ||
-                (activitySingleData?.documents &&
-                  activitySingleData?.documents?.proofOfDelivery?.[0]) ||
-                null
-              "
-              @file-selected="handleProofOfDeliveryFile"
-              title="PROOF OF DELIVERY"
-              :fileTypes="
-                fileTypes[activitySingleData?.documents?.proofOfDelivery?.[0]]
-              "
-              @downloadFileItem="
-                downloadFileItem(
-                  activitySingleData?.documents?.proofOfDelivery?.[0]
-                )
-              "
-            /> -->
-
             <UploadBox
-              v-model="formData.damagesDiscrepancies"
+              v-model="formData.damagesDiscrepanciesForCarrier"
               :filePreview="
-                damagesDiscrepanciesPreview ||
+                damagesDiscrepanciesForCarrierPreview ||
                 (activitySingleData?.documents &&
-                  activitySingleData?.documents?.damagesDiscrepancies?.[0]) ||
+                  activitySingleData?.documents
+                    ?.damagesDiscrepanciesForCarrier?.[0]) ||
                 null
               "
               @file-selected="handleDamagesDiscrepanciesFile"
               title="DAMAGES / DISCREPANCIES"
               :fileTypes="
                 fileTypes[
-                  activitySingleData?.documents?.damagesDiscrepancies?.[0]
+                  activitySingleData?.documents
+                    ?.damagesDiscrepanciesForCarrier?.[0]
                 ]
               "
               @downloadFileItem="
                 downloadFileItem(
-                  activitySingleData?.documents?.damagesDiscrepancies?.[0]
+                  activitySingleData?.documents
+                    ?.damagesDiscrepanciesForCarrier?.[0]
                 )
               "
             />
@@ -804,7 +803,7 @@ export default {
         temperatureControlIn: null,
         temperatureControlOut: null,
         // proofOfDelivery: null,
-        damagesDiscrepancies: null,
+        damagesDiscrepanciesForCarrier: null,
       },
       cartaPorteFolioPreview: null,
       aceEManifestPreview: null,
@@ -813,7 +812,7 @@ export default {
       temperatureControlInPreview: null,
       temperatureControlOutPreview: null,
       // proofOfDeliveryPreview: null,
-      damagesDiscrepanciesPreview: null,
+      damagesDiscrepanciesForCarrierPreview: null,
     };
   },
   watch: {
@@ -894,11 +893,11 @@ export default {
     // },
 
     async handleDamagesDiscrepanciesFile(file) {
-      this.formData.damagesDiscrepancies = file;
-      this.damagesDiscrepanciesPreview = file
+      this.formData.damagesDiscrepanciesForCarrier = file;
+      this.damagesDiscrepanciesForCarrierPreview = file
         ? URL.createObjectURL(file)
         : null;
-      await this.uploadDocumentFiles("damagesDiscrepancies", file);
+      await this.uploadDocumentFiles("damagesDiscrepanciesForCarrier", file);
     },
 
     async uploadDocumentFiles(fileName, file) {
@@ -906,7 +905,7 @@ export default {
         const formData = new FormData();
         formData.append(fileName, file);
         formData.append("movementId", this.movementId);
-
+        this.isLoader = true;
         const res = await this.uploadDocuments({
           id: this.movementId,
           data: formData,
@@ -919,11 +918,14 @@ export default {
 
         await this.getSingleTransitInfo();
       } catch (error) {
+        this.isLoader = false;
         console.error(error);
         this.$toast.open({
           message: error?.response?.data?.msg || this.$i18n.t("errorMessage"),
           type: "error",
         });
+      } finally {
+        this.isLoader = false;
       }
     },
 
@@ -941,6 +943,10 @@ export default {
         mp4: "video",
         mp3: "audio",
         txt: "text",
+        doc: "application/msword",
+        docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        xls: "application/vnd.ms-excel",
+        xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       };
       return fileTypes[extension] || "unknown";
     },

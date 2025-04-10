@@ -75,10 +75,17 @@
         @click="$emit('downloadFileItem')"
       />
 
+      <img
+        v-else-if="fileTypesLocal === 'unknown'"
+        src="@/static/Images/default-image.webp"
+        alt="Upload Image"
+        class="w-full h-full object-cover rounded-[10px]"
+      />
+
       <img v-else src="@/static/svg/image.svg" alt="Upload Image" />
     </div>
     <input
-      v-if="!filePreviewLocal"
+      v-if="!filePreviewLocal && isUploadMode"
       type="file"
       ref="fileInput"
       style="display: none"

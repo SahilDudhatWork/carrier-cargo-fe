@@ -50,7 +50,73 @@
               :class="isShow ? 'sm:!mr-[15rem]' : 'sm:!mr-[4rem]'"
             >
               <img src="@/static/svg/moon.svg" alt="" />
-              <img src="@/static/svg/bell.svg" alt="" />
+              <div
+                class="relative z-50 cursor-pointer"
+                @click="isNotification = !isNotification"
+              >
+                <img src="@/static/svg/bell.svg" alt="" class="w-10 h-10" />
+                <div
+                  class="absolute top-0 right-0 bg-red-600 border-2 border-white rounded-full w-5 h-5 flex items-center justify-center"
+                >
+                  <span class="text-white text-xs">
+                    {{ notificationData?.length || 0 }}
+                  </span>
+                </div>
+                <div
+                  v-if="isNotification"
+                  v-click-outside="closeNotificationDropdown"
+                  class="z-50 absolute top-10 right-0 bg-white divide-y divide-gray-100 sm:w-96 w-80 shadow rounded-xl notification-dropdown-content"
+                  style="box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 50px 0px"
+                >
+                  <div
+                    class="py-2 cursor-pointer p-3"
+                    @click="closeNotificationDropdown"
+                  >
+                    <h1 class="text-[#11263C] font-bold text-xl">
+                      Notifications
+                    </h1>
+                    <div
+                      v-if="notificationData && notificationData?.length > 0"
+                    >
+                      <ul class="py-2 cursor-pointer">
+                        <li
+                          v-for="(item, key) in notificationData.slice(0, 5)"
+                          :key="key"
+                        >
+                          <nuxt-link :to="`/activity/${item?.redirectId}`">
+                            <span
+                              class="block py-2.5 text-[#333333] font-medium text-sm border-b border-gray-300"
+                            >
+                              {{
+                                item?.title?.length > 90
+                                  ? item?.title?.substring(0, 90) + "..."
+                                  : item?.title
+                              }}
+                            </span>
+                          </nuxt-link>
+                        </li>
+                      </ul>
+
+                      <div class="flex justify-center pt-3">
+                        <nuxt-link to="/notifications">
+                          <button
+                            class="text-sm text-blue-600 font-semibold underline"
+                          >
+                            View all
+                          </button>
+                        </nuxt-link>
+                      </div>
+                    </div>
+                    <div v-else>
+                      <span
+                        class="block py-2.5 text-gray-500 text-sm text-center"
+                      >
+                        No new notifications
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h1 class="text-[#11263C] font-semibold text-[16px] capitalize">
                 {{ profileData?.contactName }}
               </h1>
@@ -155,6 +221,7 @@
                     <img
                       :src="previousPath == tab.href ? tab.svg : tab.blackSvg"
                       alt=""
+                      class="w-5 h-5"
                     />
                     <div v-if="!isShow" :class="['tooltip', 'visible-tooltip']">
                       <span>
@@ -204,6 +271,8 @@ import userSvg from "@/static/svg/user.svg";
 import blackUserSvg from "@/static/svg/black-user.svg";
 import settingsSvg from "@/static/svg/settings.svg";
 import blackSettingsSvg from "@/static/svg/black-settings.svg";
+import notificationSvg from "@/static/svg/notification.svg";
+import blackNotificationsSvg from "@/static/svg/black-notification.svg";
 // import manageRoleSvg from "@/static/svg/manage-role.svg";
 // import subCarrierSvg from "@/static/svg/sub-carrier.svg";
 // import blackSubCarrierSvg from "@/static/svg/black-sub-carrier.svg";
@@ -225,8 +294,10 @@ export default {
   },
   data() {
     return {
+      notificationData: [],
       isSidebarOpen: false,
       isDropdown: false,
+      isNotification: false,
       isShow: true,
       sidebarWidth: "14rem",
       sideBarItems: [
@@ -273,6 +344,13 @@ export default {
         //   blackSvg: blackSubCarrierSvg,
         // },
         {
+          name: "Notifications",
+          href: "/notifications",
+          isActive: false,
+          svg: notificationSvg,
+          blackSvg: blackNotificationsSvg,
+        },
+        {
           name: "Settings",
           href: "/settings",
           isActive: false,
@@ -294,9 +372,13 @@ export default {
     ...mapActions({
       updateNotificationToken: "activity/updateNotificationToken",
       checkPermissions: "auth/checkPermissions",
+      fetchNotifications: "auth/fetchNotifications",
     }),
     closeDropdown() {
       this.isDropdown = false;
+    },
+    closeNotificationDropdown() {
+      this.isNotification = false;
     },
     logOut() {
       Cookies.remove("token");
@@ -360,8 +442,17 @@ export default {
         console.log(error, "error");
       }
     },
+    async getNotifications() {
+      try {
+        const res = await this.fetchNotifications();
+        this.notificationData = res.data.response;
+      } catch (error) {
+        console.log(error, "error");
+      }
+    },
   },
-  mounted() {
+  async mounted() {
+    await this.getNotifications();
     this.activate().then(() => {
       this.notificationToken();
     });
@@ -412,6 +503,17 @@ export default {
   position: absolute;
   top: 4px;
   right: 15%;
+  margin-top: -15px;
+  z-index: 1;
+  border-bottom: solid 15px #fff;
+  border-left: solid 12px transparent;
+  border-right: solid 12px transparent;
+}
+.notification-dropdown-content:after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 8px;
   margin-top: -15px;
   z-index: 1;
   border-bottom: solid 15px #fff;

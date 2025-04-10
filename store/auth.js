@@ -3,6 +3,8 @@ import $axios from "@/plugins/axios";
 export const state = () => ({
   profileData: {},
   permissionsData: {},
+  notificationData: [],
+  notificationPaginationData: {},
 });
 
 export const getters = {
@@ -16,6 +18,12 @@ export const getters = {
     // return state.permissionsData?.menuDetails?.find((x) => x.menuTitle == menu);
     return { add: true, read: true, edit: true, delete: true };
   },
+  getNotificationData(state) {
+    return state.notificationData;
+  },
+  getNotificationPaginationData(state) {
+    return state.notificationPaginationData;
+  },
 };
 export const mutations = {
   setUserProfile(state, payload) {
@@ -23,6 +31,12 @@ export const mutations = {
   },
   setPermissionsData(state, payload) {
     state.permissionsData = payload;
+  },
+  setNotificationData(state, payload) {
+    state.notificationData = payload;
+  },
+  setNotificationPaginationData(state, payload) {
+    state.notificationPaginationData = payload;
   },
 };
 
@@ -140,6 +154,22 @@ export const actions = {
   async uploadImage(ctx, payload) {
     try {
       const response = await $axios.post("/v1/common/imageUpload", payload);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async fetchNotifications(ctx, payload) {
+    try {
+      const page = payload?.page || "";
+      const limit = payload?.limit || "";
+      const response = await $axios.get(
+        `v1/carrier/notification?page=${page}&limit=${limit}`,
+        payload
+      );
+
+      ctx.commit("setNotificationData", response.data.response);
+      ctx.commit("setNotificationPaginationData", response.data.pagination);
       return response;
     } catch (error) {
       throw error;
