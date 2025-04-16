@@ -154,7 +154,7 @@
           </div>
           <div
             v-if="allOperatorData.length > 0"
-            class="grid sm:grid-cols-2 grid-cols-1 !gap-y-5 xxxl:gap-0 gap-3 overflow-y-auto sm:h-[480px] h-[350px]"
+            class="grid sm:grid-cols-2 grid-cols-1 !gap-y-5 xxxl:gap-0 gap-3 overflow-y-auto sm:max-h-[300px] max-h-[200px]"
           >
             <AssignOperator
               v-for="item in allOperatorData"
