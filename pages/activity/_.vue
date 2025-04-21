@@ -194,20 +194,22 @@
           <UploadBox
             v-if="
               activitySingleData?.reqDocFields?.User &&
-              'overweightPermit' in activitySingleData.reqDocFields.User
+              'overweightPermitUser' in activitySingleData.reqDocFields.User
             "
             :isUploadMode="false"
             :filePreview="
               activitySingleData?.documents &&
-              activitySingleData?.documents?.overweightPermit?.[0]
+              activitySingleData?.documents?.overweightPermitUser?.[0]
             "
-            title="OVERWEIGHT PERMIT"
+            title="OVERWEIGHT PERMIT USER"
             :fileTypes="
-              fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
+              fileTypes[
+                activitySingleData?.documents?.overweightPermitUser?.[0]
+              ]
             "
             @downloadFileItem="
               downloadFileItem(
-                activitySingleData?.documents?.overweightPermit?.[0]
+                activitySingleData?.documents?.overweightPermitUser?.[0]
               )
             "
           />
@@ -581,21 +583,24 @@
                   req.type.includes('Over Weight')
                 )
               "
-              v-model="formData.overweightPermit"
+              v-model="formData.overweightPermitCarrier"
               :filePreview="
-                overweightPermitPreview ||
+                overweightPermitCarrierPreview ||
                 (activitySingleData?.documents &&
-                  activitySingleData?.documents?.overweightPermit?.[0]) ||
+                  activitySingleData?.documents
+                    ?.overweightPermitCarrier?.[0]) ||
                 null
               "
-              @file-selected="handleOverweightPermitFile"
-              title="OVERWEIGHT PERMIT"
+              @file-selected="handleOverweightPermitCarrierFile"
+              title="OVERWEIGHT PERMIT CARRIER"
               :fileTypes="
-                fileTypes[activitySingleData?.documents?.overweightPermit?.[0]]
+                fileTypes[
+                  activitySingleData?.documents?.overweightPermitCarrier?.[0]
+                ]
               "
               @downloadFileItem="
                 downloadFileItem(
-                  activitySingleData?.documents?.overweightPermit?.[0]
+                  activitySingleData?.documents?.overweightPermitCarrier?.[0]
                 )
               "
             />
@@ -855,7 +860,7 @@ export default {
         cartaPorteFolio: null,
         aceEManifest: null,
         oversizePermitCarrier: null,
-        overweightPermit: null,
+        overweightPermitCarrier: null,
         temperatureControlIn: null,
         temperatureControlOut: null,
         // proofOfDelivery: null,
@@ -864,7 +869,7 @@ export default {
       cartaPorteFolioPreview: null,
       aceEManifestPreview: null,
       oversizePermitCarrierPreview: null,
-      overweightPermitPreview: null,
+      overweightPermitCarrierPreview: null,
       temperatureControlInPreview: null,
       temperatureControlOutPreview: null,
       // proofOfDeliveryPreview: null,
@@ -920,10 +925,12 @@ export default {
       await this.uploadDocumentFiles("oversizePermitCarrier", file);
     },
 
-    async handleOverweightPermitFile(file) {
-      this.formData.overweightPermit = file;
-      this.overweightPermitPreview = file ? URL.createObjectURL(file) : null;
-      await this.uploadDocumentFiles("overweightPermit", file);
+    async handleOverweightPermitCarrierFile(file) {
+      this.formData.overweightPermitCarrier = file;
+      this.overweightPermitCarrierPreview = file
+        ? URL.createObjectURL(file)
+        : null;
+      await this.uploadDocumentFiles("overweightPermitCarrier", file);
     },
 
     async handleTemperatureControlInFile(file) {
