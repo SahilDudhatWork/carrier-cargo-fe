@@ -340,6 +340,68 @@
               )
             "
           />
+
+          <UploadBox
+            v-if="
+              activitySingleData?.reqDocFields?.User &&
+              'overweightNotification' in activitySingleData.reqDocFields.User
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.overweightNotification?.[0]
+            "
+            title="OVERWEIGHT NOTIFICATION (AVISO)"
+            :fileTypes="
+              fileTypes[
+                activitySingleData?.documents?.overweightNotification?.[0]
+              ]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.overweightNotification?.[0]
+              )
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.reqDocFields?.User &&
+              'cuadernoAta' in activitySingleData.reqDocFields.User
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.cuadernoAta?.[0]
+            "
+            title="CUADERNO ATA"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.cuadernoAta?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(activitySingleData?.documents?.cuadernoAta?.[0])
+            "
+          />
+          <UploadBox
+            v-if="
+              activitySingleData?.reqDocFields?.User &&
+              'informalExport' in activitySingleData.reqDocFields.User
+            "
+            :isUploadMode="false"
+            :filePreview="
+              activitySingleData?.documents &&
+              activitySingleData?.documents?.informalExport?.[0]
+            "
+            title="INFORMAL EXPORT"
+            :fileTypes="
+              fileTypes[activitySingleData?.documents?.informalExport?.[0]]
+            "
+            @downloadFileItem="
+              downloadFileItem(
+                activitySingleData?.documents?.informalExport?.[0]
+              )
+            "
+          />
+
           <UploadBox
             :isUploadMode="false"
             :filePreview="
