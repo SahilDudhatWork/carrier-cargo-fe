@@ -17,6 +17,22 @@
             class="flex justify-between items-center sm:flex-row flex-col mt-5 mb-6"
           >
             <h1 class="font-semibold text-lg text-[#3683D5]">Assign Vehicle</h1>
+            <div class="relative">
+              <img
+                src="@/static/svg/search.svg"
+                alt=""
+                class="absolute right-3 top-[18px] cursor-pointer"
+              />
+              <input
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Search vehicle name/ID"
+                class="border border-gray-300 text-gray-900 rounded-lg block px-3 pr-4 xl:w-96 lg:w-80 py-[14px] focus:outline-none w-full"
+                v-model="search"
+                @keyup="searchText"
+              />
+            </div>
             <div
               v-if="allVehicleData?.length > 0"
               class="flex justify-end sm:gap-5 gap-2 items-center sm:mt-0 mt-3"
@@ -180,6 +196,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      search: "",
     };
   },
   computed: {
@@ -214,6 +231,8 @@ export default {
         await this.getAllVehicle({
           page: this.vehiclePaginationData.current_page - 1,
           limit: this.vehiclePaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -228,6 +247,8 @@ export default {
         await this.getAllVehicle({
           page: this.vehiclePaginationData.current_page + 1,
           limit: this.vehiclePaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -242,6 +263,8 @@ export default {
         await this.getAllVehicle({
           page: 1,
           limit: this.vehiclePaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -256,6 +279,8 @@ export default {
         await this.getAllVehicle({
           page: this.vehiclePaginationData?.total_page,
           limit: this.vehiclePaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -274,13 +299,17 @@ export default {
     },
     async getAllVehicle(payload) {
       try {
-        let { page, limit } = payload;
+        let { sortBy, page, limit, keyWord } = payload;
+        sortBy = sortBy || "";
         page = page || 1;
         limit = limit || 10;
+        keyWord = keyWord || "";
         this.isLoading = true;
         await this.fetchAllVehicle({
+          sortBy: sortBy,
           page: page,
           limit: limit,
+          keyWord: keyWord,
         });
       } catch (error) {
         console.log(error);
@@ -291,7 +320,7 @@ export default {
   },
   async mounted() {
     try {
-      await this.getAllVehicle({ sortBy: "all" });
+      await this.getAllVehicle({ sortBy: "all", keyWord: this.search });
       if (this.requestReassign) {
         this.updateSelectedVehicle(this.getSingleActivity?.vehicleData || null);
       }
@@ -302,6 +331,11 @@ export default {
         type: "error",
       });
     }
+  },
+  async created() {
+    this.searchText = this.$lodash.debounce(async (payload) => {
+      await this.getAllVehicle({ keyWord: this.search, sortBy: "all" });
+    }, 1000);
   },
 };
 </script>

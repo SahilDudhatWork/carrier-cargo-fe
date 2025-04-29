@@ -17,9 +17,9 @@
           >
             <div>
               <label
-                for="Vehicle Name"
+                for="Vehicle / Economic Number / Name"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                >Vehicle Name *</label
+                >Vehicle / Economic Number / Name *</label
               >
               <input
                 type="text"
@@ -31,7 +31,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="Vehicle Name"
+                placeholder="Vehicle / Economic Number / Name"
                 v-model="formData.vehicleName"
               />
               <span class="error-msg" v-if="errors.vehicleName">{{
@@ -373,45 +373,59 @@ export default {
           });
           return;
         }
-        this.formData.usPlatesExpirationDate = this.$moment(
-          this.formData.usPlatesExpirationDate
-        ).format("YYYY-MM-DD");
-        this.formData.mxInsurancePlatesExpirationDate = this.$moment(
-          this.formData.mxInsurancePlatesExpirationDate
-        ).format("YYYY-MM-DD");
-        this.formData.mxPlatesExpirationDate = this.$moment(
-          this.formData.mxPlatesExpirationDate
-        ).format("YYYY-MM-DD");
-        this.formData.usInsurancePlatesExpirationDate = this.$moment(
-          this.formData.usInsurancePlatesExpirationDate
-        ).format("YYYY-MM-DD");
-        if (
-          this.selectedTypeOfServiceItem &&
-          this.selectedTypeOfServiceItem.length > 0
-        ) {
-          this.formData.typeOfService = this.selectedTypeOfServiceItem;
+        const safeFormatDate = (date) => {
+          const formatted = this.$moment(date).format("YYYY-MM-DD");
+          return formatted === "Invalid date" ? null : formatted;
+        };
+
+        const formatIfValid = (key, date) =>
+          safeFormatDate(date) ? { [key]: safeFormatDate(date) } : {};
+
+        const {
+          usPlatesExpirationDate,
+          mxPlatesExpirationDate,
+          usInsurancePlatesExpirationDate,
+          mxInsurancePlatesExpirationDate,
+          ...restData
+        } = this.formData;
+
+        let filteredFormData = {
+          ...restData,
+          ...formatIfValid("usPlatesExpirationDate", usPlatesExpirationDate),
+          ...formatIfValid("mxPlatesExpirationDate", mxPlatesExpirationDate),
+          ...formatIfValid(
+            "usInsurancePlatesExpirationDate",
+            usInsurancePlatesExpirationDate
+          ),
+          ...formatIfValid(
+            "mxInsurancePlatesExpirationDate",
+            mxInsurancePlatesExpirationDate
+          ),
+        };
+
+        if (this.selectedTypeOfServiceItem?.length > 0) {
+          filteredFormData.typeOfService = this.selectedTypeOfServiceItem;
         }
-        if (
-          this.selectedTypeOfTransportationItem &&
-          this.selectedTypeOfTransportationItem.length > 0
-        ) {
-          this.formData.typeOfTransportation =
+        if (this.selectedTypeOfTransportationItem?.length > 0) {
+          filteredFormData.typeOfTransportation =
             this.selectedTypeOfTransportationItem;
         }
-        if (
-          this.selectedModeOfTransportationItem &&
-          this.selectedModeOfTransportationItem.length > 0
-        ) {
-          this.formData.modeOfTransportation =
+        if (this.selectedModeOfTransportationItem?.length > 0) {
+          filteredFormData.modeOfTransportation =
             this.selectedModeOfTransportationItem;
         }
+
+        const formData = Object.fromEntries(
+          Object.entries(filteredFormData).filter(
+            ([_, value]) =>
+              value !== "" && value !== null && value !== undefined
+          )
+        );
+
         this.isLoading = true;
-        const response = await this.createVehicle(this.formData);
-        this.$toast.open({
-          message: response.msg,
-        });
+        const response = await this.createVehicle(formData);
+        this.$toast.open({ message: response.msg });
         this.$router.push("/vehicle");
-        this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
         console.log(error);
@@ -444,7 +458,7 @@ export default {
       return this.selectedTypeOfServiceItem?.includes(id);
     },
     selectTypeOfTransportation(id) {
-      return this.selectedTypeOfTransportationItem?.includes(id);
+      return this.selectedTypeOfTransportationItem === id;
     },
     selectModeOfTransportation(id) {
       return this.selectedModeOfTransportationItem?.includes(id);
@@ -459,14 +473,9 @@ export default {
       }
     },
     selectTypeOfTransportationItem(id) {
-      if (this.selectedTypeOfTransportationItem.includes(id)) {
-        this.selectedTypeOfTransportationItem =
-          this.selectedTypeOfTransportationItem.filter(
-            (selectedId) => selectedId !== id
-          );
-      } else {
-        this.selectedTypeOfTransportationItem.push(id);
-      }
+      this.selectedModeOfTransportationItem = [];
+      if (this.selectedTypeOfTransportationItem === id) return;
+      this.selectedTypeOfTransportationItem = id;
     },
     selectModeOfTransportationItem(id) {
       if (this.selectedModeOfTransportationItem.includes(id)) {

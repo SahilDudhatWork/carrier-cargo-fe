@@ -442,9 +442,9 @@ export default {
         console.log(error, "error");
       }
     },
-    async getNotifications() {
+    async getNotifications(page = 1, limit = 10) {
       try {
-        const res = await this.fetchNotifications();
+        const res = await this.fetchNotifications({ page, limit });
         this.notificationData = res.data.response;
       } catch (error) {
         console.log(error, "error");
@@ -453,6 +453,20 @@ export default {
   },
   async mounted() {
     await this.getNotifications();
+
+    if ("BroadcastChannel" in window) {
+      const channel = new BroadcastChannel("firebase-notification");
+
+      channel.onmessage = async (event) => {
+        if (event.data.type === "NEW_NOTIFICATION") {
+          const page = event.data.page || 1;
+          const limit = event.data.limit || 10;
+
+          await this.getNotifications(page, limit);
+        }
+      };
+    }
+
     this.activate().then(() => {
       this.notificationToken();
     });

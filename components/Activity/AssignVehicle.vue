@@ -11,7 +11,7 @@
         <div>
           <div class="flex gap-3">
             <h1 class="text-[#1E1E1E] font-medium text-sm">
-              {{ allVehicleData?.usPlates }}
+              {{ allVehicleData?.vehicleName }}
             </h1>
             <div>
               <h1
@@ -28,12 +28,33 @@
               </h1>
             </div>
           </div>
-          <p class="text-[#414141] font-light text-xs pb-1">Hologram Number</p>
-          <div
-            class="text-[#414141] font-light text-xs flex items-center gap-1"
-          >
-            <span> 12 Axes ★ Black </span>
-            <div class="bg-[#1E1E1E] rounded-[4px] w-3 h-3"></div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-[#1E1E1E] font-medium text-sm">MX plates :-</h1>
+            <p
+              class="text-[#414141] font-light text-xs"
+              v-if="allVehicleData?.mxPlatesExpirationDate"
+            >
+              {{
+                $moment(allVehicleData?.mxPlatesExpirationDate).format(
+                  "DD-MM-YYYY"
+                )
+              }}
+            </p>
+            <p class="text-[#414141] font-light text-xs" v-else>-</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-[#1E1E1E] font-medium text-sm">Us plates :-</h1>
+            <p
+              class="text-[#414141] font-light text-xs"
+              v-if="allVehicleData?.usPlatesExpirationDate"
+            >
+              {{
+                $moment(allVehicleData?.usPlatesExpirationDate).format(
+                  "DD-MM-YYYY"
+                )
+              }}
+            </p>
+            <p class="text-[#414141] font-light text-xs" v-else>-</p>
           </div>
         </div>
       </div>

@@ -224,39 +224,45 @@ export default async (ctx, inject) => {
       }
     };
 
-    validateField(form.vehicleName, "vehicleName", "vehicle-name");
-    validateField(form.mxPlates, "mxPlates", "mx-plates");
     validateField(
-      form.mxPlatesExpirationDate,
-      "mxPlatesExpirationDate",
-      "mx-plates-expiration-date"
+      form.vehicleName,
+      "vehicleName",
+      "Vehicle / Economic Number / Name"
     );
-    validateField(form.usPlates, "usPlates", "us-plates");
-    validateField(
-      form.usPlatesExpirationDate,
-      "usPlatesExpirationDate",
-      "us-plates-expiration-date"
-    );
-    validateField(
-      form.mxInsurancePlates,
-      "mxInsurancePlates",
-      "mx-insurance-plates"
-    );
-    validateField(
-      form.mxInsurancePlatesExpirationDate,
-      "mxInsurancePlatesExpirationDate",
-      "mx-insurance-plates-expiration-date"
-    );
-    validateField(
-      form.usInsurancePlates,
-      "usInsurancePlates",
-      "us-insurance-plates"
-    );
-    validateField(
-      form.usInsurancePlatesExpirationDate,
-      "usInsurancePlatesExpirationDate",
-      "us-insurance-plates-expiration-date"
-    );
+
+    if (isEmpty(form.mxPlates) && isEmpty(form.usPlates)) {
+      setError("mxPlates", "mx-plates is required");
+      setError("usPlates", "us-plates is required");
+    }
+    if (
+      isEmpty(form.mxPlatesExpirationDate) &&
+      isEmpty(form.usPlatesExpirationDate)
+    ) {
+      setError("mxPlatesExpirationDate", "mx-plates-expiration-date");
+      setError(
+        "usPlatesExpirationDate",
+        "us-plates-expiration-date is required"
+      );
+    }
+
+    if (isEmpty(form.mxInsurancePlates) && isEmpty(form.usInsurancePlates)) {
+      setError("mxInsurancePlates", "mx-insurance-plates is required");
+      setError("usInsurancePlates", "us-insurance-plates is required");
+    }
+
+    if (
+      isEmpty(form.mxInsurancePlatesExpirationDate) &&
+      isEmpty(form.usInsurancePlatesExpirationDate)
+    ) {
+      setError(
+        "mxInsurancePlatesExpirationDate",
+        "mx-insurance-plates-expiration-date is required"
+      );
+      setError(
+        "usInsurancePlatesExpirationDate",
+        "us-insurance-plates-expiration-date is required"
+      );
+    }
 
     if (!(await validatePhoneNumber(form.operatorNumber))) {
       setError("operatorNumber", "Invalid operator-number format");

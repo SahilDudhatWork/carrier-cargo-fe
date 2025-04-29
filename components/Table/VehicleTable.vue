@@ -13,12 +13,6 @@
               </th>
               <th
                 scope="col"
-                class="sm:pr-4 px-4 py-3 text-[#000000] font-normal text-[12px]"
-              >
-                Vehicle ID
-              </th>
-              <th
-                scope="col"
                 class="px-6 py-3 text-[#000000] font-normal text-[12px]"
               >
                 Vehicle Info
@@ -33,7 +27,19 @@
                 scope="col"
                 class="px-6 py-3 text-[#000000] font-normal text-[12px]"
               >
+                Us Expiration Date
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-[#000000] font-normal text-[12px]"
+              >
                 Mx Plates
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-[#000000] font-normal text-[12px]"
+              >
+                Mx Expiration Date
               </th>
               <th
                 scope="col"
@@ -57,41 +63,38 @@
               :key="index"
             >
               <td class="pl-3">#</td>
-              <th
-                scope="row"
-                class="sm:pr-4 px-4 text-[#000000] font-normal text-[12px]"
-              >
-                <span class="border-b border-black">{{ item?._id }}</span>
-              </th>
-
               <td class="px-6 py-6">
                 <span class="text-[#000000] font-normal text-[12px] pt-3">{{
                   item?.vehicleName
                 }}</span>
               </td>
               <td class="px-6 text-[#000000] font-normal text-[12px]">
-                <div class="flex flex-col mt-4">
-                  <span> {{ item?.usPlates }}</span>
-                  <span class="text-[#989898]"
-                    >({{
-                      $moment(item?.usPlatesExpirationDate).format(
-                        "DD-MM-YYYY"
-                      )
-                    }})</span
-                  >
-                </div>
+                <span v-if="item?.usPlates"> {{ item?.usPlates }}</span>
+                <span v-else>-</span>
               </td>
               <td class="px-6 text-[#000000] font-normal text-[12px]">
-                <div class="flex flex-col mt-4">
-                  <span> {{ item?.mxPlates }}</span>
-                  <span class="text-[#989898]"
-                    >({{
-                      $moment(item?.mxPlatesExpirationDate).format(
-                        "DD-MM-YYYY"
-                      )
-                    }})</span
-                  >
-                </div>
+                <span
+                  v-if="item?.usPlatesExpirationDate"
+                  :class="getExpiryClass(item.usPlatesExpirationDate)"
+                  >{{
+                    $moment(item?.usPlatesExpirationDate).format("DD-MM-YYYY")
+                  }}</span
+                >
+                <span v-else>-</span>
+              </td>
+              <td class="px-6 text-[#000000] font-normal text-[12px]">
+                <span v-if="item?.mxPlates"> {{ item?.mxPlates }}</span>
+                <span v-else>-</span>
+              </td>
+              <td class="px-6 text-[#000000] font-normal text-[12px]">
+                <span
+                  v-if="item?.mxPlatesExpirationDate"
+                  :class="getExpiryClass(item.mxPlatesExpirationDate)"
+                  >{{
+                    $moment(item?.mxPlatesExpirationDate).format("DD-MM-YYYY")
+                  }}</span
+                >
+                <span v-else>-</span>
               </td>
               <td
                 @click="handleVerify(item)"
@@ -277,6 +280,24 @@ export default {
     }),
   },
   methods: {
+    getExpiryClass(date) {
+      if (!date) return "";
+
+      const expiryDate = this.$moment(date);
+      const today = this.$moment();
+
+      if (!expiryDate.isValid()) return "";
+
+      const diffInMonths = expiryDate.diff(today, "months", true);
+
+      if (diffInMonths <= 1) {
+        return "errorExpiry-msg";
+      } else if (diffInMonths <= 3) {
+        return "warningExpiry-msg";
+      }
+
+      return "";
+    },
     editOperator(item) {
       this.$emit("handleClick", item);
     },

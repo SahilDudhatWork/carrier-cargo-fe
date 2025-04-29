@@ -19,6 +19,13 @@ if (process.client) {
 
   onMessage(messaging, (payload) => {
     console.log("Message received. ", payload);
+
+    const channel = new BroadcastChannel("firebase-notification");
+    channel.postMessage({
+      type: "NEW_NOTIFICATION",
+      page: 1,
+      limit: 10,
+    });
   });
 }
 

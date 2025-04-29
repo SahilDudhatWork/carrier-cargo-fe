@@ -17,9 +17,9 @@
           >
             <div>
               <label
-                for="Vehicle Name"
+                for="Vehicle / Economic Number / Name"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                >Vehicle Name *</label
+                >Vehicle / Economic Number / Name *</label
               >
               <input
                 type="text"
@@ -31,7 +31,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="Vehicle Name"
+                placeholder="Vehicle / Economic Number / Name"
                 v-model="formData.vehicleName"
               />
               <span class="error-msg" v-if="errors.vehicleName">{{
@@ -81,6 +81,27 @@
               <span class="error-msg" v-if="errors?.mxPlatesExpirationDate">{{
                 errors?.mxPlatesExpirationDate
               }}</span>
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.mxPlatesExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.mxPlatesExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.mxPlatesExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
 
             <div>
@@ -126,6 +147,27 @@
               <span class="error-msg" v-if="errors?.usPlatesExpirationDate">{{
                 errors?.usPlatesExpirationDate
               }}</span>
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.usPlatesExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.usPlatesExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.usPlatesExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
 
             <div>
@@ -173,6 +215,27 @@
                 v-if="errors?.mxInsurancePlatesExpirationDate"
                 >{{ errors?.mxInsurancePlatesExpirationDate }}</span
               >
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.mxInsurancePlatesExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.mxInsurancePlatesExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.mxInsurancePlatesExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
             <div>
               <label
@@ -219,6 +282,27 @@
                 v-if="errors?.usInsurancePlatesExpirationDate"
                 >{{ errors?.usInsurancePlatesExpirationDate }}</span
               >
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.usInsurancePlatesExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.usInsurancePlatesExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleVehicleData?.usInsurancePlatesExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
           </div>
           <div class="mt-3">
@@ -379,6 +463,30 @@ export default {
         event.target.value
       );
     },
+    getExpiryWarningInfo(date) {
+      if (!date) return null;
+
+      const expiryDate = this.$moment(date);
+      const today = this.$moment();
+
+      if (!expiryDate.isValid()) return null;
+
+      const diffInMonths = expiryDate.diff(today, "months", true);
+
+      if (diffInMonths <= 1) {
+        return {
+          message: "expiry in 1 months",
+          type: "error",
+        };
+      } else if (diffInMonths <= 3) {
+        return {
+          message: "expiry in 3 months",
+          type: "warning",
+        };
+      }
+
+      return null;
+    },
     getCountry(item) {
       this.formData.countryCode = item.value;
     },
@@ -410,32 +518,58 @@ export default {
           });
           return;
         }
-        if (
-          this.selectedTypeOfServiceItem &&
-          this.selectedTypeOfServiceItem.length > 0
-        ) {
-          this.formData.typeOfService = this.selectedTypeOfServiceItem;
+        const safeFormatDate = (date) => {
+          const formatted = this.$moment(date).format("YYYY-MM-DD");
+          return formatted === "Invalid date" ? null : formatted;
+        };
+
+        const formatIfValid = (key, date) =>
+          safeFormatDate(date) ? { [key]: safeFormatDate(date) } : {};
+
+        const {
+          usPlatesExpirationDate,
+          mxPlatesExpirationDate,
+          usInsurancePlatesExpirationDate,
+          mxInsurancePlatesExpirationDate,
+          ...restData
+        } = this.formData;
+
+        let filteredFormData = {
+          ...restData,
+          ...formatIfValid("usPlatesExpirationDate", usPlatesExpirationDate),
+          ...formatIfValid("mxPlatesExpirationDate", mxPlatesExpirationDate),
+          ...formatIfValid(
+            "usInsurancePlatesExpirationDate",
+            usInsurancePlatesExpirationDate
+          ),
+          ...formatIfValid(
+            "mxInsurancePlatesExpirationDate",
+            mxInsurancePlatesExpirationDate
+          ),
+        };
+
+        if (this.selectedTypeOfServiceItem?.length > 0) {
+          filteredFormData.typeOfService = this.selectedTypeOfServiceItem;
         }
-        if (
-          this.selectedTypeOfTransportationItem &&
-          this.selectedTypeOfTransportationItem.length > 0
-        ) {
-          this.formData.typeOfTransportation =
+        if (this.selectedTypeOfTransportationItem?.length > 0) {
+          filteredFormData.typeOfTransportation =
             this.selectedTypeOfTransportationItem;
         }
-        if (
-          this.selectedModeOfTransportationItem &&
-          this.selectedModeOfTransportationItem.length > 0
-        ) {
-          this.formData.modeOfTransportation =
+        if (this.selectedModeOfTransportationItem?.length > 0) {
+          filteredFormData.modeOfTransportation =
             this.selectedModeOfTransportationItem;
         }
+
+        const formData = Object.fromEntries(
+          Object.entries(filteredFormData).filter(
+            ([_, value]) =>
+              value !== "" && value !== null && value !== undefined
+          )
+        );
+
         this.isLoading = true;
-        const response = await this.updateVehicle(this.formData);
-        this.$toast.open({
-          message: response.msg,
-        });
-        this.isLoading = false;
+        const response = await this.updateVehicle(formData);
+        this.$toast.open({ message: response.msg });
         this.$router.push("/vehicle");
       } catch (error) {
         this.isLoading = false;
@@ -453,7 +587,7 @@ export default {
     },
 
     selectTypeOfTransportation(id) {
-      return this.selectedTypeOfTransportationItem?.includes(id);
+      return this.selectedTypeOfTransportationItem === id;
     },
     selectModeOfTransportation(id) {
       return this.selectedModeOfTransportationItem?.includes(id);
@@ -468,14 +602,9 @@ export default {
       }
     },
     selectTypeOfTransportationItem(id) {
-      if (this.selectedTypeOfTransportationItem.includes(id)) {
-        this.selectedTypeOfTransportationItem =
-          this.selectedTypeOfTransportationItem.filter(
-            (selectedId) => selectedId !== id
-          );
-      } else {
-        this.selectedTypeOfTransportationItem.push(id);
-      }
+      this.selectedModeOfTransportationItem = [];
+      if (this.selectedTypeOfTransportationItem === id) return;
+      this.selectedTypeOfTransportationItem = id;
     },
     selectModeOfTransportationItem(id) {
       if (this.selectedModeOfTransportationItem.includes(id)) {
