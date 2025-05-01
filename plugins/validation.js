@@ -143,7 +143,7 @@ export default async (ctx, inject) => {
     return errors;
   };
 
-  const validateOperatorField = async ({ form }) => {
+  const validateOperatorField = async ({ form, skipFields = [] }) => {
     const errors = {};
     const isEmpty = (value) => {
       return typeof value === "string" ? value.trim() === "" : !value;
@@ -153,12 +153,16 @@ export default async (ctx, inject) => {
     };
 
     const validateField = (field, fieldName, errorLabel) => {
-      if (isEmpty(field)) {
+      if (!skipFields.includes(fieldName) && isEmpty(field)) {
         setError(fieldName, `${errorLabel} is required`);
       }
     };
 
-    validateField(form.operatorName, "operatorName", "operator-name");
+    validateField(
+      form.operatorName,
+      "operatorName",
+      "Operator Name, Internal Employee Number"
+    );
     validateField(form.operatorNumber, "operatorNumber", "operator-number");
     validateField(form.mxIdBadge, "mxIdBadge", "mx-id-badge");
     validateField(
@@ -209,7 +213,7 @@ export default async (ctx, inject) => {
 
     return errors;
   };
-  const validateVehicleField = async ({ form }) => {
+  const validateVehicleField = async ({ form, skipFields = [] }) => {
     const errors = {};
     const isEmpty = (value) => {
       return typeof value === "string" ? value.trim() === "" : !value;
@@ -219,7 +223,7 @@ export default async (ctx, inject) => {
     };
 
     const validateField = (field, fieldName, errorLabel) => {
-      if (isEmpty(field)) {
+      if (!skipFields.includes(fieldName) && isEmpty(field)) {
         setError(fieldName, `${errorLabel} is required`);
       }
     };
@@ -230,39 +234,38 @@ export default async (ctx, inject) => {
       "Vehicle / Economic Number / Name"
     );
 
-    if (isEmpty(form.mxPlates) && isEmpty(form.usPlates)) {
-      setError("mxPlates", "mx-plates is required");
-      setError("usPlates", "us-plates is required");
-    }
-    if (
-      isEmpty(form.mxPlatesExpirationDate) &&
-      isEmpty(form.usPlatesExpirationDate)
-    ) {
-      setError("mxPlatesExpirationDate", "mx-plates-expiration-date");
-      setError(
-        "usPlatesExpirationDate",
-        "us-plates-expiration-date is required"
-      );
-    }
-
-    if (isEmpty(form.mxInsurancePlates) && isEmpty(form.usInsurancePlates)) {
-      setError("mxInsurancePlates", "mx-insurance-plates is required");
-      setError("usInsurancePlates", "us-insurance-plates is required");
-    }
-
-    if (
-      isEmpty(form.mxInsurancePlatesExpirationDate) &&
-      isEmpty(form.usInsurancePlatesExpirationDate)
-    ) {
-      setError(
-        "mxInsurancePlatesExpirationDate",
-        "mx-insurance-plates-expiration-date is required"
-      );
-      setError(
-        "usInsurancePlatesExpirationDate",
-        "us-insurance-plates-expiration-date is required"
-      );
-    }
+    validateField(form.mxPlates, "mxPlates", "mx-plates");
+    validateField(form.usPlates, "usPlates", "us-plates");
+    validateField(
+      form.mxPlatesExpirationDate,
+      "mxPlatesExpirationDate",
+      "mx-plates-expiration-date"
+    );
+    validateField(
+      form.usPlatesExpirationDate,
+      "usPlatesExpirationDate",
+      "us-plates-expiration-date"
+    );
+    validateField(
+      form.mxInsurancePlates,
+      "mxInsurancePlates",
+      "mx-insurance-plates"
+    );
+    validateField(
+      form.usInsurancePlates,
+      "usInsurancePlates",
+      "us-insurance-plates"
+    );
+    validateField(
+      form.mxInsurancePlatesExpirationDate,
+      "mxInsurancePlatesExpirationDate",
+      "mx-insurance-plates-expiration-date"
+    );
+    validateField(
+      form.usInsurancePlatesExpirationDate,
+      "usInsurancePlatesExpirationDate",
+      "us-insurance-plates-expiration-date"
+    );
 
     if (!(await validatePhoneNumber(form.operatorNumber))) {
       setError("operatorNumber", "Invalid operator-number format");

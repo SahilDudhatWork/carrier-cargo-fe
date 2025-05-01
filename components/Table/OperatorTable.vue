@@ -71,15 +71,24 @@
                   +{{ item?.countryCode }} {{ item?.operatorNumber }}
                 </span>
               </td>
-              <td class="px-6 text-[#000000] font-normal text-[12px]">
+              <td
+                class="px-6 text-[#000000] font-normal text-[12px]"
+                v-if="item?.mxDriversLicense"
+              >
                 {{ item?.mxDriversLicense }}
               </td>
+              <td v-else class="px-6 text-[#000000] font-normal text-[12px]">
+                {{ item?.usDriversLicense }}
+              </td>
               <td class="px-6 text-[#000000] font-normal text-[12px]">
-                {{
-                  $moment(item?.mxDriversLicenseExpirationDate).format(
-                    "DD-MM-YYYY"
-                  )
-                }}
+                <span
+                  v-if="item?.mxIdBadgeExpirationDate"
+                  :class="getExpiryClass(item.mxIdBadgeExpirationDate)"
+                  >{{
+                    $moment(item?.mxIdBadgeExpirationDate).format("YYYY-MM-DD")
+                  }}</span
+                >
+                <span v-else>-</span>
               </td>
               <td
                 class="px-6 font-normal text-[12px]"
@@ -279,6 +288,24 @@ export default {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
       }
+    },
+    getExpiryClass(date) {
+      if (!date) return "";
+
+      const expiryDate = this.$moment(date);
+      const today = this.$moment();
+
+      if (!expiryDate.isValid()) return "";
+
+      const diffInMonths = expiryDate.diff(today, "months", true);
+
+      if (diffInMonths <= 1) {
+        return "errorExpiry-msg";
+      } else if (diffInMonths <= 3) {
+        return "warningExpiry-msg";
+      }
+
+      return "";
     },
   },
 };

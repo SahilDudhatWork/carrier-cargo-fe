@@ -2,12 +2,12 @@
   <div>
     <div
       @click="$emit('selectOperator')"
-      class="xxxl:w-[384px] w-full h-[184px] py-3 px-3 rounded-lg cursor-pointer"
+      class="xxxl:w-[384px] w-full h-[160px] py-3 px-3 rounded-lg cursor-pointer"
       :class="
         isSelected ? 'border border-[#3683D5]' : 'border border-[#E7E7E7] '
       "
     >
-      <div class="flex gap-3 mt-2">
+      <div class="flex gap-3">
         <div>
           <img src="@/static/Images/truck-circle-img.webp" alt="" />
         </div>
@@ -41,22 +41,31 @@
           </div>
         </div>
       </div>
-      <div class="bg-[#EEEEEE] h-[1px] w-full mt-5 mb-5"></div>
+      <div class="bg-[#EEEEEE] h-[1px] w-full mt-3 mb-3"></div>
       <div class="grid grid-cols-2">
         <div>
           <h1 class="text-[#989898] font-normal text-xs">License Number</h1>
 
-          <p class="text-[#1E1E1E] font-light text-xs">
+          <p
+            class="text-[#1E1E1E] font-light text-xs"
+            v-if="allOperatorData?.mxDriversLicense"
+          >
             {{ allOperatorData?.mxDriversLicense }}
+          </p>
+          <p v-else class="text-[#1E1E1E] font-light text-xs">
+            {{ allOperatorData?.usDriversLicense }}
           </p>
         </div>
         <div>
           <h1 class="text-[#989898] font-normal text-xs">License validity</h1>
 
-          <p class="text-[#1E1E1E] font-light text-xs">
+          <p
+            class="text-[#1E1E1E] font-light text-xs inline-flex"
+            :class="getExpiryClass(allOperatorData?.mxIdBadgeExpirationDate)"
+          >
             {{
-              $moment(allOperatorData?.mxDriversLicenseExpirationDate).format(
-                "DD-MM-YYYY"
+              $moment(allOperatorData?.mxIdBadgeExpirationDate).format(
+                "YYYY-MM-DD"
               )
             }}
           </p>
@@ -75,6 +84,26 @@ export default {
     isSelected: {
       type: Boolean,
       default: false,
+    },
+  },
+  methods: {
+    getExpiryClass(date) {
+      if (!date) return "";
+
+      const expiryDate = this.$moment(date);
+      const today = this.$moment();
+
+      if (!expiryDate.isValid()) return "";
+
+      const diffInMonths = expiryDate.diff(today, "months", true);
+
+      if (diffInMonths <= 1) {
+        return "errorExpiry-msg";
+      } else if (diffInMonths <= 3) {
+        return "warningExpiry-msg";
+      }
+
+      return "";
     },
   },
 };

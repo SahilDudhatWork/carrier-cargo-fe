@@ -17,9 +17,9 @@
           >
             <div>
               <label
-                for="Operator Name"
+                for="Operator Name, Internal Employee Number"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                >Operator Name *</label
+                >Operator Name, Internal Employee Number *</label
               >
               <input
                 type="text"
@@ -31,7 +31,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="Operator Name"
+                placeholder="Operator Name, Internal Employee Number"
                 v-model="formData.operatorName"
               />
               <span class="error-msg" v-if="errors.operatorName">{{
@@ -118,6 +118,28 @@
               <span class="error-msg" v-if="errors?.mxIdBadgeExpirationDate">{{
                 errors?.mxIdBadgeExpirationDate
               }}</span>
+
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.mxIdBadgeExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.mxIdBadgeExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.mxIdBadgeExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
             <div>
               <label
@@ -162,6 +184,27 @@
               <span class="error-msg" v-if="errors?.fastIdExpirationDate">{{
                 errors?.fastIdExpirationDate
               }}</span>
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.fastIdExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.fastIdExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.fastIdExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
             <div>
               <label
@@ -208,6 +251,27 @@
                 v-if="errors?.mxDriversLicenseExpirationDate"
                 >{{ errors?.mxDriversLicenseExpirationDate }}</span
               >
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.mxDriversLicenseExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.mxDriversLicenseExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.mxDriversLicenseExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
             <div>
               <label
@@ -254,6 +318,27 @@
                 v-if="errors?.usDriversLicenseExpirationDate"
                 >{{ errors?.usDriversLicenseExpirationDate }}</span
               >
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.usDriversLicenseExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.usDriversLicenseExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.usDriversLicenseExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
             <div>
               <div class="relative group cursor-pointer">
@@ -275,6 +360,27 @@
               <span class="error-msg" v-if="errors?.visaExpirationDate">{{
                 errors?.visaExpirationDate
               }}</span>
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.visaExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.visaExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.visaExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
             <div>
               <div class="relative group cursor-pointer">
@@ -298,6 +404,27 @@
                 v-if="errors?.customsBadgeExpirationDate"
                 >{{ errors?.customsBadgeExpirationDate }}</span
               >
+              <div
+                v-if="
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.customsBadgeExpirationDate
+                  )
+                "
+                :class="[
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.customsBadgeExpirationDate
+                  ).type === 'error'
+                    ? 'errorExpiry-msg'
+                    : 'warningExpiry-msg',
+                  'mt-2 inline-block',
+                ]"
+              >
+                {{
+                  getExpiryWarningInfo(
+                    getSingleOperatorData?.customsBadgeExpirationDate
+                  ).message
+                }}
+              </div>
             </div>
           </div>
           <div class="flex justify-center">
@@ -353,15 +480,15 @@ export default {
         operatorNumber: "",
         countryCode: 1,
         mxIdBadge: "",
-        mxIdBadgeExpirationDate: new Date().toISOString().slice(0, 10),
+        mxIdBadgeExpirationDate: null,
         fastId: "",
-        fastIdExpirationDate: new Date().toISOString().slice(0, 10),
+        fastIdExpirationDate: null,
         mxDriversLicense: "",
-        mxDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
+        mxDriversLicenseExpirationDate: null,
         usDriversLicense: "",
-        usDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
-        visaExpirationDate: new Date().toISOString().slice(0, 10),
-        customsBadgeExpirationDate: new Date().toISOString().slice(0, 10),
+        usDriversLicenseExpirationDate: null,
+        visaExpirationDate: null,
+        customsBadgeExpirationDate: null,
       },
     };
   },
@@ -384,11 +511,70 @@ export default {
       this.formData.countryCode = item.value;
     },
 
+    getExpiryWarningInfo(date) {
+      if (!date) return null;
+
+      const expiryDate = this.$moment(date);
+      const today = this.$moment();
+
+      if (!expiryDate.isValid()) return null;
+
+      const diffInMonths = expiryDate.diff(today, "months", true);
+
+      if (diffInMonths <= 1) {
+        return {
+          message: "expiry in 1 months",
+          type: "error",
+        };
+      } else if (diffInMonths <= 3) {
+        return {
+          message: "expiry in 3 months",
+          type: "warning",
+        };
+      }
+
+      return null;
+    },
+
     async EditOperator() {
       try {
+        const countFilled = (fields) =>
+          fields.filter((key) => this.formData[key]?.toString().trim()).length;
+
+        const mxFields = ["mxDriversLicense", "mxDriversLicenseExpirationDate"];
+        const usFields = ["usDriversLicense", "usDriversLicenseExpirationDate"];
+
+        const mxCount = countFilled(mxFields);
+        const usCount = countFilled(usFields);
+
+        let skipFields = [];
+        if (mxCount === mxFields.length && usCount === 0) {
+          skipFields = usFields;
+        } else if (usCount === usFields.length && mxCount === 0) {
+          skipFields = mxFields;
+        }
+
         this.errors = await this.$validateOperatorField({
           form: this.formData,
+          skipFields,
         });
+
+        if (mxCount > 0 && usCount > 0) {
+          [...mxFields, ...usFields].forEach((key) => {
+            const value = this.formData[key];
+            if (value && value.toString().trim() !== "") {
+              this.errors[key] =
+                "Please fill only one group at a time (US or MX).";
+            }
+          });
+
+          this.$toast.open({
+            message: "Please fill only one group (MX or US), not both.",
+            type: "error",
+          });
+          return;
+        }
+
         if (Object.keys(this.errors).length > 0) {
           this.$toast.open({
             message: "Please fix the errors before submitting.",
@@ -396,8 +582,42 @@ export default {
           });
           return;
         }
+
+        const safeFormatDate = (date) => {
+          const formatted = this.$moment(date).format("YYYY-MM-DD");
+          return formatted === "Invalid date" ? null : formatted;
+        };
+
+        const formatIfValid = (key, date) =>
+          safeFormatDate(date) ? { [key]: safeFormatDate(date) } : {};
+
+        const {
+          mxDriversLicenseExpirationDate,
+          usDriversLicenseExpirationDate,
+          ...restData
+        } = this.formData;
+
+        let filteredFormData = {
+          ...restData,
+          ...formatIfValid(
+            "mxDriversLicenseExpirationDate",
+            mxDriversLicenseExpirationDate
+          ),
+          ...formatIfValid(
+            "usDriversLicenseExpirationDate",
+            usDriversLicenseExpirationDate
+          ),
+        };
+
+        const formData = Object.fromEntries(
+          Object.entries(filteredFormData).filter(
+            ([_, value]) =>
+              value !== "" && value !== null && value !== undefined
+          )
+        );
+
         this.isLoading = true;
-        const response = await this.updateOperator(this.formData);
+        const response = await this.updateOperator(formData);
         this.$toast.open({
           message: response.msg,
         });

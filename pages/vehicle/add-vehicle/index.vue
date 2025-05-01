@@ -317,13 +317,13 @@ export default {
         vehicleName: "",
         countryCode: 1,
         mxPlates: "",
-        mxPlatesExpirationDate: new Date().toISOString().slice(0, 10),
+        mxPlatesExpirationDate: null,
         usPlates: "",
-        usPlatesExpirationDate: new Date().toISOString().slice(0, 10),
+        usPlatesExpirationDate: null,
         mxInsurancePlates: "",
-        mxInsurancePlatesExpirationDate: new Date().toISOString().slice(0, 10),
+        mxInsurancePlatesExpirationDate: null,
         usInsurancePlates: "",
-        usInsurancePlatesExpirationDate: new Date().toISOString().slice(0, 10),
+        usInsurancePlatesExpirationDate: null,
       },
     };
   },
@@ -365,7 +365,53 @@ export default {
     },
     async addVehicle() {
       try {
-        this.errors = await this.$validateVehicleField({ form: this.formData });
+        const countFilled = (fields) =>
+          fields.filter((key) => this.formData[key]?.toString().trim()).length;
+
+        const mxFields = [
+          "mxPlates",
+          "mxPlatesExpirationDate",
+          "mxInsurancePlates",
+          "mxInsurancePlatesExpirationDate",
+        ];
+        const usFields = [
+          "usPlates",
+          "usPlatesExpirationDate",
+          "usInsurancePlates",
+          "usInsurancePlatesExpirationDate",
+        ];
+
+        const mxCount = countFilled(mxFields);
+        const usCount = countFilled(usFields);
+
+        let skipFields = [];
+        if (mxCount === mxFields.length && usCount === 0) {
+          skipFields = usFields;
+        } else if (usCount === usFields.length && mxCount === 0) {
+          skipFields = mxFields;
+        }
+
+        this.errors = await this.$validateVehicleField({
+          form: this.formData,
+          skipFields,
+        });
+
+        if (mxCount > 0 && usCount > 0) {
+          [...mxFields, ...usFields].forEach((key) => {
+            const value = this.formData[key];
+            if (value && value.toString().trim() !== "") {
+              this.errors[key] =
+                "Please fill only one group at a time (US or MX).";
+            }
+          });
+
+          this.$toast.open({
+            message: "Please fill only one group (MX or US), not both.",
+            type: "error",
+          });
+          return;
+        }
+
         if (Object.keys(this.errors).length > 0) {
           this.$toast.open({
             message: "Please fix the errors before submitting.",

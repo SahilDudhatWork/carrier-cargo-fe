@@ -18,8 +18,10 @@
     >
       <template #content>
         <div>
-          <div class="mb-3">
-            <div>
+          <div
+            class="mb-3 flex justify-between sm:items-end sm:flex-row flex-col gap-3"
+          >
+            <div class="w-full">
               <label
                 for="Carrier Reference"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
@@ -28,7 +30,7 @@
               <input
                 type="text"
                 placeholder="Carrier Reference"
-                class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[15px] focus:outline-none border border-gray-300"
+                class="xl:w-[382px] text-gray-900 rounded-lg block w-full px-3 py-[12px] focus:outline-none border border-gray-300"
                 v-model="carrierReferenceData"
                 @input="validateCarrierReference"
                 maxlength="10"
@@ -38,9 +40,27 @@
                 errors?.carrierReference
               }}</span>
             </div>
+            <div class="w-full">
+              <div class="relative">
+                <img
+                  src="@/static/svg/search.svg"
+                  alt=""
+                  class="absolute right-3 top-[18px] cursor-pointer"
+                />
+                <input
+                  type="text"
+                  name="search"
+                  id="search"
+                  placeholder="Search operator name/ID"
+                  class="border border-gray-300 text-gray-900 rounded-lg block px-3 pr-4 py-[12px] focus:outline-none w-full"
+                  v-model="search"
+                  @keyup="searchText"
+                />
+              </div>
+            </div>
           </div>
           <div
-            class="flex justify-between items-center sm:flex-row flex-col mt-5 mb-6"
+            class="flex justify-between items-center sm:flex-row flex-col mt-3 mb-4"
           >
             <h1 class="font-semibold text-lg text-[#3683D5]">
               Assign Operator
@@ -154,7 +174,7 @@
           </div>
           <div
             v-if="allOperatorData.length > 0"
-            class="grid sm:grid-cols-2 grid-cols-1 !gap-y-5 xxxl:gap-0 gap-3 overflow-y-auto sm:max-h-[300px] max-h-[200px]"
+            class="grid sm:grid-cols-2 grid-cols-1 !gap-y-5 xxxl:gap-0 gap-3 overflow-y-auto sm:max-h-[260px] max-h-[160px]"
           >
             <AssignOperator
               v-for="item in allOperatorData"
@@ -211,6 +231,7 @@ export default {
     return {
       carrierReferenceData: this.carrierReference,
       isLoading: false,
+      search: "",
     };
   },
   computed: {
@@ -259,6 +280,8 @@ export default {
         await this.getAllOperator({
           page: this.operatorPaginationData.current_page - 1,
           limit: this.operatorPaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -273,6 +296,8 @@ export default {
         await this.getAllOperator({
           page: this.operatorPaginationData.current_page + 1,
           limit: this.operatorPaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -287,6 +312,8 @@ export default {
         await this.getAllOperator({
           page: 1,
           limit: this.operatorPaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -301,6 +328,8 @@ export default {
         await this.getAllOperator({
           page: this.operatorPaginationData?.total_page,
           limit: this.operatorPaginationData.limit,
+          sortBy: "all",
+          keyWord: this.search,
         });
       } catch (error) {
         console.log(error);
@@ -312,13 +341,17 @@ export default {
     },
     async getAllOperator(payload) {
       try {
-        let { page, limit } = payload;
+        let { sortBy, page, limit, keyWord } = payload;
+        sortBy = sortBy || "";
         page = page || 1;
         limit = limit || 10;
+        keyWord = keyWord || "";
         this.isLoading = true;
         await this.fetchAllOperator({
+          sortBy: sortBy,
           page: page,
           limit: limit,
+          keyWord: keyWord,
         });
       } catch (error) {
         console.log(error);
@@ -330,7 +363,7 @@ export default {
   async mounted() {
     this.carrierReferenceData = this.carrierReference || null;
     try {
-      await this.getAllOperator({ sortBy: "all" });
+      await this.getAllOperator({ sortBy: "all", keyWord: this.search });
       if (this.requestReassign) {
         this.updateSelectedOperator(
           this.getSingleActivity?.operatorData || null
@@ -347,6 +380,11 @@ export default {
         type: "error",
       });
     }
+  },
+  async created() {
+    this.searchText = this.$lodash.debounce(async (payload) => {
+      await this.getAllOperator({ keyWord: this.search, sortBy: "all" });
+    }, 1000);
   },
 };
 </script>

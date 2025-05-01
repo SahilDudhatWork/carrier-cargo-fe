@@ -77,7 +77,7 @@
                   v-if="item?.usPlatesExpirationDate"
                   :class="getExpiryClass(item.usPlatesExpirationDate)"
                   >{{
-                    $moment(item?.usPlatesExpirationDate).format("DD-MM-YYYY")
+                    $moment(item?.usPlatesExpirationDate).format("YYYY-MM-DD")
                   }}</span
                 >
                 <span v-else>-</span>
@@ -91,7 +91,7 @@
                   v-if="item?.mxPlatesExpirationDate"
                   :class="getExpiryClass(item.mxPlatesExpirationDate)"
                   >{{
-                    $moment(item?.mxPlatesExpirationDate).format("DD-MM-YYYY")
+                    $moment(item?.mxPlatesExpirationDate).format("YYYY-MM-DD")
                   }}</span
                 >
                 <span v-else>-</span>

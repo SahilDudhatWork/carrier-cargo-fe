@@ -17,9 +17,9 @@
           >
             <div>
               <label
-                for="Operator Name"
+                for="Operator Name, Internal Employee Number"
                 class="block mb-2 text-sm font-normal text-[#4B4B4B]"
-                >Operator Name *</label
+                >Operator Name, Internal Employee Number *</label
               >
               <input
                 type="text"
@@ -31,7 +31,7 @@
                     ? 'border border-red-600'
                     : 'border border-gray-300'
                 "
-                placeholder="Operator Name"
+                placeholder="Operator Name, Internal Employee Number"
                 v-model="formData.operatorName"
               />
               <span class="error-msg" v-if="errors.operatorName">{{
@@ -347,15 +347,15 @@ export default {
         operatorNumber: "",
         countryCode: 1,
         mxIdBadge: "",
-        mxIdBadgeExpirationDate: new Date().toISOString().slice(0, 10),
+        mxIdBadgeExpirationDate: null,
         fastId: "",
-        fastIdExpirationDate: new Date().toISOString().slice(0, 10),
+        fastIdExpirationDate: null,
         mxDriversLicense: "",
-        mxDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
+        mxDriversLicenseExpirationDate: null,
         usDriversLicense: "",
-        usDriversLicenseExpirationDate: new Date().toISOString().slice(0, 10),
-        visaExpirationDate: new Date().toISOString().slice(0, 10),
-        customsBadgeExpirationDate: new Date().toISOString().slice(0, 10),
+        usDriversLicenseExpirationDate: null,
+        visaExpirationDate: null,
+        customsBadgeExpirationDate: null,
       },
     };
   },
@@ -376,9 +376,43 @@ export default {
     },
     async addOperator() {
       try {
+        const countFilled = (fields) =>
+          fields.filter((key) => this.formData[key]?.toString().trim()).length;
+
+        const mxFields = ["mxDriversLicense", "mxDriversLicenseExpirationDate"];
+        const usFields = ["usDriversLicense", "usDriversLicenseExpirationDate"];
+
+        const mxCount = countFilled(mxFields);
+        const usCount = countFilled(usFields);
+
+        let skipFields = [];
+        if (mxCount === mxFields.length && usCount === 0) {
+          skipFields = usFields;
+        } else if (usCount === usFields.length && mxCount === 0) {
+          skipFields = mxFields;
+        }
+
         this.errors = await this.$validateOperatorField({
           form: this.formData,
+          skipFields,
         });
+
+        if (mxCount > 0 && usCount > 0) {
+          [...mxFields, ...usFields].forEach((key) => {
+            const value = this.formData[key];
+            if (value && value.toString().trim() !== "") {
+              this.errors[key] =
+                "Please fill only one group at a time (US or MX).";
+            }
+          });
+
+          this.$toast.open({
+            message: "Please fill only one group (MX or US), not both.",
+            type: "error",
+          });
+          return;
+        }
+
         if (Object.keys(this.errors).length > 0) {
           this.$toast.open({
             message: "Please fix the errors before submitting.",
@@ -386,17 +420,38 @@ export default {
           });
           return;
         }
+
+        const safeFormatDate = (date) => {
+          const formatted = this.$moment(date).format("YYYY-MM-DD");
+          return formatted === "Invalid date" ? null : formatted;
+        };
+
+        const formatIfValid = (key, date) =>
+          safeFormatDate(date) ? { [key]: safeFormatDate(date) } : {};
+
+        const {
+          mxDriversLicenseExpirationDate,
+          usDriversLicenseExpirationDate,
+          ...restData
+        } = this.formData;
+
+        let filteredFormData = {
+          ...restData,
+          ...formatIfValid(
+            "mxDriversLicenseExpirationDate",
+            mxDriversLicenseExpirationDate
+          ),
+          ...formatIfValid(
+            "usDriversLicenseExpirationDate",
+            usDriversLicenseExpirationDate
+          ),
+        };
+
         this.formData.fastIdExpirationDate = this.$moment(
           this.formData.fastIdExpirationDate
         ).format("YYYY-MM-DD");
-        this.formData.mxDriversLicenseExpirationDate = this.$moment(
-          this.formData.mxDriversLicenseExpirationDate
-        ).format("YYYY-MM-DD");
         this.formData.mxIdBadgeExpirationDate = this.$moment(
           this.formData.mxIdBadgeExpirationDate
-        ).format("YYYY-MM-DD");
-        this.formData.usDriversLicenseExpirationDate = this.$moment(
-          this.formData.usDriversLicenseExpirationDate
         ).format("YYYY-MM-DD");
         this.formData.visaExpirationDate = this.$moment(
           this.formData.visaExpirationDate
@@ -404,8 +459,16 @@ export default {
         this.formData.customsBadgeExpirationDate = this.$moment(
           this.formData.customsBadgeExpirationDate
         ).format("YYYY-MM-DD");
+
+        const formData = Object.fromEntries(
+          Object.entries(filteredFormData).filter(
+            ([_, value]) =>
+              value !== "" && value !== null && value !== undefined
+          )
+        );
+
         this.isLoading = true;
-        const response = await this.createOperator(this.formData);
+        const response = await this.createOperator(formData);
         this.$toast.open({
           message: response.msg,
         });
