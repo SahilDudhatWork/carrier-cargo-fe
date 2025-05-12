@@ -375,7 +375,7 @@
               activitySingleData?.documents &&
               activitySingleData?.documents?.cuadernoAta?.[0]
             "
-            title="CUADERNO ATA"
+            title="TRUCK ORDER NOT USED (TONU) EVIDENCE"
             :fileTypes="
               fileTypes[activitySingleData?.documents?.cuadernoAta?.[0]]
             "
@@ -393,7 +393,7 @@
               activitySingleData?.documents &&
               activitySingleData?.documents?.informalExport?.[0]
             "
-            title="INFORMAL EXPORT"
+            title="DEMURRAGES EVIDENCES"
             :fileTypes="
               fileTypes[activitySingleData?.documents?.informalExport?.[0]]
             "
